@@ -1,0 +1,1 @@
+ignores: ["@vue/runtime-core", "element-plus"]

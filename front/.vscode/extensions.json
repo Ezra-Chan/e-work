@@ -1,0 +1,8 @@
+{
+  "recommendations": [
+    "Vue.volar",
+    "Vue.vscode-typescript-vue-plugin",
+    "EditorConfig.EditorConfig",
+    "esbenp.prettier-vscode"
+  ]
+}
