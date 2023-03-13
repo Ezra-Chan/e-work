@@ -30,8 +30,15 @@ const getUser = async () => {
 
 <style lang="less" scoped>
 #login {
-  div {
-    font-weight: bold;
-  }
+  width: 100%;
+  height: 100%;
+  background-image: url('assets/images/login/background-image.png');
+  background-repeat: no-repeat;
+  background-position: left top;
+  background-color: linear-gradient(
+    to bottom,
+    rgb(109, 66, 248),
+    rgb(56, 116, 252)
+  );
 }
 </style>
