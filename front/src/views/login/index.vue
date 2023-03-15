@@ -1,9 +1,10 @@
 <template>
   <div id="login">
-    <div class="header">
+    <header>
       <div class="logo-title">
         <img src="@/assets/images/login/Logo.png" alt="logo" class="logo" />
-        <h1 class="title">{{ systemName }}</h1>
+        <h1 class="title full-name">{{ systemName }}</h1>
+        <h1 class="title abbreviation">{{ systemAbbreviation }}</h1>
       </div>
       <div class="functional-area">
         <el-switch
@@ -12,16 +13,30 @@
           :inactive-icon="Sunny"
           inline-prompt
           @change="changeMode"
+          aria-label="切换暗色主题"
         />
+        <el-link
+          href="https://github.com/Ezra-Chan/e-work"
+          :underline="false"
+          target="_blank"
+        >
+          <el-icon :size="iconFontSize">
+            <SvgIcon
+              icon-class="icon-github-fill"
+              :size="iconFontSize"
+              color="#000"
+            />
+          </el-icon>
+        </el-link>
       </div>
-    </div>
+    </header>
     <div class="centerBgc">
       <img class="cityBgc" src="@/assets/images/login/cityBgc.png" alt="" />
       <img class="bgcImg" src="@/assets/images/login/bgcImg.png" alt="" />
     </div>
     <div class="login-module">
       <el-text type="primary" tag="h2" class="login-name">登录</el-text>
-      <el-space spacer="|" size="large" style="justify-content: center">
+      <el-space spacer="|" size="large" class="login-types">
         <el-text
           class="login-type"
           :class="loginType === 0 ? 'current-login-type' : ''"
@@ -35,10 +50,15 @@
           >人脸识别</el-text
         >
       </el-space>
-      <el-form ref="loginFormRef" :model="loginForm">
+      <el-form
+        v-if="loginType === 0"
+        ref="loginFormRef"
+        :model="loginForm"
+        class="login-form"
+      >
         <el-form-item prop="account">
           <span slot="label">
-            <el-icon>
+            <el-icon :size="iconFontSize">
               <User />
             </el-icon>
           </span>
@@ -46,7 +66,7 @@
         </el-form-item>
         <el-form-item prop="password">
           <span slot="label">
-            <el-icon>
+            <el-icon :size="iconFontSize">
               <Lock />
             </el-icon>
           </span>
@@ -65,16 +85,28 @@
         </el-form-item>
       </el-form>
     </div>
+    <footer>
+      <el-text>© {{ new Date().getFullYear() }}</el-text>
+      <el-link
+        href="https://blog.csdn.net/qq_41065415"
+        :underline="false"
+        target="_blank"
+        >Ezra Chan</el-link
+      >
+    </footer>
   </div>
 </template>
 
 <script setup lang="ts">
 import { Sunny, Moon, User, Lock } from '@element-plus/icons-vue';
+import { FormInstance } from 'element-plus';
 import * as LoginService from 'api/modules/login';
 import { cancelRequest } from 'api/request';
-import { FormInstance } from 'element-plus';
+import SvgIcon from '@/components/SvgIcon.vue';
 
-const systemName = import.meta.env.VITE_GLOB_APP_TITLE;
+const systemName = import.meta.env.VITE_SYSTEM_TITLE;
+const systemAbbreviation = import.meta.env.VITE_SYSTEM_ABBREVIATION;
+const iconFontSize = '30px';
 const loginType = $ref<LoginType>(0);
 let flag = true;
 const isDark = useDark();
@@ -119,13 +151,15 @@ const getUser = async () => {
   background-size: cover;
   position: relative;
   overflow: hidden;
-
-  & > div {
+  user-select: none;
+  & > * {
     z-index: 1;
     position: relative;
   }
-
-  .header {
+  img {
+    -webkit-user-drag: none;
+  }
+  header {
     width: 100%;
     height: 140px;
     line-height: 140px;
@@ -151,14 +185,19 @@ const getUser = async () => {
         margin: 0;
         text-align: center;
       }
+      .abbreviation {
+        display: none;
+      }
     }
 
     .functional-area {
       display: flex;
-      justify-content: space-between;
+      justify-content: center;
+      gap: 10px;
+      align-items: center;
+      padding-right: 20px;
     }
   }
-
   .centerBgc {
     width: 100%;
     height: 100%;
@@ -188,7 +227,6 @@ const getUser = async () => {
       margin: auto 0;
     }
   }
-
   .login-module {
     position: absolute;
     top: 0;
@@ -210,13 +248,91 @@ const getUser = async () => {
       letter-spacing: 20px;
       padding-left: 6px;
     }
-    .login-type {
-      font-size: 20px;
-      cursor: pointer;
+    :deep(.login-types) {
+      justify-content: center;
+      & > span {
+        height: 29px;
+      }
+      .login-type {
+        font-size: 20px;
+        cursor: pointer;
+        padding-bottom: 5px;
+        border-bottom: 2px solid transparent;
+      }
+      .current-login-type {
+        color: var(--el-color-primary);
+        border-bottom: 2px solid;
+      }
     }
-    .current-login-type {
-      color: var(--el-color-primary);
-      border-bottom: 2px solid;
+    .login-form {
+      :deep(.el-form-item__content) {
+        color: var(--el-color-primary);
+        display: flex;
+        gap: 20px;
+        & > span {
+          width: 60px;
+          display: inline-flex;
+          align-items: center;
+          justify-content: right;
+        }
+        & > div {
+          width: calc(100% - 80px);
+        }
+      }
+    }
+  }
+  footer {
+    width: 100%;
+    height: 40px;
+    line-height: 40px;
+    position: fixed;
+    bottom: 0;
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    & > span,
+    & > a {
+      color: #fff9;
+    }
+    & > a:hover {
+      color: #fffc;
+    }
+  }
+  @media screen and (max-width: 910px) {
+    .bgcImg {
+      display: none;
+    }
+    .login-module {
+      right: 0;
+      left: 0;
+      margin: auto;
+    }
+  }
+  @media screen and (max-width: 820px) {
+    header {
+      justify-content: center;
+      flex-direction: column;
+      height: auto;
+      .logo-title {
+        padding-left: 0;
+        justify-content: center;
+        .logo {
+          margin: 40px 0;
+          max-width: 65px;
+          max-height: 60px;
+        }
+        .full-name {
+          display: none;
+        }
+        .abbreviation {
+          display: block;
+          width: 200px;
+        }
+      }
+      .functional-area {
+        justify-content: center;
+        padding-right: 0;
+      }
     }
   }
 }
