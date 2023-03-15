@@ -18,7 +18,8 @@
       "api/*": ["src/api/*"],
       "assets/*": ["src/assets/"],
       "components/*": ["src/assets/"]
-    }
+    },
+    "types": ["@vue-macros/reactivity-transform/macros-global"]
   },
   "include": [
     "src/*.ts",

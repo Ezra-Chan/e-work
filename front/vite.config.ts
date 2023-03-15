@@ -1,13 +1,19 @@
 import { defineConfig, loadEnv } from 'vite';
 import type { ConfigEnv } from 'vite';
-import vue from '@vitejs/plugin-vue';
+import ReactivityTransform from '@vue-macros/reactivity-transform/vite';
+import Vue from '@vitejs/plugin-vue';
+// import VueJsx from '@vitejs/plugin-vue-jsx'
+import viteCompression from 'vite-plugin-compression';
+import Icons from 'unplugin-icons/vite';
+import IconsResolver from 'unplugin-icons/resolver';
 import AutoImport from 'unplugin-auto-import/vite';
 import Components from 'unplugin-vue-components/vite';
 import { ElementPlusResolver } from 'unplugin-vue-components/resolvers';
 import * as path from 'path';
+import type { ViteEnv } from './src/vite-env';
 
 export default defineConfig(({ mode }: ConfigEnv) => {
-  const env = loadEnv(mode, process.cwd());
+  const env = loadEnv(mode, process.cwd()) as unknown as ViteEnv;
   return {
     base: './',
     resolve: {
@@ -20,21 +26,47 @@ export default defineConfig(({ mode }: ConfigEnv) => {
       extensions: ['.js', '.json', '.ts', '.vue'],
     },
     plugins: [
-      vue(),
+      Vue(),
+      ReactivityTransform(),
       AutoImport({
-        resolvers: [ElementPlusResolver()],
-        imports: ['vue', 'vue-router'],
+        resolvers: [
+          // 自动导入 Element Plus 相关函数，如：ElMessage, ElMessageBox... (带样式)
+          ElementPlusResolver(),
+          // 自动导入图标组件
+          IconsResolver({
+            prefix: 'Icon',
+          }),
+        ],
+        imports: ['vue', 'vue-router', '@vueuse/core'],
       }),
       Components({
-        resolvers: [ElementPlusResolver()],
+        resolvers: [
+          // 自动注册图标组件
+          IconsResolver({
+            enabledCollections: ['ep'],
+          }),
+          ElementPlusResolver(),
+        ],
       }),
+      Icons({
+        autoInstall: true,
+      }),
+      // * gzip compress
+      env.VITE_BUILD_GZIP === 'true' &&
+        viteCompression({
+          verbose: true,
+          disable: false,
+          threshold: 10240,
+          algorithm: 'gzip',
+          ext: '.gz',
+        }),
     ],
     server: {
-      // port: 8080,
-      // hmr: {
-      //   host: "127.0.0.1",
-      //   port: 8080,
-      // },
+      port: env.VITE_PORT,
+      open: env.VITE_OPEN === 'true',
+      hmr: {
+        port: env.VITE_PORT,
+      },
       proxy: {
         [env.VITE_PREFIX]: {
           target: env.VITE_BASE_URL,
@@ -42,6 +74,13 @@ export default defineConfig(({ mode }: ConfigEnv) => {
           rewrite: (path: string) => path.replace(env.VITE_PREFIX, ''),
         },
       },
+    },
+    css: {
+      devSourcemap: true,
+    },
+    // * 打包去除 console.log && debugger
+    esbuild: {
+      pure: env.VITE_DROP_CONSOLE === 'true' ? ['console.log', 'debugger'] : [],
     },
   };
 });
