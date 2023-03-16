@@ -8,11 +8,11 @@
       </div>
       <div class="functional-area">
         <el-switch
-          v-model="isDark"
+          v-model="theme"
           :active-icon="Moon"
           :inactive-icon="Sunny"
           inline-prompt
-          @change="changeMode"
+          @change="changeTheme"
           aria-label="切换暗色主题"
         />
         <el-link
@@ -134,11 +134,18 @@ const systemName = import.meta.env.VITE_SYSTEM_TITLE;
 const systemAbbreviation = import.meta.env.VITE_SYSTEM_ABBREVIATION;
 const iconFontSize = '3rem';
 const loginType = $ref<LoginType>(0);
-let isDark = useDark();
+
+// 暗黑模式
+const isDark = useDark();
 const toggleDark = useToggle(isDark);
+let theme = $ref<typeof isDark>(isDark);
+const changeTheme = (e: boolean) => {
+  toggleDark();
+  theme = e;
+};
 
-const loginFormRef = ref<FormInstance>();
-
+// 登录表单
+const loginFormRef = $ref<FormInstance>();
 const loginForm = reactive<LoginFormType>({
   account: '',
   password: '',
@@ -204,14 +211,8 @@ onMounted(() => {
   // getUser();
 });
 
-const changeMode = (e: typeof isDark) => {
-  isDark = e;
-  toggleDark();
-};
-
 const onLogin = async () => {
-  console.log(loginFormRef);
-  await loginFormRef.validate((valid, fields) => {
+  await loginFormRef!.validate((valid, fields) => {
     if (valid) {
       console.log('submit!');
     } else {
@@ -470,6 +471,11 @@ const getUser = async () => {
         padding-right: 0;
       }
     }
+  }
+}
+.dark {
+  #login {
+    filter: brightness(0.7) saturate(1.25);
   }
 }
 </style>
