@@ -21,7 +21,6 @@ export default defineConfig(({ mode }: ConfigEnv) => {
         '@': path.resolve(__dirname, 'src'),
         api: path.resolve(__dirname, 'src/api'),
         assets: path.resolve(__dirname, 'src/assets'),
-        components: path.resolve(__dirname, 'src/components'),
       },
       extensions: ['.js', '.json', '.ts', '.vue'],
     },
@@ -77,6 +76,11 @@ export default defineConfig(({ mode }: ConfigEnv) => {
     },
     css: {
       devSourcemap: true,
+      preprocessorOptions: {
+        less: {
+          additionalData: '@import "./src/assets/css/common.less";',
+        },
+      },
     },
     // * 打包去除 console.log && debugger
     esbuild: {
