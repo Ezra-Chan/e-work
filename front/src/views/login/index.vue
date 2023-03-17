@@ -111,6 +111,7 @@
           >
         </el-form-item>
       </el-form>
+      <face-login v-else />
     </div>
     <footer>
       <el-text>© {{ new Date().getFullYear() }}</el-text>
@@ -120,20 +121,42 @@
         target="_blank"
         >Ezra Chan</el-link
       >
+      <el-popover
+        :width="240"
+        popper-style="box-shadow: rgb(14 18 22 / 35%) 0px 10px 38px -10px, rgb(14 18 22 / 20%) 0px 10px 20px -15px; padding: 20px;"
+      >
+        <template #reference>
+          <el-icon size="4rem" title="E-Work系统交流群">
+            <svg-icon
+              icon-class="icon-QQ-circle-fill"
+              color="var(--el-color-black)"
+            />
+          </el-icon>
+        </template>
+        <template #default>
+          <img
+            src="@/assets/images/login/qq-group-qrcode.png"
+            :width="200"
+            alt="E-Work系统交流群"
+            title="E-Work系统交流群"
+          />
+        </template>
+      </el-popover>
     </footer>
   </div>
 </template>
 
 <script setup lang="ts">
 import { Sunny, Moon, User, Lock } from '@element-plus/icons-vue';
-import type { FormInstance, FormRules } from 'element-plus';
+import { FormInstance, FormRules } from 'element-plus';
 import * as LoginService from 'api/modules/login';
 import { cancelRequest } from 'api/request';
+import FaceLogin from './FaceLogin.vue';
 
 const systemName = import.meta.env.VITE_SYSTEM_TITLE;
 const systemAbbreviation = import.meta.env.VITE_SYSTEM_ABBREVIATION;
 const iconFontSize = '3rem';
-const loginType = $ref<LoginType>(0);
+let loginType = $ref<LoginType>(0);
 
 // 暗黑模式
 const isDark = useDark();
@@ -144,7 +167,7 @@ const changeTheme = (e: boolean) => {
   theme = e;
 };
 
-// 登录表单
+// 密码登录
 const loginFormRef = $ref<FormInstance>();
 const loginForm = reactive<LoginFormType>({
   account: '',
@@ -258,6 +281,7 @@ const getUser = async () => {
         margin: 4vh 0;
         -webkit-filter: brightness(2);
         filter: brightness(2);
+        width: 7rem;
       }
       .title {
         font-size: 4rem;

@@ -18,8 +18,8 @@ interface NewRequestConfig<T, R> extends RequestConfig<NewResponse<R>> {
 }
 
 const request = new Request({
-  baseURL: import.meta.env.BASE_URL + import.meta.env.VITE_PREFIX,
-  timeout: 1000 * 60 * 5,
+  baseURL: import.meta.env.VITE_PREFIX,
+  timeout: 1000 * 60 * 1,
   interceptors: {
     // 请求拦截器
     requestInterceptors: config => config,
@@ -53,4 +53,4 @@ export const cancelAllRequest = () => {
   return request.cancelAllRequest();
 };
 
-export default newRequest;
+export default request;

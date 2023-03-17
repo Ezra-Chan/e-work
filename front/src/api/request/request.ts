@@ -118,12 +118,12 @@ class Request {
     });
   }
 
-  get<T>(config: RequestConfig<T>): Promise<T> {
-    return this.request<T>({ ...config, method: 'GET' });
+  get<T>(url: string, params?: any, config?: RequestConfig<T>): Promise<T> {
+    return this.request<T>({ ...(config || {}), url, params, method: 'GET' });
   }
 
-  post<T>(config: RequestConfig<T>): Promise<T> {
-    return this.request<T>({ ...config, method: 'POST' });
+  post<T>(url: string, data?: any, config?: RequestConfig<T>): Promise<T> {
+    return this.request<T>({ ...(config || {}), url, data, method: 'POST' });
   }
 
   delete<T>(config: RequestConfig<T>): Promise<T> {
