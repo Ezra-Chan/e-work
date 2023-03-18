@@ -50,108 +50,20 @@
           >人脸识别</el-text
         >
       </el-space>
-      <el-form
-        v-if="loginType === 0"
-        ref="loginFormRef"
-        :model="loginForm"
-        class="login-form"
-      >
-        <el-form-item prop="account">
-          <span slot="label">
-            <el-icon :size="iconFontSize">
-              <User />
-            </el-icon>
-          </span>
-          <el-input
-            v-model="loginForm.account"
-            placeholder="请输入账号"
-            class="only-border-bottom"
-            size="large"
-          />
-        </el-form-item>
-        <el-form-item prop="password">
-          <span slot="label">
-            <el-icon :size="iconFontSize">
-              <Lock />
-            </el-icon>
-          </span>
-          <el-input
-            v-model="loginForm.password"
-            type="password"
-            autocomplete="off"
-            placeholder="请输入密码"
-            class="only-border-bottom"
-            size="large"
-          />
-        </el-form-item>
-        <el-form-item prop="verificationCode">
-          <span slot="label">
-            <el-icon :size="iconFontSize">
-              <svg-icon icon-class="icon-verified" :size="iconFontSize" />
-            </el-icon>
-          </span>
-          <el-input
-            v-model="loginForm.verificationCode"
-            placeholder="请输入验证码"
-            class="only-border-bottom"
-            size="large"
-          />
-        </el-form-item>
-        <el-form-item prop="rememberMe">
-          <span slot="label" />
-          <el-checkbox
-            v-model="loginForm.rememberMe"
-            label="记住我"
-            size="large"
-          />
-        </el-form-item>
-        <el-form-item class="form-item-center">
-          <el-button type="primary" @click="onLogin" size="large"
-            >登录</el-button
-          >
-        </el-form-item>
-      </el-form>
+      <account-login v-if="loginType === 0" />
       <face-login v-else />
     </div>
-    <footer>
-      <el-text>© {{ new Date().getFullYear() }}</el-text>
-      <el-link
-        href="https://blog.csdn.net/qq_41065415"
-        :underline="false"
-        target="_blank"
-        >Ezra Chan</el-link
-      >
-      <el-popover
-        :width="240"
-        popper-style="box-shadow: rgb(14 18 22 / 35%) 0px 10px 38px -10px, rgb(14 18 22 / 20%) 0px 10px 20px -15px; padding: 20px;"
-      >
-        <template #reference>
-          <el-icon size="4rem" title="E-Work系统交流群">
-            <svg-icon
-              icon-class="icon-QQ-circle-fill"
-              color="var(--el-color-black)"
-            />
-          </el-icon>
-        </template>
-        <template #default>
-          <img
-            src="@/assets/images/login/qq-group-qrcode.png"
-            :width="200"
-            alt="E-Work系统交流群"
-            title="E-Work系统交流群"
-          />
-        </template>
-      </el-popover>
-    </footer>
+    <brand-footer />
   </div>
 </template>
 
 <script setup lang="ts">
-import { Sunny, Moon, User, Lock } from '@element-plus/icons-vue';
-import { FormInstance, FormRules } from 'element-plus';
+import { Sunny, Moon } from '@element-plus/icons-vue';
 import * as LoginService from 'api/modules/login';
 import { cancelRequest } from 'api/request';
 import FaceLogin from './FaceLogin.vue';
+import AccountLogin from './AccountLogin.vue';
+import BrandFooter from '@/components/BrandFooter.vue';
 
 const systemName = import.meta.env.VITE_SYSTEM_TITLE;
 const systemAbbreviation = import.meta.env.VITE_SYSTEM_ABBREVIATION;
@@ -167,82 +79,9 @@ const changeTheme = (e: boolean) => {
   theme = e;
 };
 
-// 密码登录
-const loginFormRef = $ref<FormInstance>();
-const loginForm = reactive<LoginFormType>({
-  account: '',
-  password: '',
-  verificationCode: '',
-  rememberMe: false,
-});
-const rules = reactive<FormRules>({
-  name: [
-    { required: true, message: 'Please input Activity name', trigger: 'blur' },
-    { min: 3, max: 5, message: 'Length should be 3 to 5', trigger: 'blur' },
-  ],
-  region: [
-    {
-      required: true,
-      message: 'Please select Activity zone',
-      trigger: 'change',
-    },
-  ],
-  count: [
-    {
-      required: true,
-      message: 'Please select Activity count',
-      trigger: 'change',
-    },
-  ],
-  date1: [
-    {
-      type: 'date',
-      required: true,
-      message: 'Please pick a date',
-      trigger: 'change',
-    },
-  ],
-  date2: [
-    {
-      type: 'date',
-      required: true,
-      message: 'Please pick a time',
-      trigger: 'change',
-    },
-  ],
-  type: [
-    {
-      type: 'array',
-      required: true,
-      message: 'Please select at least one activity type',
-      trigger: 'change',
-    },
-  ],
-  resource: [
-    {
-      required: true,
-      message: 'Please select activity resource',
-      trigger: 'change',
-    },
-  ],
-  desc: [
-    { required: true, message: 'Please input activity form', trigger: 'blur' },
-  ],
-});
-
 onMounted(() => {
   // getUser();
 });
-
-const onLogin = async () => {
-  await loginFormRef!.validate((valid, fields) => {
-    if (valid) {
-      console.log('submit!');
-    } else {
-      console.log('error submit!', fields);
-    }
-  });
-};
 
 const getUser = async () => {
   const data = await LoginService.getUser();
@@ -252,6 +91,7 @@ const getUser = async () => {
 
 <style lang="less" scoped>
 #login {
+  --ework-text-white: #fffd;
   width: 100%;
   height: 100%;
   background-image: url('assets/images/login/background-image.png');
@@ -275,19 +115,20 @@ const getUser = async () => {
     justify-content: space-between;
     .logo-title {
       display: flex;
+      align-items: center;
       padding-left: 10vw;
       gap: 2vw;
       .logo {
-        margin: 4vh 0;
         -webkit-filter: brightness(2);
         filter: brightness(2);
         width: 7rem;
+        max-height: 6rem;
       }
       .title {
         font-size: 4rem;
         font-family: PingFang-SC;
         font-weight: bold;
-        color: var(--el-color-white);
+        color: var(--ework-text-white);
         margin: 0;
         text-align: center;
       }
@@ -374,90 +215,13 @@ const getUser = async () => {
         border-bottom: 2px solid;
       }
     }
-    :deep(.login-form) {
-      .el-form-item__content {
-        color: var(--el-color-primary);
-        display: flex;
-        gap: 2rem;
-        & > span {
-          width: 6rem;
-          display: inline-flex;
-          align-items: center;
-          justify-content: right;
-        }
-        & > div {
-          width: calc(100% - 8rem);
-        }
-        .el-input--large,
-        .el-checkbox__label {
-          font-size: 1.4rem;
-          --el-input-inner-height: 3.8rem;
-          --el-input-height: 4rem;
-        }
-        .el-checkbox--large {
-          height: 4rem;
-        }
-        .el-checkbox__inner {
-          width: 1.4rem;
-          height: 1.4rem;
-        }
-        .el-checkbox__inner::after {
-          width: 0.3rem;
-          height: 0.7rem;
-          left: 0.4rem;
-          top: 0.1rem;
-        }
-      }
-      .only-border-bottom {
-        .el-input__wrapper {
-          box-shadow: unset;
-          border-radius: unset;
-          border-bottom: 2px solid var(--el-input-border-color);
-          &:hover {
-            border-bottom-color: var(--el-input-hover-border-color);
-          }
-          &.is-focus {
-            border-bottom-color: var(--el-input-focus-border);
-          }
-        }
-      }
-      .form-item-center {
-        .el-form-item__content {
-          display: flex;
-          justify-content: center;
-          button {
-            height: 4rem;
-            & > span {
-              .letter-spacing-em(1);
-              font-size: 2.4rem;
-            }
-          }
-        }
-      }
-    }
   }
   @media screen and (max-width: 500px) {
     .login-module {
       min-width: 90vw;
     }
   }
-  footer {
-    width: 100%;
-    height: 4rem;
-    line-height: 4rem;
-    position: fixed;
-    bottom: 0;
-    display: flex;
-    justify-content: center;
-    gap: 1rem;
-    & > span,
-    & > a {
-      color: #fff9;
-    }
-    & > a:hover {
-      color: #fffc;
-    }
-  }
+
   @media screen and (max-width: 910px) {
     .bgcImg {
       display: none;
@@ -473,12 +237,11 @@ const getUser = async () => {
       justify-content: center;
       flex-direction: column;
       height: auto;
+      line-height: 10rem;
       .logo-title {
         padding-left: 0;
         justify-content: center;
-        align-items: center;
         .logo {
-          margin: 4rem 0;
           max-width: 6.5rem;
           max-height: 6rem;
         }
@@ -500,6 +263,7 @@ const getUser = async () => {
 .dark {
   #login {
     filter: brightness(0.7) saturate(1.25);
+    --ework-text-white: #cfd3dc;
   }
 }
 </style>
