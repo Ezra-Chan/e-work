@@ -1,21 +1,23 @@
 <template>
   <el-form
     ref="loginFormRef"
+    class="login-form"
     :model="loginForm"
     :rules="rules"
-    class="login-form"
+    @keydown.enter.native="onLogin(loginFormRef)"
   >
-    <el-form-item prop="account">
+    <el-form-item prop="userName">
       <span slot="label">
         <el-icon :size="iconFontSize">
           <User />
         </el-icon>
       </span>
       <el-input
-        v-model="loginForm.account"
+        v-model="loginForm.userName"
         placeholder="请输入账号"
         class="only-border-bottom"
         size="large"
+        clearable
       />
     </el-form-item>
     <el-form-item prop="password">
@@ -31,19 +33,27 @@
         placeholder="请输入密码"
         class="only-border-bottom"
         size="large"
+        clearable
       />
     </el-form-item>
-    <el-form-item prop="verificationCode">
+    <el-form-item prop="code">
       <span slot="label">
         <el-icon :size="iconFontSize">
           <svg-icon icon-class="icon-verified" :size="iconFontSize" />
         </el-icon>
       </span>
       <el-input
-        v-model="loginForm.verificationCode"
+        v-model="loginForm.code"
         placeholder="请输入验证码"
-        class="only-border-bottom"
+        class="only-border-bottom captcha-input"
         size="large"
+        clearable
+      />
+      <img
+        :src="captcha"
+        @click="getCaptcha"
+        class="login-captcha"
+        alt="验证码"
       />
     </el-form-item>
     <el-form-item prop="rememberMe">
@@ -51,7 +61,13 @@
       <el-checkbox v-model="loginForm.rememberMe" label="记住我" size="large" />
     </el-form-item>
     <el-form-item class="form-item-center">
-      <el-button type="primary" @click="onLogin" size="large">登录</el-button>
+      <el-button
+        type="primary"
+        @click="onLogin(loginFormRef)"
+        size="large"
+        :loading="loading"
+        >登录</el-button
+      >
     </el-form-item>
   </el-form>
 </template>
@@ -59,44 +75,63 @@
 <script setup lang="ts">
 import { User, Lock } from '@element-plus/icons-vue';
 import { FormInstance, FormRules } from 'element-plus';
+import md5 from 'js-md5';
 import * as LoginService from 'api/modules/login';
 import { cancelRequest } from 'api/request';
 
+const router = useRouter();
 const iconFontSize = '3rem';
 
 const loginFormRef = $ref<FormInstance>();
-const loginForm = reactive<LoginFormType>({
-  account: '',
+const initLoginForm = {
+  userName: '',
   password: '',
-  verificationCode: '',
+  code: '',
   rememberMe: false,
-});
+};
+let loginForm = reactive<LoginFormType>(initLoginForm);
+let loginFormCache = $(useLocalStorage('ework-loginCache', initLoginForm));
 const rules = reactive<FormRules>({
-  account: { required: true, message: '请输入账号！', trigger: 'blur' },
+  userName: { required: true, message: '请输入账号！', trigger: 'blur' },
   password: { required: true, message: '请输入密码！', trigger: 'blur' },
-  verificationCode: {
-    required: true,
-    message: '请输入验证码！',
-    trigger: 'blur',
-  },
+  code: { required: true, message: '请输入验证码！', trigger: 'blur' },
 });
+let captcha = $ref<string>();
+let loading = $ref(false);
 
 onMounted(() => {
-  // getUser();
+  getCaptcha();
+  loginForm = loginFormCache;
 });
 
-const onLogin = async () => {
-  await loginFormRef!.validate((valid, fields) => {
+const onLogin = async (formRef: FormInstance | undefined) => {
+  if (!formRef) return;
+  await formRef.validate(async valid => {
     if (valid) {
-      console.log('submit!');
-    } else {
-      console.log('error submit!', fields);
+      try {
+        loading = true;
+        const data = await LoginService.accountLogin({
+          ...loginForm,
+          password: md5(loginForm.password),
+        });
+        ElMessage.success('登录成功！,欢迎');
+        if (loginForm.rememberMe) {
+          loginFormCache = loginForm;
+        } else {
+          loginFormCache = initLoginForm;
+        }
+        router.push('/');
+      } catch (error) {
+      } finally {
+        loading = false;
+      }
     }
   });
 };
 
-const getUser = async () => {
-  const data = await LoginService.getUser();
+const getCaptcha = async () => {
+  const data = (await LoginService.getCaptcha()) as Blob;
+  captcha = window.URL.createObjectURL(data);
   // cancelRequest('/login');
 };
 </script>
@@ -112,7 +147,7 @@ const getUser = async () => {
       align-items: center;
       justify-content: right;
     }
-    & > div:not(.el-form-item__error) {
+    & > .el-input {
       width: calc(100% - 8rem);
     }
     .el-form-item__error {
@@ -138,6 +173,9 @@ const getUser = async () => {
       left: 0.4rem;
       top: 0.1rem;
     }
+    .captcha-input {
+      width: calc(100% - 22rem);
+    }
   }
   .only-border-bottom {
     .el-input__wrapper {
@@ -162,6 +200,27 @@ const getUser = async () => {
           .letter-spacing-em(1);
           font-size: 2.4rem;
         }
+      }
+    }
+  }
+  .login-captcha {
+    width: 12rem;
+    cursor: pointer;
+  }
+  @media screen and (max-width: 500px) {
+    .el-form-item__content {
+      & > span {
+        width: 4rem;
+      }
+      & > .el-input {
+        width: calc(100% - 6rem);
+      }
+      .el-form-item__error {
+        font-size: 1.2rem;
+        margin-left: calc(6rem + 15px);
+      }
+      .captcha-input {
+        width: calc(100% - 20rem);
       }
     }
   }

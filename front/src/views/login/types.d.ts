@@ -1,8 +1,8 @@
 declare type LoginType = 0 | 1;
 
 declare type LoginFormType = {
-  account: string;
+  userName: string;
   password: string;
-  verificationCode: string;
+  code: string;
   rememberMe: boolean;
 };

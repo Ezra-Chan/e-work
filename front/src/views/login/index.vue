@@ -91,7 +91,7 @@ const getUser = async () => {
 
 <style lang="less" scoped>
 #login {
-  --ework-text-white: #fffd;
+  --ework-text-white: #fffc;
   width: 100%;
   height: 100%;
   background-image: url('assets/images/login/background-image.png');
@@ -219,6 +219,7 @@ const getUser = async () => {
   @media screen and (max-width: 500px) {
     .login-module {
       min-width: 90vw;
+      padding: 8rem 1rem 5rem;
     }
   }
 
