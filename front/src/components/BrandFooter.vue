@@ -1,5 +1,5 @@
 <template>
-  <footer id="brand-footer">
+  <el-footer id="brand-footer">
     <el-text>© {{ new Date().getFullYear() }}</el-text>
     <el-link
       href="https://blog.csdn.net/qq_41065415"
@@ -28,7 +28,7 @@
         />
       </template>
     </el-popover>
-  </footer>
+  </el-footer>
 </template>
 
 <style lang="less">
