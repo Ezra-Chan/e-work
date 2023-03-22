@@ -83,14 +83,16 @@ const router = useRouter();
 const iconFontSize = '3rem';
 
 const loginFormRef = $ref<FormInstance>();
-const initLoginForm = {
+
+let loginForm = reactive<LoginFormType>({
   userName: '',
   password: '',
   code: '',
   rememberMe: false,
-};
-let loginForm = reactive<LoginFormType>(initLoginForm);
-let loginFormCache = $(useLocalStorage('ework-loginCache', initLoginForm));
+});
+let loginFormCache = $(
+  useLocalStorage('ework-loginCache', null)
+) as InitLoginFormType;
 const rules = reactive<FormRules>({
   userName: { required: true, message: '请输入账号！', trigger: 'blur' },
   password: { required: true, message: '请输入密码！', trigger: 'blur' },
@@ -101,7 +103,13 @@ let loading = $ref(false);
 
 onMounted(() => {
   getCaptcha();
-  loginForm = loginFormCache;
+  if (loginFormCache) {
+    const cache = JSON.parse(loginFormCache);
+    loginForm.userName = cache.userName;
+    loginForm.password = cache.password;
+    loginForm.rememberMe = true;
+  }
+  console.log(loginFormCache);
 });
 
 const onLogin = async (formRef: FormInstance | undefined) => {
@@ -110,15 +118,24 @@ const onLogin = async (formRef: FormInstance | undefined) => {
     if (valid) {
       try {
         loading = true;
+        const password = loginForm.password;
+        const rex = /encrypted$/;
         const data = await LoginService.accountLogin({
           ...loginForm,
-          password: md5(loginForm.password),
+          password: rex.test(password)
+            ? password.replace(rex, '')
+            : md5(loginForm.password),
         });
         ElMessage.success('登录成功！,欢迎');
         if (loginForm.rememberMe) {
-          loginFormCache = loginForm;
+          loginFormCache = JSON.stringify({
+            userName: loginForm.userName,
+            password: rex.test(password)
+              ? password
+              : md5(loginForm.password) + 'encrypted',
+          });
         } else {
-          loginFormCache = initLoginForm;
+          loginFormCache = null;
         }
         router.push('/');
       } catch (error) {

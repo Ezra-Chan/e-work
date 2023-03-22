@@ -59,8 +59,6 @@
 
 <script setup lang="ts">
 import { Sunny, Moon } from '@element-plus/icons-vue';
-import * as LoginService from 'api/modules/login';
-import { cancelRequest } from 'api/request';
 import FaceLogin from './FaceLogin.vue';
 import AccountLogin from './AccountLogin.vue';
 import BrandFooter from '@/components/BrandFooter.vue';
@@ -82,11 +80,6 @@ const changeTheme = (e: boolean) => {
 onMounted(() => {
   // getUser();
 });
-
-const getUser = async () => {
-  const data = await LoginService.getUser();
-  // cancelRequest('/login');
-};
 </script>
 
 <style lang="less" scoped>

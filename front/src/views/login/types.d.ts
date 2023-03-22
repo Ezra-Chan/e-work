@@ -6,3 +6,5 @@ declare type LoginFormType = {
   code: string;
   rememberMe: boolean;
 };
+
+declare type InitLoginFormType = null | string;
