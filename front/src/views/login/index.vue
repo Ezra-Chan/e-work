@@ -53,7 +53,7 @@
       <account-login v-if="loginType === 0" />
       <face-login v-else />
     </div>
-    <brand-footer />
+    <brand-footer :isFixed="true" />
   </div>
 </template>
 
@@ -61,7 +61,6 @@
 import { Sunny, Moon } from '@element-plus/icons-vue';
 import FaceLogin from './FaceLogin.vue';
 import AccountLogin from './AccountLogin.vue';
-import BrandFooter from '@/components/BrandFooter.vue';
 
 const systemName = import.meta.env.VITE_SYSTEM_TITLE;
 const systemAbbreviation = import.meta.env.VITE_SYSTEM_ABBREVIATION;

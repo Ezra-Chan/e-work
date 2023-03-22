@@ -31,12 +31,23 @@
   </el-footer>
 </template>
 
-<style lang="less">
+<script setup lang="ts">
+interface FooterProps {
+  isFixed?: boolean; // 位置是否固定在页面下方
+}
+
+const props = withDefaults(defineProps<FooterProps>(), {
+  isFixed: false,
+});
+const position = $computed(() => (props.isFixed ? 'fixed' : 'static'));
+</script>
+
+<style lang="less" scoped>
 #brand-footer {
   width: 100%;
   height: 4rem;
   line-height: 4rem;
-  position: fixed !important;
+  position: v-bind('position');
   bottom: 0;
   display: flex;
   justify-content: center;

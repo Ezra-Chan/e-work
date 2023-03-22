@@ -1,8 +1,12 @@
 <template>
   <div id="home">
-    <div>主页</div>
-    <el-button>Default</el-button>
-    <el-button type="warning">Warning</el-button>
+    <el-container>
+      <aside-menus />
+      <el-container>
+        <common-header />
+        <brand-footer />
+      </el-container>
+    </el-container>
   </div>
 </template>
 
@@ -10,8 +14,17 @@
 
 <style lang="less" scoped>
 #home {
-  div {
-    font-weight: bold;
+  width: 100%;
+  height: 100%;
+  & > .el-container {
+    width: 100%;
+    height: 100%;
+    --el-aside-width: 20rem;
+    & > .el-container {
+      width: calc(100% - var(--el-aside-width));
+      display: flex;
+      flex-direction: column;
+    }
   }
 }
 </style>
