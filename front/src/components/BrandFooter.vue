@@ -39,15 +39,15 @@ interface FooterProps {
 const props = withDefaults(defineProps<FooterProps>(), {
   isFixed: false,
 });
-const position = $computed(() => (props.isFixed ? 'fixed' : 'static'));
+const position = computed(() => (props.isFixed ? 'fixed' : 'static'));
 </script>
 
-<style lang="less" scoped>
+<style scoped lang="less">
 #brand-footer {
   width: 100%;
   height: 4rem;
   line-height: 4rem;
-  position: v-bind('position');
+  position: v-bind(position) !important;
   bottom: 0;
   display: flex;
   justify-content: center;
