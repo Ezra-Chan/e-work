@@ -2,7 +2,7 @@
   <div id="login">
     <header>
       <div class="logo-title">
-        <img src="@/assets/images/login/Logo.png" alt="logo" class="logo" />
+        <img src="@/assets/images/public/Logo.png" alt="logo" class="logo" />
         <h1 class="title full-name">{{ systemName }}</h1>
         <h1 class="title abbreviation">{{ systemAbbreviation }}</h1>
       </div>
@@ -53,7 +53,7 @@
       <account-login v-if="loginType === 0" />
       <face-login v-else />
     </div>
-    <brand-footer :isFixed="true" />
+    <brand-footer :isFixed="true" mode="white" />
   </div>
 </template>
 
@@ -83,7 +83,6 @@ onMounted(() => {
 
 <style lang="less" scoped>
 #login {
-  --ework-text-white: #fffc;
   width: 100%;
   height: 100%;
   background-image: url('assets/images/login/background-image.png');
@@ -256,7 +255,6 @@ onMounted(() => {
 .dark {
   #login {
     filter: brightness(0.7) saturate(1.25);
-    --ework-text-white: #cfd3dc;
   }
 }
 </style>

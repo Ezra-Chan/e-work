@@ -34,12 +34,22 @@
 <script setup lang="ts">
 interface FooterProps {
   isFixed?: boolean; // 位置是否固定在页面下方
+  mode?: 'white' | 'black'; //
 }
 
 const props = withDefaults(defineProps<FooterProps>(), {
   isFixed: false,
+  mode: 'black',
 });
 const position = computed(() => (props.isFixed ? 'fixed' : 'static'));
+const color = computed(() =>
+  props.mode === 'black' ? 'var(--ework-text-black)' : 'var(--ework-text-white)'
+);
+const hoverColor = computed(() =>
+  props.mode === 'black'
+    ? 'var(--ework-text-black-hover)'
+    : 'var(--ework-text-white-hover)'
+);
 </script>
 
 <style scoped lang="less">
@@ -54,9 +64,9 @@ const position = computed(() => (props.isFixed ? 'fixed' : 'static'));
   gap: 1rem;
   & > span,
   & > a {
-    color: var(--ework-text-white);
+    color: v-bind(color);
     &:hover {
-      color: var(--el-color-white);
+      color: v-bind(hoverColor);
     }
   }
 }
