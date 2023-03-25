@@ -4,12 +4,52 @@
       <img src="@/assets/images/public/Logo.png" alt="logo" />
       <el-text>{{ systemAbbreviation }}</el-text>
     </div>
+    <el-menu
+      default-active="2"
+      class="el-menu-vertical-demo"
+      :collapse="isCollapse"
+      @open="handleOpen"
+      @close="handleClose"
+    >
+      <el-sub-menu index="1">
+        <template #title>
+          <el-icon><location /></el-icon>
+          <span>Navigator One</span>
+        </template>
+        <el-menu-item-group>
+          <template #title><span>Group One</span></template>
+          <el-menu-item index="1-1">item one</el-menu-item>
+          <el-menu-item index="1-2">item two</el-menu-item>
+        </el-menu-item-group>
+        <el-menu-item-group title="Group Two">
+          <el-menu-item index="1-3">item three</el-menu-item>
+        </el-menu-item-group>
+        <el-sub-menu index="1-4">
+          <template #title><span>item four</span></template>
+          <el-menu-item index="1-4-1">item one</el-menu-item>
+        </el-sub-menu>
+      </el-sub-menu>
+      <el-menu-item index="2">
+        <el-icon><icon-menu /></el-icon>
+        <template #title>Navigator Two</template>
+      </el-menu-item>
+      <el-menu-item index="3">
+        <el-icon><document /></el-icon>
+        <template #title>Navigator Three</template>
+      </el-menu-item>
+      <el-menu-item index="4">
+        <el-icon><setting /></el-icon>
+        <template #title>Navigator Four</template>
+      </el-menu-item>
+    </el-menu>
   </el-aside>
 </template>
 
 <script setup lang="ts">
 const systemAbbreviation = import.meta.env.VITE_SYSTEM_ABBREVIATION;
 const router = useRouter();
+const isCollapse = $ref(false);
+
 const routerTo = (path: string) => router.push(path);
 </script>
 
@@ -37,6 +77,13 @@ const routerTo = (path: string) => router.push(path);
     span {
       font-size: 4rem;
       color: var(--ework-text-white);
+    }
+  }
+  .el-menu {
+    --el-menu-bg-color: var(--ework-border-color);
+    --el-menu-hover-bg-color: #14151a;
+    .el-menu-item.is-active {
+      background-color: #060708;
     }
   }
 }
