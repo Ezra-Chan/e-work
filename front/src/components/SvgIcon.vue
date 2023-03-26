@@ -4,6 +4,7 @@
   </svg>
 </template>
 <script setup lang="ts">
+import { DEFAULT_PRIMARY } from '@/config/config';
 const props = defineProps({
   className: {
     type: String,
@@ -15,7 +16,7 @@ const props = defineProps({
   },
   color: {
     type: String,
-    default: '#409eff',
+    default: DEFAULT_PRIMARY,
   },
   size: {
     type: String,

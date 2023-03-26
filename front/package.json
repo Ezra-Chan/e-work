@@ -16,6 +16,7 @@
     "element-plus": "^2.3.0",
     "js-md5": "^0.7.3",
     "pinia": "^2.0.28",
+    "pinia-plugin-persistedstate": "^3.1.0",
     "querystringify": "^2.2.0",
     "vue": "^3.2.45",
     "vue-router": "^4.1.6"

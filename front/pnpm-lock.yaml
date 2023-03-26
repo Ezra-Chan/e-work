@@ -13,6 +13,7 @@ specifiers:
   js-md5: ^0.7.3
   less: ^4.1.3
   pinia: ^2.0.28
+  pinia-plugin-persistedstate: ^3.1.0
   prettier: ^2.8.3
   querystringify: ^2.2.0
   typescript: ^4.9.3
@@ -32,6 +33,7 @@ dependencies:
   element-plus: 2.3.0_vue@3.2.45
   js-md5: 0.7.3
   pinia: 2.0.28_prq2uz4lho2pwp6irk4cfkrxwu
+  pinia-plugin-persistedstate: 3.1.0_pinia@2.0.28
   querystringify: 2.2.0
   vue: 3.2.45
   vue-router: 4.1.6_vue@3.2.45
@@ -1032,7 +1034,7 @@ packages:
     optional: true
 
   /image-size/0.5.5:
-    resolution: {integrity: sha1-Cd/Uq50g4p6xw+gLiZA3jfnjy5w=}
+    resolution: {integrity: sha512-6TDAlDPZxUFCv+fuOkIoXT/V/f3Qbq8e37p+YOiYrUv3v9cc3/6x78VdfPgFVaB9dZYeLUfKgHRebpkm/oP2VQ==}
     engines: {node: '>=0.10.0'}
     hasBin: true
     requiresBuild: true
@@ -1355,6 +1357,14 @@ packages:
     engines: {node: '>=6'}
     dev: true
     optional: true
+
+  /pinia-plugin-persistedstate/3.1.0_pinia@2.0.28:
+    resolution: {integrity: sha512-8UN+vYMEPBdgNLwceY08mi5olI0wkYaEb8b6hD6xW7SnBRuPydWHlEhZvUWgNb/ibuf4PvufpvtS+dmhYjJQOw==}
+    peerDependencies:
+      pinia: ^2.0.0
+    dependencies:
+      pinia: 2.0.28_prq2uz4lho2pwp6irk4cfkrxwu
+    dev: false
 
   /pinia/2.0.28_prq2uz4lho2pwp6irk4cfkrxwu:
     resolution: {integrity: sha512-YClq9DkqCblq9rlyUual7ezMu/iICWdBtfJrDt4oWU9Zxpijyz7xB2xTwx57DaBQ96UGvvTMORzALr+iO5PVMw==}

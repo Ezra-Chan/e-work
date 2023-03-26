@@ -46,9 +46,17 @@
 </template>
 
 <script setup lang="ts">
+import { GlobalStore } from '@/store';
+
 const systemAbbreviation = import.meta.env.VITE_SYSTEM_ABBREVIATION;
 const router = useRouter();
-const isCollapse = $ref(false);
+const globalStore = GlobalStore();
+const isCollapse = computed(() => globalStore.isCollapse);
+
+const logoMarginRight = computed(() => (isCollapse.value ? '0' : '1rem'));
+const spanDisplay = computed(() =>
+  isCollapse.value ? 'none' : 'inline-block'
+);
 
 const routerTo = (path: string) => router.push(path);
 </script>
@@ -69,7 +77,7 @@ const routerTo = (path: string) => router.push(path);
     img {
       width: 3.5rem;
       height: 3.5rem;
-      margin-right: 1rem;
+      margin-right: v-bind(logoMarginRight);
       -webkit-filter: brightness(2);
       filter: brightness(2);
       -webkit-user-drag: none;
@@ -77,6 +85,7 @@ const routerTo = (path: string) => router.push(path);
     span {
       font-size: 4rem;
       color: var(--ework-text-white);
+      display: v-bind(spanDisplay);
     }
   }
   .el-menu {
