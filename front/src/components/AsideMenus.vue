@@ -91,8 +91,22 @@ const routerTo = (path: string) => router.push(path);
   .el-menu {
     --el-menu-bg-color: var(--ework-border-color);
     --el-menu-hover-bg-color: #14151a;
+    --el-menu-text-color: #bdbdc0;
+    --el-menu-hover-text-color: #bdbdc0;
+    --el-menu-active-color: #ffffff;
+    --el-menu-level: 1;
+    border-right: none;
     .el-menu-item.is-active {
       background-color: #060708;
+      &:before {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        width: 4px;
+        content: '';
+        background: var(--el-color-primary);
+      }
     }
   }
 }
