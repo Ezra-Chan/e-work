@@ -54,9 +54,7 @@ const globalStore = GlobalStore();
 const isCollapse = computed(() => globalStore.isCollapse);
 
 const logoMarginRight = computed(() => (isCollapse.value ? '0' : '1rem'));
-const spanDisplay = computed(() =>
-  isCollapse.value ? 'none' : 'inline-block'
-);
+const spanDisplay = computed(() => (isCollapse.value ? 'none' : 'block'));
 
 const routerTo = (path: string) => router.push(path);
 </script>
@@ -66,12 +64,12 @@ const routerTo = (path: string) => router.push(path);
   --ework-border-color: #191a20;
   background-color: var(--ework-border-color);
   user-select: none;
+  transition: width 0.3s;
   .logo {
     height: 5.5rem;
     border-bottom: 1px solid #282a35;
     display: flex;
     align-items: center;
-    justify-content: space-around;
     padding: 0 1rem;
     cursor: pointer;
     img {
@@ -86,6 +84,7 @@ const routerTo = (path: string) => router.push(path);
       font-size: 3.6rem;
       color: var(--ework-text-white);
       display: v-bind(spanDisplay);
+      white-space: nowrap;
     }
   }
   .el-menu {
