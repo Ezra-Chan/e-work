@@ -109,7 +109,6 @@ onMounted(() => {
     loginForm.password = cache.password;
     loginForm.rememberMe = true;
   }
-  console.log(loginFormCache);
 });
 
 const onLogin = async (formRef: FormInstance | undefined) => {
@@ -126,7 +125,7 @@ const onLogin = async (formRef: FormInstance | undefined) => {
             ? password.replace(rex, '')
             : md5(loginForm.password),
         });
-        ElMessage.success('登录成功！,欢迎');
+        ElMessage.success('登录成功！欢迎');
         if (loginForm.rememberMe) {
           loginFormCache = JSON.stringify({
             userName: loginForm.userName,

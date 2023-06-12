@@ -83,7 +83,7 @@ const routerTo = (path: string) => router.push(path);
       -webkit-user-drag: none;
     }
     span {
-      font-size: 4rem;
+      font-size: 3.6rem;
       color: var(--ework-text-white);
       display: v-bind(spanDisplay);
     }
