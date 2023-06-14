@@ -22,26 +22,8 @@ export const GlobalStore = defineStore({
   }),
   getters: {},
   actions: {
-    setToken(token: string) {
-      this.token = token;
-    },
-    setUserInfo(userInfo: any) {
-      this.userInfo = userInfo;
-    },
-    setIsCollapse(isCollapse: boolean) {
-      this.isCollapse = isCollapse;
-    },
-    setIsDark(isDark: boolean) {
-      this.isDark = isDark;
-    },
-    setPrimary(primary: string) {
-      this.primary = primary;
-    },
-    setBreadcrumb(breadcrumb: boolean) {
-      this.breadcrumb = breadcrumb;
-    },
-    setBreadcrumbIcon(breadcrumbIcon: boolean) {
-      this.breadcrumbIcon = breadcrumbIcon;
+    setGlobalState(...args: ObjToKeyValArray<GlobalState>) {
+      this.$patch({ [args[0]]: args[1] });
     },
   },
   persist: piniaPersistConfig('GlobalState'),

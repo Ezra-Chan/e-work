@@ -4,6 +4,7 @@
       <aside-menus />
       <el-container>
         <common-header />
+        <Main />
         <brand-footer />
       </el-container>
     </el-container>
@@ -30,6 +31,7 @@ const asideWidth = computed(() => (isCollapse.value ? '6.4rem' : '20rem'));
       width: calc(100% - var(--el-aside-width));
       display: flex;
       flex-direction: column;
+      overflow-y: hidden;
     }
   }
 }

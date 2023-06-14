@@ -1,5 +1,5 @@
 <template>
-  <el-footer id="brand-footer">
+  <el-footer id="brand-footer" :class="{ 'has-color': props.mode === 'black' }">
     <el-text>© {{ new Date().getFullYear() }}</el-text>
     <el-link
       href="https://blog.csdn.net/qq_41065415"
@@ -62,12 +62,19 @@ const hoverColor = computed(() =>
   display: flex;
   justify-content: center;
   gap: 1rem;
+  &.has-color {
+    border-top: 1px solid var(--el-border-color-light);
+    background-color: var(--el-color-white);
+  }
   & > span,
   & > a {
     color: v-bind(color);
     &:hover {
       color: v-bind(hoverColor);
     }
+  }
+  .el-icon {
+    width: auto;
   }
 }
 </style>
