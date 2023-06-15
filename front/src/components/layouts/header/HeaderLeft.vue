@@ -1,31 +1,24 @@
 <template>
-  <el-header id="commonHeader" height="5.5rem">
+  <div id="headerLeft">
     <el-icon
-      size="2.2rem"
+      :size="IconSize"
       @click="() => globalStore.setGlobalState('isCollapse', !isCollapse)"
       :title="isCollapse ? '展开' : '收起'"
     >
       <component :is="isCollapse ? Expand : Fold"></component>
     </el-icon>
-  </el-header>
+  </div>
 </template>
-
 <script setup lang="ts">
-import { GlobalStore } from '@/store';
 import { Expand, Fold } from '@element-plus/icons-vue';
+import { GlobalStore } from '@/store';
+import { IconSize } from 'utils/constants';
 
 const globalStore = GlobalStore();
 const isCollapse = computed(() => globalStore.isCollapse);
-const primary = computed(() => globalStore.primary);
 </script>
-
-<style scoped lang="less">
-#commonHeader {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background-color: v-bind(primary);
-  --el-header-padding: 0 15px;
+<style lang="less" scoped>
+#headerLeft {
   .el-icon {
     cursor: pointer;
   }

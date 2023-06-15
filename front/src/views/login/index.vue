@@ -7,27 +7,7 @@
         <h1 class="title abbreviation">{{ systemAbbreviation }}</h1>
       </div>
       <div class="functional-area">
-        <el-switch
-          v-model="theme"
-          :active-icon="Moon"
-          :inactive-icon="Sunny"
-          inline-prompt
-          @change="changeTheme"
-          aria-label="切换暗色主题"
-        />
-        <el-link
-          href="https://github.com/Ezra-Chan/e-work"
-          :underline="false"
-          target="_blank"
-        >
-          <el-icon :size="iconFontSize">
-            <svg-icon
-              icon-class="icon-github-fill"
-              :size="iconFontSize"
-              color="#000"
-            />
-          </el-icon>
-        </el-link>
+        <theme-switch />
       </div>
     </header>
     <div class="centerBgc">
@@ -58,23 +38,12 @@
 </template>
 
 <script setup lang="ts">
-import { Sunny, Moon } from '@element-plus/icons-vue';
 import FaceLogin from './FaceLogin.vue';
 import AccountLogin from './AccountLogin.vue';
 
 const systemName = import.meta.env.VITE_SYSTEM_TITLE;
 const systemAbbreviation = import.meta.env.VITE_SYSTEM_ABBREVIATION;
-const iconFontSize = '3rem';
 let loginType = $ref<LoginType>(0);
-
-// 暗黑模式
-const isDark = useDark();
-const toggleDark = useToggle(isDark);
-let theme = $ref<typeof isDark>(isDark);
-const changeTheme = (e: boolean) => {
-  toggleDark();
-  theme = e;
-};
 
 onMounted(() => {
   // getUser();
@@ -171,7 +140,7 @@ onMounted(() => {
     min-width: 450px;
     height: max-content;
     border-radius: 3rem;
-    background-color: var(--el-bg-color);
+    background-color: var(--ework-theme-bg-color);
     box-shadow: 0 0 3rem #0d2cb8;
     padding: 8rem 5rem 5rem;
     display: flex;

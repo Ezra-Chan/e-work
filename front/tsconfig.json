@@ -16,7 +16,8 @@
     "paths": {
       "@/*": ["src/*"],
       "api/*": ["src/api/*"],
-      "assets/*": ["src/assets/"]
+      "assets/*": ["src/assets/"],
+      "utils/*": ["src/utils/*"]
     },
     "types": ["@vue-macros/reactivity-transform/macros-global"]
   },

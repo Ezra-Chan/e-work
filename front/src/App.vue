@@ -35,6 +35,9 @@ body,
   font-size: 10px;
   * {
     box-sizing: border-box;
+    &:focus {
+      outline: none;
+    }
   }
 }
 </style>

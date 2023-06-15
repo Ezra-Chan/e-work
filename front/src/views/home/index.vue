@@ -16,6 +16,15 @@ import { GlobalStore } from '@/store';
 const globalStore = GlobalStore();
 const isCollapse = computed(() => globalStore.isCollapse);
 const asideWidth = computed(() => (isCollapse.value ? '6.4rem' : '20rem'));
+
+onMounted(() => {
+  globalStore.setGlobalState('userInfo', {
+    userName: '超级管理员',
+    loginName: 'admin',
+    id: 1,
+    avatar: 'https://avatars.githubusercontent.com/u/21073039?v=4',
+  });
+});
 </script>
 
 <style lang="less" scoped>

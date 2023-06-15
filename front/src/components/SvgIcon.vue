@@ -1,10 +1,11 @@
 <template>
-  <svg :class="classList" aria-hidden="true">
-    <use :xlink:href="iconName" rel="external nofollow" :fill="color" />
-  </svg>
+  <i :title="tip">
+    <svg :class="classList" aria-hidden="true">
+      <use :xlink:href="iconName" rel="external nofollow" fill="currentColor" />
+    </svg>
+  </i>
 </template>
 <script setup lang="ts">
-import { DEFAULT_PRIMARY } from '@/config/config';
 const props = defineProps({
   className: {
     type: String,
@@ -16,26 +17,36 @@ const props = defineProps({
   },
   color: {
     type: String,
-    default: DEFAULT_PRIMARY,
+  },
+  hoverColor: {
+    type: String,
   },
   size: {
     type: String,
     default: '20px',
   },
+  pointer: {
+    type: Boolean,
+    default: false,
+  },
+  tip: {
+    type: String,
+  },
 });
-const classList = computed(() => {
-  return ['icon', props.className || ''];
-});
-const iconName = computed(() => {
-  return `#${props.iconClass}`;
-});
+const classList = computed(() => ['icon', props.className || '']);
+const iconName = computed(() => `#${props.iconClass}`);
 </script>
-<style scoped>
+<style scoped lang="less">
 .icon {
   width: v-bind('props.size');
   height: v-bind('props.size');
+  font-size: v-bind('props.size');
   position: relative;
   vertical-align: -2px;
-  fill: currentColor;
+  cursor: v-bind("props.pointer ? 'pointer' : 'inherit'");
+  color: v-bind('props.color');
+  &:hover {
+    color: v-bind('props.hoverColor ? props.hoverColor : props.color');
+  }
 }
 </style>

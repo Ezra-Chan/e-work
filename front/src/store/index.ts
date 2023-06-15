@@ -8,7 +8,7 @@ export const GlobalStore = defineStore({
   id: 'globslState',
   state: (): GlobalState => ({
     token: '',
-    userInfo: '',
+    userInfo: undefined,
     // 折叠菜单
     isCollapse: false,
     // 黑暗模式

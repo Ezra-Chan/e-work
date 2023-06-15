@@ -61,6 +61,7 @@ const routerTo = (path: string) => router.push(path);
   user-select: none;
   transition: width 0.3s ease;
   overflow-x: hidden;
+  border-right: 1px solid var(--el-border-color-light);
   .logo {
     height: 5.5rem;
     border-bottom: 1px solid #282a35;

@@ -7,24 +7,32 @@
       target="_blank"
       >Ezra Chan</el-link
     >
+    <el-link
+      href="https://github.com/Ezra-Chan/e-work"
+      :underline="false"
+      target="_blank"
+    >
+      <svg-icon
+        icon-class="icon-github-fill"
+        :size="IconSize"
+        tip="Github项目主页"
+      />
+    </el-link>
     <el-popover
       :width="220"
+      popper-class="qq-group-popover"
       popper-style="box-shadow: rgb(14 18 22 / 35%) 0px 10px 38px -10px, rgb(14 18 22 / 20%) 0px 10px 20px -15px; padding: 10px;"
+      :teleported="false"
     >
       <template #reference>
-        <el-icon size="4rem" title="E-Work系统交流群">
-          <svg-icon
-            icon-class="icon-QQ-circle-fill"
-            color="var(--el-color-black)"
-          />
-        </el-icon>
+        <svg-icon icon-class="icon-QQ-circle-fill" :size="IconSize" />
       </template>
       <template #default>
+        <el-text tag="h3">E-Work系统交流群</el-text>
         <img
           src="@/assets/images/login/qq-group-qrcode.png"
           :width="200"
           alt="E-Work系统交流群"
-          title="E-Work系统交流群"
         />
       </template>
     </el-popover>
@@ -32,6 +40,7 @@
 </template>
 
 <script setup lang="ts">
+import { IconSize } from 'utils/constants';
 interface FooterProps {
   isFixed?: boolean; // 位置是否固定在页面下方
   mode?: 'white' | 'black'; //
@@ -56,15 +65,15 @@ const hoverColor = computed(() =>
 #brand-footer {
   width: 100%;
   height: 4rem;
-  line-height: 4rem;
   position: v-bind(position) !important;
   bottom: 0;
   display: flex;
   justify-content: center;
+  align-items: center;
   gap: 1rem;
   &.has-color {
     border-top: 1px solid var(--el-border-color-light);
-    background-color: var(--el-color-white);
+    background-color: var(--ework-header-bg-color);
   }
   & > span,
   & > a {
@@ -73,8 +82,11 @@ const hoverColor = computed(() =>
       color: v-bind(hoverColor);
     }
   }
-  .el-icon {
-    width: auto;
+  .qq-group-popover {
+    h3 {
+      text-align: center;
+      margin-bottom: 10px;
+    }
   }
 }
 </style>

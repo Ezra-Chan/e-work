@@ -1,0 +1,30 @@
+<template>
+  <div id="themeSwitch">
+    <el-switch
+      v-model="theme"
+      :active-icon="Moon"
+      :inactive-icon="Sunny"
+      inline-prompt
+      @change="changeTheme"
+      aria-label="切换暗色主题"
+    />
+  </div>
+</template>
+
+<script setup lang="ts">
+import { Sunny, Moon } from '@element-plus/icons-vue';
+import { GlobalStore } from '@/store';
+
+const globalStore = GlobalStore();
+// 暗黑模式
+const isDark = useDark();
+const toggleDark = useToggle(isDark);
+let theme = $ref<typeof isDark>(isDark);
+const changeTheme = (e: boolean) => {
+  toggleDark();
+  theme = e;
+  globalStore.setGlobalState('isDark', e);
+};
+</script>
+
+<style lang="less" scoped></style>
