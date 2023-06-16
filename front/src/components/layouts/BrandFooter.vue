@@ -1,10 +1,14 @@
 <template>
-  <el-footer id="brand-footer" :class="{ 'has-color': props.mode === 'black' }">
-    <el-text>© {{ new Date().getFullYear() }}</el-text>
+  <el-footer
+    class="brand-footer"
+    :class="{ 'has-color': props.mode === 'black' }"
+  >
+    <el-text class="text-light">© {{ new Date().getFullYear() }}</el-text>
     <el-link
       href="https://blog.csdn.net/qq_41065415"
       :underline="false"
       target="_blank"
+      class="text-light"
       >Ezra Chan</el-link
     >
     <el-link
@@ -28,7 +32,7 @@
         <svg-icon icon-class="icon-QQ-circle-fill" :size="IconSize" />
       </template>
       <template #default>
-        <el-text tag="h3">E-Work系统交流群</el-text>
+        <el-text tag="h3" class="text-light">E-Work系统交流群</el-text>
         <img
           src="@/assets/images/login/qq-group-qrcode.png"
           :width="200"
@@ -51,20 +55,12 @@ const props = withDefaults(defineProps<FooterProps>(), {
   mode: 'black',
 });
 const position = computed(() => (props.isFixed ? 'fixed' : 'static'));
-const color = computed(() =>
-  props.mode === 'black' ? 'var(--ework-text-black)' : 'var(--ework-text-white)'
-);
-const hoverColor = computed(() =>
-  props.mode === 'black'
-    ? 'var(--ework-text-black-hover)'
-    : 'var(--ework-text-white-hover)'
-);
 </script>
 
 <style scoped lang="less">
-#brand-footer {
+.brand-footer {
   width: 100%;
-  height: 4rem;
+  height: 3rem;
   position: v-bind(position) !important;
   bottom: 0;
   display: flex;
@@ -74,13 +70,6 @@ const hoverColor = computed(() =>
   &.has-color {
     border-top: 1px solid var(--el-border-color-light);
     background-color: var(--ework-header-bg-color);
-  }
-  & > span,
-  & > a {
-    color: v-bind(color);
-    &:hover {
-      color: v-bind(hoverColor);
-    }
   }
   .qq-group-popover {
     h3 {

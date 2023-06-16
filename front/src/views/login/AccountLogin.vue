@@ -8,7 +8,7 @@
   >
     <el-form-item prop="userName">
       <span slot="label">
-        <el-icon :size="iconFontSize">
+        <el-icon :size="iconFontSize" class="text-light">
           <User />
         </el-icon>
       </span>
@@ -22,7 +22,7 @@
     </el-form-item>
     <el-form-item prop="password">
       <span slot="label">
-        <el-icon :size="iconFontSize">
+        <el-icon :size="iconFontSize" class="text-light">
           <Lock />
         </el-icon>
       </span>
@@ -38,9 +38,7 @@
     </el-form-item>
     <el-form-item prop="code">
       <span slot="label">
-        <el-icon :size="iconFontSize">
-          <svg-icon icon-class="icon-verified" :size="iconFontSize" />
-        </el-icon>
+        <svg-icon icon-class="icon-verified" :size="iconFontSize" />
       </span>
       <el-input
         v-model="loginForm.code"

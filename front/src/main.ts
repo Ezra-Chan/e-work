@@ -4,6 +4,10 @@ import router from '@/router';
 import App from '@/App.vue';
 import './assets/js/iconfont.js';
 import 'element-plus/theme-chalk/dark/css-vars.css';
-import 'assets/css/var.less';
+
+const less = import.meta.glob('assets/css/*.less');
+for (const path in less) {
+  less[path]();
+}
 
 createApp(App).use(store).use(router).mount('#app');

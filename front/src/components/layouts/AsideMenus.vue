@@ -2,10 +2,12 @@
   <el-aside id="asideMenus">
     <div class="logo" @click="routerTo('/home')">
       <img src="@/assets/images/public/Logo.png" alt="logo" />
-      <el-text v-show="!isCollapse">{{ systemAbbreviation }}</el-text>
+      <el-text v-show="!isCollapse" class="text-dark">{{
+        systemAbbreviation
+      }}</el-text>
     </div>
     <el-scrollbar>
-      <el-menu :collapse="isCollapse">
+      <el-menu :collapse="isCollapse" :unique-opened="true">
         <el-sub-menu index="1">
           <template #title>
             <el-icon></el-icon>
@@ -56,15 +58,13 @@ const routerTo = (path: string) => router.push(path);
 
 <style scoped lang="less">
 #asideMenus {
-  --ework-border-color: #191a20;
-  background-color: var(--ework-border-color);
+  background-color: var(--ework-bg-color-2);
   user-select: none;
   transition: width 0.3s ease;
   overflow-x: hidden;
   border-right: 1px solid var(--el-border-color-light);
   .logo {
     height: 5.5rem;
-    border-bottom: 1px solid #282a35;
     display: flex;
     align-items: center;
     padding: 0 1rem;
@@ -79,7 +79,6 @@ const routerTo = (path: string) => router.push(path);
     }
     span {
       font-size: 3.6rem;
-      color: var(--ework-text-white);
       white-space: nowrap;
     }
   }
@@ -87,7 +86,7 @@ const routerTo = (path: string) => router.push(path);
     height: calc(100% - 55px);
 
     .el-menu {
-      --el-menu-bg-color: var(--ework-border-color);
+      --el-menu-bg-color: var(--ework-bg-color-2);
       --el-menu-hover-bg-color: #14151a;
       --el-menu-text-color: #bdbdc0;
       --el-menu-hover-text-color: #bdbdc0;
@@ -108,8 +107,5 @@ const routerTo = (path: string) => router.push(path);
       }
     }
   }
-}
-.dark {
-  --ework-border-color: #4c4c4d;
 }
 </style>

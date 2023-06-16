@@ -3,8 +3,8 @@
     <header>
       <div class="logo-title">
         <img src="@/assets/images/public/Logo.png" alt="logo" class="logo" />
-        <h1 class="title full-name">{{ systemName }}</h1>
-        <h1 class="title abbreviation">{{ systemAbbreviation }}</h1>
+        <h1 class="title full-name text-dark">{{ systemName }}</h1>
+        <h1 class="title abbreviation text-dark">{{ systemAbbreviation }}</h1>
       </div>
       <div class="functional-area">
         <theme-switch />
@@ -88,7 +88,6 @@ onMounted(() => {
         font-size: 4rem;
         font-family: PingFang-SC;
         font-weight: bold;
-        color: var(--ework-text-white);
         margin: 0;
         text-align: center;
       }
@@ -140,7 +139,7 @@ onMounted(() => {
     min-width: 450px;
     height: max-content;
     border-radius: 3rem;
-    background-color: var(--ework-theme-bg-color);
+    background-color: var(--ework-bg-color);
     box-shadow: 0 0 3rem #0d2cb8;
     padding: 8rem 5rem 5rem;
     display: flex;
@@ -198,7 +197,7 @@ onMounted(() => {
       justify-content: center;
       flex-direction: column;
       height: auto;
-      line-height: 10rem;
+      line-height: 7rem;
       .logo-title {
         padding-left: 0;
         justify-content: center;

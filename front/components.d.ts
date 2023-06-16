@@ -45,7 +45,9 @@ declare module '@vue/runtime-core' {
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     StationMessage: typeof import('./src/components/layouts/header/StationMessage.vue')['default']
+    SubMenu: typeof import('./src/components/layouts/aside/SubMenu.vue')['default']
     SvgIcon: typeof import('./src/components/SvgIcon.vue')['default']
     ThemeSwitch: typeof import('./src/components/ThemeSwitch.vue')['default']
+    UserAvatar: typeof import('./src/components/layouts/header/UserAvatar.vue')['default']
   }
 }

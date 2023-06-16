@@ -4,15 +4,40 @@
   --ework-text-white-hover: var(--el-color-white);
   --ework-text-black: #858585;
   --ework-text-black-hover: #666;
-  // 主题色
-  --ework-theme-bg-color: #fff;
-  --ework-header-bg-color: var(--ework-theme-bg-color);
+  // 背景色
+  --ework-bg-color: #fff; // 主色1
+  --ework-bg-secondary-color: #ecf5ff; // 辅助色1
+
+  --ework-bg-color-2: #141414; // 主色2
+  --ework-bg-secondary-color-2: #ffffff26; // 辅助色2
+
+  // 文字色
+  --ework-text-color: #141414; // 主色1
+  --ework-text-secondary-color: #606266; // 辅助色1
+  --ework-text-color-hover: var(--ework-text-secondary-color); // 悬浮色
+
+  --ework-text-color-2: #dadada; // 主色2
+  --ework-text-color-2-hover: #fff; // 悬浮色
+
+  // 功能色
+  --ework-header-bg-color: var(--ework-bg-color); // 头部背景色
 }
+
 html.dark {
   --el-color-primary: #009688;
   --ework-text-white: #cfd3dc;
   --ework-text-black: #cfd3dc;
   --ework-text-black-hover: #dfdfdf;
   // 主题色
-  --ework-theme-bg-color: #141414;
+  --ework-bg-color: #141414; // 主色1
+  --ework-bg-secondary-color: #ffffff26; // 辅助色1
+
+  --ework-bg-color-2: #141414; // 主色2
+  --ework-bg-secondary-color-2: #ffffff26; // 辅助色2
+
+  // 文字色
+  --ework-text-color: var(--ework-text-color-2); // 主色1
+  --ework-text-color-hover: var(--ework-text-color-2-hover); // 悬浮色
+
+  // 功能色
 }

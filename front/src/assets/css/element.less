@@ -1,0 +1,32 @@
+:root {
+  // 下拉菜单悬浮
+  .el-dropdown__popper {
+    --el-dropdown-menuItem-hover-fill: var(
+      --ework-bg-secondary-color
+    ); // 悬浮背景色
+    --el-dropdown-menuItem-hover-color: var(
+      --ework-text-color-hover
+    ); // 悬浮文字色
+  }
+  .el-dropdown-menu__item {
+    color: var(--ework-text-color);
+  }
+  .el-menu-item {
+    &:hover {
+      --el-menu-hover-bg-color: var(--ework-bg-secondary-color-2);
+    }
+  }
+
+  // 开关
+  .el-switch {
+    .el-switch__core {
+      background-color: var(--ework-bg-secondary-color);
+      .is-icon {
+        color: var(--ework-text-color);
+      }
+    }
+  }
+}
+
+html.dark {
+}

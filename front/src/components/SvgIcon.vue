@@ -1,5 +1,5 @@
 <template>
-  <i :title="tip">
+  <i :title="tip" class="svg-icon">
     <svg :class="classList" aria-hidden="true">
       <use :xlink:href="iconName" rel="external nofollow" fill="currentColor" />
     </svg>
@@ -17,9 +17,15 @@ const props = defineProps({
   },
   color: {
     type: String,
+    default: 'var(--ework-text-color)',
   },
   hoverColor: {
     type: String,
+    default: 'var(--ework-text-color-hover)',
+  },
+  needHover: {
+    type: Boolean,
+    default: true,
   },
   size: {
     type: String,
@@ -37,16 +43,19 @@ const classList = computed(() => ['icon', props.className || '']);
 const iconName = computed(() => `#${props.iconClass}`);
 </script>
 <style scoped lang="less">
-.icon {
-  width: v-bind('props.size');
-  height: v-bind('props.size');
-  font-size: v-bind('props.size');
-  position: relative;
-  vertical-align: -2px;
-  cursor: v-bind("props.pointer ? 'pointer' : 'inherit'");
-  color: v-bind('props.color');
-  &:hover {
-    color: v-bind('props.hoverColor ? props.hoverColor : props.color');
+.svg-icon {
+  display: inline-flex;
+  .icon {
+    width: v-bind('props.size');
+    height: v-bind('props.size');
+    font-size: v-bind('props.size');
+    position: relative;
+    vertical-align: -2px;
+    cursor: v-bind("props.pointer ? 'pointer' : 'inherit'");
+    color: v-bind('props.color');
+    &:hover {
+      color: v-bind('props.needHover ? props.hoverColor : props.color');
+    }
   }
 }
 </style>

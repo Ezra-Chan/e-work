@@ -1,12 +1,12 @@
 <template>
-  <div id="themeSwitch">
+  <div id="themeSwitch" title="切换主题">
     <el-switch
       v-model="theme"
       :active-icon="Moon"
       :inactive-icon="Sunny"
       inline-prompt
       @change="changeTheme"
-      aria-label="切换暗色主题"
+      aria-label="切换主题"
     />
   </div>
 </template>
@@ -27,4 +27,10 @@ const changeTheme = (e: boolean) => {
 };
 </script>
 
-<style lang="less" scoped></style>
+<style lang="less">
+#themeSwitch {
+  .el-switch.is-checked .el-switch__core {
+    background-color: var(--ework-bg-secondary-color);
+  }
+}
+</style>

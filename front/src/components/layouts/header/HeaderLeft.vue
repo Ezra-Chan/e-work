@@ -4,6 +4,7 @@
       :size="IconSize"
       @click="() => globalStore.setGlobalState('isCollapse', !isCollapse)"
       :title="isCollapse ? '展开' : '收起'"
+      class="text-light"
     >
       <component :is="isCollapse ? Expand : Fold"></component>
     </el-icon>
