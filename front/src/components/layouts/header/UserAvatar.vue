@@ -10,7 +10,7 @@
       <template #dropdown>
         <el-dropdown-menu>
           <el-dropdown-item>个人中心</el-dropdown-item>
-          <el-dropdown-item>退出登录</el-dropdown-item>
+          <el-dropdown-item @click="logout">退出登录</el-dropdown-item>
         </el-dropdown-menu>
       </template>
     </el-dropdown>
@@ -21,8 +21,14 @@
 import user from '@/assets/images/public/user.png';
 import { GlobalStore } from '@/store';
 
+const router = useRouter();
 const globalStore = GlobalStore();
 const userInfo = computed(() => globalStore.userInfo);
+
+const logout = () => {
+  router.push('/login');
+  ElMessage.success('退出成功！');
+};
 </script>
 
 <style lang="less" scoped>
