@@ -3,34 +3,51 @@
     id="login"
     class="w-h-100 bg-no-repeat bg-cover relative overflow-hidden select-none"
   >
-    <header class="w-100% flex justify-between">
-      <div class="logo-title">
-        <img src="@/assets/images/public/Logo.png" alt="logo" class="logo" />
-        <h1 class="title full-name text-dark">{{ systemName }}</h1>
-        <h1 class="title abbreviation text-dark">{{ systemAbbreviation }}</h1>
+    <header class="w-100% h-15vh lh-15vh flex justify-between">
+      <div class="logo-title flex items-center pl-10vw gap-2vw">
+        <img
+          src="@/assets/images/public/Logo.png"
+          alt="logo"
+          class="logo brightness-200 w-28 max-h-24 no-drag"
+        />
+        <h1 class="full-name text-dark fs-4 font-500 m-0 text-center">
+          {{ systemName }}
+        </h1>
+        <h1
+          class="abbreviation text-dark fs-4 font-500 m-0 text-center display-none"
+        >
+          {{ systemAbbreviation }}
+        </h1>
       </div>
-      <div class="functional-area">
+      <div
+        class="functional-area flex items-center justify-center gap-1vw pr-1vw"
+      >
         <theme-switch />
       </div>
     </header>
-    <div class="centerBgc">
-      <img class="cityBgc" src="@/assets/images/login/cityBgc.png" alt="" />
-      <img class="bgcImg" src="@/assets/images/login/bgcImg.png" alt="" />
+    <div class="centerBgc w-h-100 overflow-hidden !absolute top-0 !z-0">
+      <img
+        class="cityBgc no-drag absolute inset-0 opacity-30 m-y-a m-x-0"
+        src="@/assets/images/login/cityBgc.png"
+        alt=""
+      />
+      <img
+        class="bgcImg no-drag w-30% absolute inset-0 left-10% m-y-a m-x-0"
+        src="@/assets/images/login/bgcImg.png"
+        alt=""
+      />
     </div>
-    <div class="login-module">
-      <el-text type="primary" tag="h2" class="login-name">登录</el-text>
-      <el-space spacer=" " size="large" class="login-types">
+    <div
+      class="login-module !absolute top-0 bottom-0 m-y-a m-x-0 right-10vw w-25vw min-w-184 border-rd-12 flex flex-col gap-8 h-max pt-32 p-x-20 pb-20"
+    >
+      <el-text type="primary" tag="h2" class="login-name !fs-3.6">登录</el-text>
+      <el-space spacer=" " size="large" class="login-types justify-center">
         <el-text
-          class="login-type"
-          :class="loginType === 0 ? 'current-login-type' : ''"
-          @click="loginType = 0"
-          >密码登录</el-text
-        >
-        <el-text
-          class="login-type"
-          :class="loginType === 1 ? 'current-login-type' : ''"
-          @click="loginType = 1"
-          >人脸识别</el-text
+          v-for="item in loginTypes"
+          class="!fs-2 cursor-pointer !pb-2 b-b-2 b-b-solid b-b-transparent"
+          :class="loginType === item.type ? 'current-login-type' : ''"
+          @click="loginType = item.type"
+          >{{ item.name }}</el-text
         >
       </el-space>
       <component :is="loginType === 0 ? AccountLogin : FaceLogin" />
@@ -45,7 +62,11 @@ import AccountLogin from './AccountLogin.vue';
 
 const systemName = import.meta.env.VITE_SYSTEM_TITLE;
 const systemAbbreviation = import.meta.env.VITE_SYSTEM_ABBREVIATION;
-let loginType = $ref<LoginType>(0);
+const loginTypes = reactive<LoginTypes[]>([
+  { name: '密码登录', type: 0 },
+  { name: '人脸识别', type: 1 },
+]);
+let loginType = $ref<LoginType>(loginTypes[0].type);
 
 onMounted(() => {
   // getUser();
@@ -59,90 +80,18 @@ onMounted(() => {
     z-index: 1;
     position: relative;
   }
-  img {
-    -webkit-user-drag: none;
-  }
-  header {
-    height: 15vh;
-    line-height: 15vh;
-    .logo-title {
-      display: flex;
-      align-items: center;
-      padding-left: 10vw;
-      gap: 2vw;
-      .logo {
-        -webkit-filter: brightness(2);
-        filter: brightness(2);
-        width: 7rem;
-        max-height: 6rem;
-      }
-      .title {
-        font-size: 4rem;
-        font-family: PingFang-SC;
-        font-weight: bold;
-        margin: 0;
-        text-align: center;
-      }
-      .abbreviation {
-        display: none;
-      }
-    }
-    .functional-area {
-      display: flex;
-      justify-content: center;
-      gap: 1vw;
-      align-items: center;
-      padding-right: 1vw;
-    }
-  }
-  .centerBgc {
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
-    position: absolute;
-    top: 0;
-    z-index: 0;
-    .cityBgc {
-      position: absolute;
-      inset: 0;
-      margin: auto 0;
-      opacity: 0.3;
-    }
-    @media screen and (min-width: 1921px) {
-      .cityBgc {
-        width: 100%;
-      }
-    }
-    .bgcImg {
-      width: 30%;
-      position: absolute;
-      inset: 0;
-      left: 10%;
-      margin: auto 0;
+  @media screen and (min-width: 1921px) {
+    .centerBgc .cityBgc {
+      width: 100%;
     }
   }
   .login-module {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    margin: auto 0;
-    right: 10vw;
-    width: 25vw;
-    min-width: 450px;
-    height: max-content;
-    border-radius: 3rem;
     background-color: var(--ework-bg-color);
     box-shadow: 0 0 3rem #0d2cb8;
-    padding: 8rem 5rem 5rem;
-    display: flex;
-    flex-direction: column;
-    gap: 2rem;
     .login-name {
-      font-size: 3.6rem;
       .letter-spacing-em(1);
     }
     :deep(.login-types) {
-      justify-content: center;
       & > * {
         margin-right: 1.6rem !important;
       }
@@ -155,22 +104,15 @@ onMounted(() => {
       & > .el-space__item:last-child {
         margin-right: 0 !important;
       }
-      .login-type {
-        font-size: 2rem;
-        cursor: pointer;
-        padding-bottom: 5px;
-        border-bottom: 2px solid transparent;
-      }
       .current-login-type {
         color: var(--el-color-primary);
-        border-bottom: 2px solid;
+        border-color: initial;
       }
     }
   }
   @media screen and (max-width: 500px) {
     .login-module {
       min-width: 90vw;
-      padding: 8rem 1rem 5rem;
     }
   }
 

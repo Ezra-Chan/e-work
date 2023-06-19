@@ -1,5 +1,10 @@
 declare type LoginType = 0 | 1;
 
+declare type LoginTypes = {
+  type: LoginType;
+  name: string;
+};
+
 declare type LoginFormType = {
   userName: string;
   password: string;

@@ -43,7 +43,7 @@
       <el-input
         v-model="loginForm.code"
         placeholder="请输入验证码"
-        class="only-border-bottom captcha-input flex-1"
+        class="only-border-bottom captcha-input"
         size="large"
         clearable
       />
@@ -162,7 +162,7 @@ const getCaptcha = async () => {
       justify-content: right;
     }
     & > .el-input {
-      width: calc(100% - 8rem);
+      width: calc(100% - 10rem);
     }
     .el-form-item__error {
       font-size: 1.2rem;
@@ -186,6 +186,9 @@ const getCaptcha = async () => {
       height: 0.7rem;
       left: 0.4rem;
       top: 0.1rem;
+    }
+    .captcha-input {
+      width: calc(100% - 24rem);
     }
   }
   .only-border-bottom {
@@ -211,21 +214,6 @@ const getCaptcha = async () => {
           .letter-spacing-em(1);
           font-size: 2.4rem;
         }
-      }
-    }
-  }
-
-  @media screen and (max-width: 500px) {
-    .el-form-item__content {
-      & > span {
-        width: 4rem;
-      }
-      & > .el-input {
-        width: calc(100% - 6rem);
-      }
-      .el-form-item__error {
-        font-size: 1.2rem;
-        margin-left: calc(6rem + 15px);
       }
     }
   }
