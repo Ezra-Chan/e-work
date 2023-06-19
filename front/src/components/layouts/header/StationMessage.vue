@@ -1,6 +1,11 @@
 <template>
-  <div id="stationMessage" ref="iconRef" title="站内信">
-    <el-badge :value="5">
+  <div
+    id="stationMessage"
+    class="inline-flex border-rdp-50 items-center justify-center cursor-pointer"
+    ref="iconRef"
+    title="站内信"
+  >
+    <el-badge :value="5" class="!inline-flex">
       <el-icon :size="IconSize" class="text-light">
         <Bell />
       </el-icon>
@@ -31,14 +36,9 @@ onClickOutside(iconRef, () => {
 
 <style lang="less">
 #stationMessage {
-  display: inline-flex;
   background-color: var(--ework-bg-secondary-color);
   width: v-bind(IconBgSize);
   height: v-bind(IconBgSize);
-  border-radius: 50%;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
 
   &:hover {
     .text-light {
@@ -46,11 +46,8 @@ onClickOutside(iconRef, () => {
     }
   }
 
-  .el-badge {
-    display: inline-flex;
-    .el-badge__content {
-      border-color: var(--ework-header-bg-color, #fff);
-    }
+  .el-badge .el-badge__content {
+    border-color: var(--ework-header-bg-color, #fff);
   }
 }
 </style>

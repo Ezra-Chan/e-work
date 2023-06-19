@@ -1,13 +1,28 @@
 <template>
-  <el-aside id="asideMenus">
-    <div class="logo" @click="routerTo('/home')">
-      <img src="@/assets/images/public/Logo.png" alt="logo" />
-      <el-text v-show="!isCollapse" class="text-dark">{{
+  <el-aside
+    id="asideMenus"
+    class="select-none !overflow-x-hidden transition-width-300"
+  >
+    <div
+      class="logo h-22 flex items-center cursor-pointer px"
+      @click="routerTo('/home')"
+    >
+      <img
+        src="@/assets/images/public/Logo.png"
+        alt="logo"
+        class="w-14 h-14 brightness-200 no-drag"
+        :class="isCollapse ? 'mr-0' : 'mr'"
+      />
+      <el-text v-show="!isCollapse" class="text-dark !fs-3.6 ws-nowrap">{{
         systemAbbreviation
       }}</el-text>
     </div>
-    <el-scrollbar>
-      <el-menu :collapse="isCollapse" :unique-opened="true">
+    <el-scrollbar class="!h-calc-5.5">
+      <el-menu
+        :collapse="isCollapse"
+        :unique-opened="true"
+        class="overflow-x-hidden !border-r-0"
+      >
         <el-sub-menu index="1">
           <template #title>
             <el-icon></el-icon>
@@ -51,51 +66,24 @@ const router = useRouter();
 const globalStore = GlobalStore();
 const isCollapse = computed(() => globalStore.isCollapse);
 
-const logoMarginRight = computed(() => (isCollapse.value ? '0' : '1rem'));
-
 const routerTo = (path: string) => router.push(path);
 </script>
 
 <style scoped lang="less">
 #asideMenus {
   background-color: var(--ework-bg-color-2);
-  user-select: none;
-  transition: width 0.3s ease;
-  overflow-x: hidden;
   border-right: 1px solid var(--el-border-color-light);
-  .logo {
-    height: 5.5rem;
-    display: flex;
-    align-items: center;
-    padding: 0 1rem;
-    cursor: pointer;
-    img {
-      width: 3.5rem;
-      height: 3.5rem;
-      margin-right: v-bind(logoMarginRight);
-      -webkit-filter: brightness(2);
-      filter: brightness(2);
-      -webkit-user-drag: none;
-    }
-    span {
-      font-size: 3.6rem;
-      white-space: nowrap;
-    }
-  }
-  .el-scrollbar {
-    height: calc(100% - 55px);
 
+  .el-scrollbar {
     .el-menu {
       --el-menu-bg-color: var(--ework-bg-color-2);
       --el-menu-hover-bg-color: #14151a;
       --el-menu-text-color: #bdbdc0;
       --el-menu-hover-text-color: #bdbdc0;
-      --el-menu-active-color: #ffffff;
-      overflow-x: hidden;
-      border-right: none;
+      --el-menu-active-color: #fff;
       .el-menu-item.is-active {
         background-color: #060708;
-        &:before {
+        &::before {
           position: absolute;
           top: 0;
           bottom: 0;

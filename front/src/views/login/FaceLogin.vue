@@ -1,6 +1,6 @@
 <template>
-  <div class="face-recognition">
-    <div class="video-area">
+  <div class="face-recognition w-100% h-118.4">
+    <div class="video-area w-100% h-95.2 flex items-center justify-center">
       <template v-if="enabled">
         <video
           ref="video"
@@ -9,14 +9,18 @@
           :width="videoWidth"
           :height="videoHeight"
         />
-        <canvas class="login-canvas" ref="canvas" />
+        <canvas class="login-canvas hidden" ref="canvas" />
       </template>
       <el-button v-else type="primary" @click="enabled = true" size="large"
         >开启摄像头</el-button
       >
     </div>
-    <div class="login-button">
-      <el-button type="primary" @click="onFaceLogin" size="large"
+    <div class="login-button w-100% mb-7.2 text-center">
+      <el-button
+        type="primary"
+        @click="onFaceLogin"
+        size="large"
+        class="h-16 !fs-2.4"
         >登录</el-button
       >
     </div>
@@ -111,28 +115,9 @@ onBeforeUnmount(() => {
 
 <style lang="less" scoped>
 .face-recognition {
-  width: 100%;
-  height: 29.6rem;
-  .video-area {
-    width: 100%;
-    height: 23.8rem;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    .login-canvas {
-      display: none;
-    }
-  }
   :deep(.login-button) {
-    width: 100%;
-    margin-bottom: 1.8rem;
-    text-align: center;
-    button {
-      height: 4rem;
-      & > span {
-        .letter-spacing-em(1);
-        font-size: 2.4rem;
-      }
+    button > span {
+      .letter-spacing-em(1);
     }
   }
 }

@@ -34,4 +34,12 @@ const handleClickMenu = (subItem: Menu.MenuOptions) => {
 };
 </script>
 
-<style lang="less"></style>
+<style lang="less">
+.el-menu {
+  .is-opened {
+    .el-sub-menu__icon-arrow {
+      transform: rotateZ(90deg) !important;
+    }
+  }
+}
+</style>

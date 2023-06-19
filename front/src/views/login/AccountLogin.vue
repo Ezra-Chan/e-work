@@ -43,14 +43,14 @@
       <el-input
         v-model="loginForm.code"
         placeholder="请输入验证码"
-        class="only-border-bottom captcha-input"
+        class="only-border-bottom captcha-input flex-1"
         size="large"
         clearable
       />
       <img
         :src="captcha"
         @click="getCaptcha"
-        class="login-captcha"
+        class="w-48 cursor-pointer"
         alt="验证码"
       />
     </el-form-item>
@@ -187,9 +187,6 @@ const getCaptcha = async () => {
       left: 0.4rem;
       top: 0.1rem;
     }
-    .captcha-input {
-      width: calc(100% - 22rem);
-    }
   }
   .only-border-bottom {
     .el-input__wrapper {
@@ -217,10 +214,7 @@ const getCaptcha = async () => {
       }
     }
   }
-  .login-captcha {
-    width: 12rem;
-    cursor: pointer;
-  }
+
   @media screen and (max-width: 500px) {
     .el-form-item__content {
       & > span {
@@ -232,9 +226,6 @@ const getCaptcha = async () => {
       .el-form-item__error {
         font-size: 1.2rem;
         margin-left: calc(6rem + 15px);
-      }
-      .captcha-input {
-        width: calc(100% - 20rem);
       }
     }
   }

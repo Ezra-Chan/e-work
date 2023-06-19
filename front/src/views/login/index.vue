@@ -1,6 +1,9 @@
 <template>
-  <div id="login">
-    <header>
+  <div
+    id="login"
+    class="w-h-100 bg-no-repeat bg-cover relative overflow-hidden select-none"
+  >
+    <header class="w-100% flex justify-between">
       <div class="logo-title">
         <img src="@/assets/images/public/Logo.png" alt="logo" class="logo" />
         <h1 class="title full-name text-dark">{{ systemName }}</h1>
@@ -30,8 +33,7 @@
           >人脸识别</el-text
         >
       </el-space>
-      <account-login v-if="loginType === 0" />
-      <face-login v-else />
+      <component :is="loginType === 0 ? AccountLogin : FaceLogin" />
     </div>
     <brand-footer :isFixed="true" mode="white" />
   </div>
@@ -52,14 +54,7 @@ onMounted(() => {
 
 <style lang="less" scoped>
 #login {
-  width: 100%;
-  height: 100%;
   background-image: url('assets/images/login/background-image.png');
-  background-repeat: no-repeat;
-  background-size: cover;
-  position: relative;
-  overflow: hidden;
-  user-select: none;
   & > * {
     z-index: 1;
     position: relative;
@@ -68,11 +63,8 @@ onMounted(() => {
     -webkit-user-drag: none;
   }
   header {
-    width: 100%;
     height: 15vh;
     line-height: 15vh;
-    display: flex;
-    justify-content: space-between;
     .logo-title {
       display: flex;
       align-items: center;

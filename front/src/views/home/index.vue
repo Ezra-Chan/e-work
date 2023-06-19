@@ -1,8 +1,8 @@
 <template>
-  <div id="home">
-    <el-container>
+  <div id="home" class="w-h-100">
+    <el-container class="w-h-100 transition-width-300">
       <aside-menus />
-      <el-container>
+      <el-container class="!flex-col overflow-y-hidden">
         <common-header />
         <Main />
         <brand-footer />
@@ -29,18 +29,10 @@ onMounted(() => {
 
 <style lang="less" scoped>
 #home {
-  width: 100%;
-  height: 100%;
   & > .el-container {
-    width: 100%;
-    height: 100%;
     --el-aside-width: v-bind(asideWidth);
-    transition: width 0.5s;
     & > .el-container {
       width: calc(100% - var(--el-aside-width));
-      display: flex;
-      flex-direction: column;
-      overflow-y: hidden;
     }
   }
 }

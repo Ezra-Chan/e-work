@@ -1,6 +1,6 @@
 <template>
   <el-footer
-    class="brand-footer"
+    class="brand-footer w-100% !h-12 flex items-center justify-center gap-4 bottom-0"
     :class="{ 'has-color': props.mode === 'black' }"
   >
     <el-text class="text-light">© {{ new Date().getFullYear() }}</el-text>
@@ -32,7 +32,9 @@
         <svg-icon icon-class="icon-QQ-circle-fill" :size="IconSize" />
       </template>
       <template #default>
-        <el-text tag="h3" class="text-light">E-Work系统交流群</el-text>
+        <el-text tag="h3" class="text-light text-center !mb"
+          >E-Work系统交流群</el-text
+        >
         <img
           src="@/assets/images/login/qq-group-qrcode.png"
           :width="200"
@@ -59,23 +61,10 @@ const position = computed(() => (props.isFixed ? 'fixed' : 'static'));
 
 <style scoped lang="less">
 .brand-footer {
-  width: 100%;
-  height: 3rem;
   position: v-bind(position) !important;
-  bottom: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 1rem;
   &.has-color {
     border-top: 1px solid var(--el-border-color-light);
     background-color: var(--ework-header-bg-color);
-  }
-  .qq-group-popover {
-    h3 {
-      text-align: center;
-      margin-bottom: 10px;
-    }
   }
 }
 </style>

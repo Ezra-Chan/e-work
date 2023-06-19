@@ -4,12 +4,13 @@
       :size="IconSize"
       @click="() => globalStore.setGlobalState('isCollapse', !isCollapse)"
       :title="isCollapse ? '展开' : '收起'"
-      class="text-light"
+      class="text-light cursor-pointer"
     >
       <component :is="isCollapse ? Expand : Fold"></component>
     </el-icon>
   </div>
 </template>
+
 <script setup lang="ts">
 import { Expand, Fold } from '@element-plus/icons-vue';
 import { GlobalStore } from '@/store';
@@ -18,10 +19,5 @@ import { IconSize } from 'utils/constants';
 const globalStore = GlobalStore();
 const isCollapse = computed(() => globalStore.isCollapse);
 </script>
-<style lang="less" scoped>
-#headerLeft {
-  .el-icon {
-    cursor: pointer;
-  }
-}
-</style>
+
+<style lang="less" scoped></style>

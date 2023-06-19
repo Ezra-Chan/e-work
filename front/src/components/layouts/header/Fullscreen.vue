@@ -1,6 +1,6 @@
 <template>
   <div
-    class="fullscreen"
+    class="fullscreen inline-flex items-center justify-center border-rdp-50 cursor-pointer"
     @click="toggle"
     :title="isFullscreen ? '退出全屏' : '全屏'"
   >
@@ -18,14 +18,9 @@ const { toggle, isFullscreen } = useFullscreen();
 
 <style lang="less">
 .fullscreen {
-  display: inline-flex;
   width: v-bind(IconBgSize);
   height: v-bind(IconBgSize);
-  border-radius: 50%;
-  align-items: center;
-  justify-content: center;
   background-color: var(--ework-bg-secondary-color);
-  cursor: pointer;
 
   &:hover {
     .svg-icon .icon {

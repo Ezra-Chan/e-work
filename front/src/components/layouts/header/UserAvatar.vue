@@ -1,9 +1,15 @@
 <template>
   <div class="user-avatar">
     <el-dropdown trigger="click">
-      <div class="current-user">
-        <el-avatar :size="40" :src="userInfo?.avatar || user" />
-        <el-text class="user-name text-light" truncated>{{
+      <div
+        class="current-user flex items-center border-rd-8 cursor-pointer gap-6 pr-6"
+      >
+        <el-avatar
+          :size="40"
+          :src="userInfo?.avatar || user"
+          class="border-rd-8"
+        />
+        <el-text class="text-light w-fit !max-w-32 !fs-1.6" truncated>{{
           userInfo?.userName
         }}</el-text>
       </div>
@@ -33,27 +39,12 @@ const logout = () => {
 
 <style lang="less" scoped>
 .user-avatar {
-  .el-dropdown {
-    .current-user {
-      display: flex;
-      align-items: center;
-      border-radius: 20px;
-      background-color: var(--ework-bg-secondary-color);
-      cursor: pointer;
-      gap: 16px;
-      padding-right: 16px;
-      .el-avatar--circle {
-        border-radius: 20px;
-      }
-      &:hover {
-        .text-light {
-          color: var(--ework-text-color-hover) !important;
-        }
-      }
-      .user-name {
-        width: fit-content;
-        max-width: 80px;
-        font-size: 16px;
+  .current-user {
+    background-color: var(--ework-bg-secondary-color);
+
+    &:hover {
+      .text-light {
+        color: var(--ework-text-color-hover) !important;
       }
     }
   }

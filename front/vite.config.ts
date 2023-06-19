@@ -9,6 +9,7 @@ import IconsResolver from 'unplugin-icons/resolver';
 import AutoImport from 'unplugin-auto-import/vite';
 import Components from 'unplugin-vue-components/vite';
 import { ElementPlusResolver } from 'unplugin-vue-components/resolvers';
+import UnoCSS from 'unocss/vite';
 import * as path from 'path';
 import type { ViteEnv } from './src/vite-env';
 
@@ -50,6 +51,10 @@ export default defineConfig(({ mode }: ConfigEnv) => {
       }),
       Icons({
         autoInstall: true,
+      }),
+      UnoCSS({
+        // 使用Unocss
+        configFile: './uno.config.ts',
       }),
       // * gzip compress
       env.VITE_BUILD_GZIP === 'true' &&
