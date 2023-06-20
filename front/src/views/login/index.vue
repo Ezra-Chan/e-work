@@ -155,7 +155,7 @@ onMounted(() => {
   }
 }
 .dark {
-  #login {
+  #login .centerBgc {
     filter: brightness(0.7) saturate(1.25);
   }
 }
