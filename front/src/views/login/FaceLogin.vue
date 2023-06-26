@@ -102,7 +102,7 @@ watchEffect(() => {
 });
 
 const getUser = async () => {
-  const data = await LoginService.getUser();
+  // const data = await LoginService.getUser();
   // cancelRequest('/login');
 };
 onMounted(() => {
