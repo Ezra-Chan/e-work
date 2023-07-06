@@ -1,2 +1,2 @@
-export const IconSize = '2.2rem';
-export const IconBgSize = '4rem';
+export const IconSize: string = '2.2rem';
+export const IconBgSize: string = '4rem';
