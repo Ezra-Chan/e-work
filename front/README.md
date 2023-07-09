@@ -1,6 +1,6 @@
 # e-work
 
-e-work 信息化办公管理系统，前端采用 Vue 3 + Element Plus + Vite 4 + Pinia
+e-work 信息化办公管理系统，前端采用 Vue 3 + Element Plus + Vite 4 + Pinia，后端采用 Node.js + NestJS + MySQL
 
 原版基于https://gitee.com/aaluoxiang/oa_system 二次开发，增加了人脸识别登录（基于百度 AI），在 oasys 上进行一些删改
 
