@@ -1,7 +1,10 @@
 {
-  "name": "ework-front",
-  "private": true,
+  "name": "ework-front-vue",
   "version": "0.0.1",
+  "description": "e-work信息化办公管理系统",
+  "author": "ezra-chan",
+  "private": true,
+  "license": "MIT",
   "type": "module",
   "scripts": {
     "dev": "vite",
