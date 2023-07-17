@@ -1,23 +1,165 @@
 import {
-  BeforeInsert,
   Column,
   Entity,
-  OneToMany,
+  JoinColumn,
+  ManyToOne,
+  OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import { ApiProperty } from '@nestjs/swagger';
+import { Exclude } from 'class-transformer';
+import { Department } from 'src/department/entities/department.entity';
+import { Role } from 'src/role/entities/role.entity';
+import { EDUCATION, SEX } from 'src/utils/constant';
+import { ApiPropertyDesc } from 'src/utils/customDecorator';
+import { UserDesc } from 'src/utils/entitiesDescription';
 
-@Entity('users')
+@Entity('user')
 export class User {
-  @ApiProperty({ description: '用户ID' })
-  @PrimaryGeneratedColumn({ comment: '用户ID' })
+  @ApiPropertyDesc(UserDesc)
+  @PrimaryGeneratedColumn({ type: 'bigint', comment: UserDesc.id })
   id: number;
 
-  @ApiProperty({ description: '用户登录名' })
-  @Column({ length: 50, unique: true, comment: '用户登录名', nullable: false })
+  @ApiPropertyDesc(UserDesc)
+  @Column({ name: 'real_name', length: 50, comment: UserDesc.realName })
+  realName: string;
+
+  @ApiPropertyDesc(UserDesc)
+  @Column('enum', {
+    enum: SEX,
+    default: SEX['男'],
+    comment: UserDesc.sex,
+  })
+  sex: SEX;
+
+  @ApiPropertyDesc(UserDesc)
+  @Column({
+    name: 'login_name',
+    length: 50,
+    unique: true,
+    comment: UserDesc.loginName,
+  })
   loginName: string;
 
-  @ApiProperty({ description: '用户密码' })
-  @Column({ length: 50, comment: '用户密码', nullable: false })
+  @ApiPropertyDesc(UserDesc)
+  @Exclude()
+  @Column({ comment: UserDesc.password })
   password: string;
+
+  @ApiPropertyDesc(UserDesc)
+  @ManyToOne(() => Role, role => role.id, { nullable: false })
+  @JoinColumn({ name: 'role_id' })
+  role: Role;
+
+  @ApiPropertyDesc(UserDesc)
+  @ManyToOne(() => Department, department => department.id, { nullable: false })
+  @JoinColumn({ name: 'department_id' })
+  department: Department;
+
+  @ApiPropertyDesc(UserDesc)
+  @Column({ nullable: true, default: null, comment: UserDesc.avatar })
+  avatar: string;
+
+  @ApiPropertyDesc(UserDesc)
+  @Column({ nullable: true, default: null, comment: UserDesc.email })
+  email: string;
+
+  @ApiPropertyDesc(UserDesc)
+  @Column({
+    type: 'bigint',
+    name: 'phone_number',
+    nullable: true,
+    default: null,
+    comment: UserDesc.phoneNumber,
+    unique: true,
+  })
+  phoneNumber: number;
+
+  @ApiPropertyDesc(UserDesc)
+  @Column({
+    name: 'id_card',
+    nullable: false,
+    comment: UserDesc.idCard,
+    unique: true,
+  })
+  idCard: string;
+
+  @ApiPropertyDesc(UserDesc)
+  @Column({
+    name: 'bank_card',
+    nullable: false,
+    unique: true,
+    comment: UserDesc.bankCard,
+  })
+  bankCard: string;
+
+  @ApiPropertyDesc(UserDesc)
+  @Column('enum', {
+    enum: EDUCATION,
+    default: null,
+    nullable: true,
+    comment: UserDesc.education,
+  })
+  education: EDUCATION;
+
+  @ApiPropertyDesc(UserDesc)
+  @Column({
+    name: 'graduate_school',
+    default: null,
+    nullable: true,
+    comment: UserDesc.graduateSchool,
+  })
+  graduateSchool: string;
+
+  @ApiPropertyDesc(UserDesc)
+  @OneToOne(() => User, user => user.id, { nullable: true })
+  @JoinColumn({ name: 'leader_id' })
+  leader: User;
+
+  @ApiPropertyDesc(UserDesc)
+  @Column({ nullable: true, default: null, comment: UserDesc.address })
+  address: string;
+
+  @ApiPropertyDesc(UserDesc)
+  @Column({ nullable: true, default: null, comment: UserDesc.signature })
+  signature: string;
+
+  @ApiPropertyDesc(UserDesc)
+  @Column({
+    name: 'last_login_ip',
+    default: null,
+    comment: UserDesc.lastLoginIp,
+  })
+  lastLoginIp: string;
+
+  @ApiPropertyDesc(UserDesc)
+  @Column({
+    name: 'last_login_time',
+    type: 'timestamp',
+    default: null,
+    comment: UserDesc.lastLoginTime,
+  })
+  lastLoginTime: Date;
+
+  @ApiPropertyDesc(UserDesc)
+  @Column({
+    name: 'create_time',
+    type: 'timestamp',
+    default: () => 'CURRENT_TIMESTAMP',
+    comment: UserDesc.joinTime,
+  })
+  joinTime: Date;
+
+  @ApiPropertyDesc(UserDesc)
+  @Column({
+    name: 'update_time',
+    type: 'timestamp',
+    default: () => 'CURRENT_TIMESTAMP',
+    onUpdate: 'CURRENT_TIMESTAMP',
+    comment: UserDesc.updateTime,
+  })
+  updateTime: Date;
+
+  @ApiPropertyDesc(UserDesc)
+  @Column({ type: 'boolean', default: true, comment: UserDesc.enabled })
+  enabled: boolean;
 }
