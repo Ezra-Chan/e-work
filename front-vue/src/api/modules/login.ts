@@ -1,12 +1,7 @@
 import request from '../request';
 
 export const getCaptcha = () =>
-  request.get('/captcha', undefined, {
-    headers: {
-      'Content-Type': 'image/jpeg',
-    },
-    responseType: 'blob',
-  });
+  request.instance?.defaults?.baseURL + '/auth/captcha';
 
 export const accountLogin = (data: LoginFormType) =>
   request.post('/logins', data, {

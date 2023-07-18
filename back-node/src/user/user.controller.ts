@@ -6,13 +6,10 @@ import {
   Patch,
   Param,
   Delete,
+  UseInterceptors,
+  ClassSerializerInterceptor,
 } from '@nestjs/common';
-import {
-  ApiBearerAuth,
-  ApiOperation,
-  ApiResponse,
-  ApiTags,
-} from '@nestjs/swagger';
+import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -23,15 +20,28 @@ export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @ApiOperation({ summary: '注册用户' })
+  @UseInterceptors(ClassSerializerInterceptor)
   @Post('register')
-  create(@Body() createUserDto: CreateUserDto) {
-    return this.userService.create(createUserDto);
+  register(@Body() createUserDto: CreateUserDto) {
+    return this.userService.register(createUserDto);
+  }
+
+  @ApiOperation({ summary: '检查字段唯一性' })
+  @Post('checkUnique')
+  checkUnique(@Body() body: { field: string; value: string }) {
+    return this.userService.checkUnique(body.field, body.value);
   }
 
   @ApiOperation({ summary: '获取所有用户信息' })
   @Get()
   findAll() {
     return this.userService.findAll();
+  }
+
+  @ApiOperation({ summary: '模糊搜索用户' })
+  @Get('search/:keyword')
+  search(@Param('keyword') keyword: string) {
+    return this.userService.search(keyword);
   }
 
   @ApiOperation({ summary: '获取指定用户信息' })

@@ -2,22 +2,22 @@
  * @description: 学历
  */
 export enum EDUCATION {
-  '无',
-  '小学',
-  '初中',
-  '中专',
-  '高中',
-  '大专',
-  '本科',
-  '硕士',
-  '博士',
-  '其它',
+  NULL = '无',
+  PRIMARY = '小学',
+  JUNIOR_HIGH = '初中',
+  SECONDARY = '中专',
+  SENIOR_HIGH = '高中',
+  JUNIOR_COLLEGE = '大专',
+  UNDERGRADUATE = '本科',
+  MASTER = '硕士',
+  DOCTOR = '博士',
+  OTHER = '其它',
 }
 
 /**
  * @description: 性别
  */
 export enum SEX {
-  '男',
-  '女',
+  MALE = '男',
+  FEMALE = '女',
 }

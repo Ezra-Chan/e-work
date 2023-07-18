@@ -144,9 +144,7 @@ const onLogin = async (formRef: FormInstance | undefined) => {
 };
 
 const getCaptcha = async () => {
-  const data = (await LoginService.getCaptcha()) as Blob;
-  captcha = window.URL.createObjectURL(data);
-  // cancelRequest('/login');
+  captcha = LoginService.getCaptcha() + `?t=${new Date().getTime()}`;
 };
 </script>
 

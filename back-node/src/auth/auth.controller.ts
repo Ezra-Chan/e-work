@@ -1,3 +1,4 @@
+import * as svgCaptcha from 'svg-captcha';
 import {
   Controller,
   Get,
@@ -6,11 +7,12 @@ import {
   Patch,
   Param,
   Delete,
+  Req,
+  Res,
+  Session,
 } from '@nestjs/common';
 import { ApiBody, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { AuthService } from './auth.service';
-import { CreateAuthDto } from './dto/create-auth.dto';
-import { UpdateAuthDto } from './dto/update-auth.dto';
 
 @ApiTags('验证')
 @Controller('auth')
@@ -19,10 +21,21 @@ export class AuthController {
 
   @ApiOperation({ summary: '登录' })
   @Post('login')
-  login(@Body() createAuthDto: CreateAuthDto) {
-    return this.authService.login(createAuthDto);
+  login() {
+    return this.authService.login();
   }
 
-  @Get()
-  capture() {}
+  @ApiOperation({ summary: '获取验证码' })
+  @Get('captcha')
+  getCaptcha(@Req() req: any, @Res() res: any, @Session() session: any) {
+    const captcha = svgCaptcha.create({
+      size: 4,
+      noise: 2,
+      color: true,
+      ignoreChars: '0o1i',
+    });
+    // session.code = captcha.text;
+    res.type('image/svg+xml');
+    res.send(captcha.data);
+  }
 }

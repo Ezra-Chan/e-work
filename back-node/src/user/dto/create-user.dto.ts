@@ -1,7 +1,9 @@
 import {
+  IsEmail,
   IsEnum,
   IsNotEmpty,
   IsNumber,
+  IsOptional,
   Length,
   Validate,
 } from 'class-validator';
@@ -39,10 +41,10 @@ export class CreateUserDto {
   @IsNumber()
   role: Role['id'];
 
-  @ApiPropertyDesc(UserDesc, { example: 1 })
-  @IsNotEmpty({ message: '部门不能为空' })
+  @ApiPropertyDesc(UserDesc, { example: 1, required: false })
   @IsNumber()
-  department: Department['id'];
+  @IsOptional()
+  department?: Department['id'];
 
   @ApiPropertyDesc(UserDesc, {
     example: 'http://xxx.com/xxx.png',
@@ -51,10 +53,20 @@ export class CreateUserDto {
   avatar?: string;
 
   @ApiPropertyDesc(UserDesc, { example: 'xx@xx.com', required: false })
+  @IsEmail({}, { message: '邮箱格式不正确' })
+  @IsOptional()
   email?: string;
 
-  @ApiPropertyDesc(UserDesc, { example: 12345678901, required: false })
-  phoneNumber?: number;
+  @ApiPropertyDesc(UserDesc, { example: '13245678901', required: false })
+  @IsOptional()
+  @Validate((value: string) => {
+    const reg = /^1[3456789]\d{9}$/;
+    if (!reg.test(value)) {
+      throw new Error('手机号格式不正确');
+    }
+    return true;
+  })
+  phoneNumber?: string;
 
   @ApiPropertyDesc(UserDesc, { example: '321001200001011010' })
   @IsNotEmpty({ message: '身份证号不能为空' })
@@ -80,14 +92,14 @@ export class CreateUserDto {
 
   @ApiPropertyDesc(UserDesc, { example: '本科', required: false })
   @IsEnum(EDUCATION)
-  education?: string;
+  @IsOptional()
+  education?: EDUCATION;
 
   @ApiPropertyDesc(UserDesc, { example: 'xx大学', required: false })
   graduateSchool?: string;
 
-  @ApiPropertyDesc(UserDesc, { example: 1 })
-  @IsNumber()
-  leader: User['id'];
+  @ApiPropertyDesc(UserDesc, { example: 1, required: false })
+  leader?: User['id'];
 
   @ApiPropertyDesc(UserDesc, { example: 'xx市xx区xx街道xx号', required: false })
   address?: string;

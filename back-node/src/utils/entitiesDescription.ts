@@ -42,4 +42,5 @@ export const DepartmentDesc = {
 export const RoleDesc = {
   id: '角色ID',
   name: '角色名',
+  permissions: '权限',
 };

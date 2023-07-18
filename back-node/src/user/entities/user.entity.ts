@@ -26,7 +26,7 @@ export class User {
   @ApiPropertyDesc(UserDesc)
   @Column('enum', {
     enum: SEX,
-    default: SEX['男'],
+    default: SEX['MALE'],
     comment: UserDesc.sex,
   })
   sex: SEX;
@@ -48,12 +48,12 @@ export class User {
   @ApiPropertyDesc(UserDesc)
   @ManyToOne(() => Role, role => role.id, { nullable: false })
   @JoinColumn({ name: 'role_id' })
-  role: Role;
+  role: Role['id'];
 
   @ApiPropertyDesc(UserDesc)
-  @ManyToOne(() => Department, department => department.id, { nullable: false })
+  @ManyToOne(() => Department, department => department.id)
   @JoinColumn({ name: 'department_id' })
-  department: Department;
+  department: Department['id'];
 
   @ApiPropertyDesc(UserDesc)
   @Column({ nullable: true, default: null, comment: UserDesc.avatar })
@@ -65,14 +65,13 @@ export class User {
 
   @ApiPropertyDesc(UserDesc)
   @Column({
-    type: 'bigint',
     name: 'phone_number',
     nullable: true,
     default: null,
     comment: UserDesc.phoneNumber,
     unique: true,
   })
-  phoneNumber: number;
+  phoneNumber: string;
 
   @ApiPropertyDesc(UserDesc)
   @Column({
@@ -113,7 +112,7 @@ export class User {
   @ApiPropertyDesc(UserDesc)
   @OneToOne(() => User, user => user.id, { nullable: true })
   @JoinColumn({ name: 'leader_id' })
-  leader: User;
+  leader: User['id'];
 
   @ApiPropertyDesc(UserDesc)
   @Column({ nullable: true, default: null, comment: UserDesc.address })
