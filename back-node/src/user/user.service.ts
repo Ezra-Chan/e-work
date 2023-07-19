@@ -5,6 +5,7 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
 import { UserDesc } from 'src/utils/entitiesDescription';
+import { decrypt } from 'src/utils/decrypt';
 
 @Injectable()
 export class UserService {
@@ -16,7 +17,10 @@ export class UserService {
     for await (const field of uniqueFields) {
       await this.checkUnique(field, createUserDto[field]);
     }
-    const newUser = this.userRepository.create(createUserDto);
+    const newUser = this.userRepository.create({
+      ...createUserDto,
+      password: decrypt(createUserDto.password), // RSA密码加密
+    });
     return await this.userRepository.save(newUser);
   }
 

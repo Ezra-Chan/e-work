@@ -76,6 +76,7 @@ import { FormInstance, FormRules } from 'element-plus';
 import md5 from 'js-md5';
 import * as LoginService from 'api/modules/login';
 import { cancelRequest } from 'api/request';
+import { encrypt } from 'utils/encrypt';
 
 const router = useRouter();
 const iconFontSize = '3rem';
@@ -121,7 +122,7 @@ const onLogin = async (formRef: FormInstance | undefined) => {
           ...loginForm,
           password: rex.test(password)
             ? password.replace(rex, '')
-            : md5(loginForm.password),
+            : (encrypt(loginForm.password) as string),
         });
         ElMessage.success('登录成功！欢迎');
         if (loginForm.rememberMe) {
@@ -129,7 +130,7 @@ const onLogin = async (formRef: FormInstance | undefined) => {
             userName: loginForm.userName,
             password: rex.test(password)
               ? password
-              : md5(loginForm.password) + 'encrypted',
+              : encrypt(loginForm.password) + 'encrypted',
           });
         } else {
           loginFormCache = null;

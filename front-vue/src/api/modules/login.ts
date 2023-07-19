@@ -4,7 +4,7 @@ export const getCaptcha = () =>
   request.instance?.defaults?.baseURL + '/auth/captcha';
 
 export const accountLogin = (data: LoginFormType) =>
-  request.post('/logins', data, {
+  request.post('/auth/login', data, {
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
     },
