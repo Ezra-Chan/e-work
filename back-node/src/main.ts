@@ -1,12 +1,13 @@
 import 'dotenv/config';
 import { join } from 'path';
 import { NestFactory } from '@nestjs/core';
-import { ValidationPipe } from '@nestjs/common';
+import { ValidationPipe, Logger } from '@nestjs/common';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { HttpFilter } from 'src/common/filter';
 import { TransformInterceptor } from 'src/common/response';
 import { AppModule } from './app.module';
+import { getRealPort } from './utils/getRealPort';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
@@ -33,6 +34,12 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('/api-docs', app, document);
 
-  await app.listen(process.env.SYS_PORT);
+  const [realPort, msg] = await getRealPort(+process.env.SYS_PORT || 8000);
+  await app.listen(realPort, () => {
+    msg && Logger.warn(msg);
+    Logger.log(`App running at:
+- Local:   http://localhost:${realPort}
+- Swagger: http://localhost:${realPort}/api-docs`);
+  });
 }
 bootstrap();
