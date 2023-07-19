@@ -117,20 +117,21 @@ const onLogin = async (formRef: FormInstance | undefined) => {
       try {
         loading = true;
         const password = loginForm.password;
-        const rex = /encrypted$/;
+        const sign = 'encrypted';
+        const isRemember = password.endsWith(sign);
         const data = await LoginService.accountLogin({
           ...loginForm,
-          password: rex.test(password)
-            ? password.replace(rex, '')
+          password: isRemember
+            ? password.replace(sign, '')
             : (encrypt(loginForm.password) as string),
         });
         ElMessage.success('登录成功！欢迎');
         if (loginForm.rememberMe) {
           loginFormCache = JSON.stringify({
             userName: loginForm.userName,
-            password: rex.test(password)
+            password: isRemember
               ? password
-              : encrypt(loginForm.password) + 'encrypted',
+              : encrypt(loginForm.password) + sign,
           });
         } else {
           loginFormCache = null;

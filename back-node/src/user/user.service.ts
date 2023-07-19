@@ -17,10 +17,8 @@ export class UserService {
     for await (const field of uniqueFields) {
       await this.checkUnique(field, createUserDto[field]);
     }
-    const newUser = this.userRepository.create({
-      ...createUserDto,
-      password: decrypt(createUserDto.password), // RSA密码加密
-    });
+    const newUser = this.userRepository.create(createUserDto);
+    // password: decrypt(createUserDto.password), // RSA密码加密
     return await this.userRepository.save(newUser);
   }
 

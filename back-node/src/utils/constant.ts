@@ -21,3 +21,10 @@ export enum SEX {
   MALE = '男',
   FEMALE = '女',
 }
+
+/**
+ * @description: JWT秘钥
+ */
+export const jwtConstants = {
+  secret: 'shinobi7414',
+};
