@@ -1,4 +1,5 @@
 import { Repository } from 'typeorm';
+import * as md5 from 'md5';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -17,8 +18,11 @@ export class UserService {
     for await (const field of uniqueFields) {
       await this.checkUnique(field, createUserDto[field]);
     }
-    const newUser = this.userRepository.create(createUserDto);
-    // password: decrypt(createUserDto.password), // RSA密码加密
+    const decryptedPassword = decrypt(createUserDto.password);
+    const newUser = this.userRepository.create({
+      ...createUserDto,
+      password: md5(decryptedPassword), // md5再加密
+    });
     return await this.userRepository.save(newUser);
   }
 
@@ -47,6 +51,7 @@ export class UserService {
    * @returns
    */
   async checkUnique(field: string, value: string) {
+    if (!value) return;
     const user = await this.userRepository.findOneBy({ [field]: value });
     if (user) {
       throw new HttpException(

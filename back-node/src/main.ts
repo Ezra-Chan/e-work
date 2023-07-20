@@ -1,5 +1,6 @@
 import 'dotenv/config';
 import { join } from 'path';
+import * as session from 'express-session';
 import { NestFactory } from '@nestjs/core';
 import { ValidationPipe, Logger } from '@nestjs/common';
 import { NestExpressApplication } from '@nestjs/platform-express';
@@ -23,6 +24,17 @@ async function bootstrap() {
   });
   // 跨域
   app.enableCors();
+  // session
+  app.use(
+    session({
+      secret: 'ework',
+      name: 'sid',
+      rolling: true,
+      resave: false,
+      saveUninitialized: false,
+      cookie: { maxAge: 1000 * 60 * 60 * 12 },
+    })
+  );
 
   // swagger
   const config = new DocumentBuilder()

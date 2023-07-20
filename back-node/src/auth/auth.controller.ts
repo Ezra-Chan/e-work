@@ -21,8 +21,8 @@ export class AuthController {
 
   @ApiOperation({ summary: '登录' })
   @Post('login')
-  login() {
-    return this.authService.login();
+  login(@Body() body: any, @Session() session: any) {
+    return this.authService.login(body, session);
   }
 
   @ApiOperation({ summary: '获取验证码' })
@@ -34,7 +34,7 @@ export class AuthController {
       color: true,
       ignoreChars: '0o1i',
     });
-    // session.code = captcha.text;
+    session.code = captcha.text;
     res.type('image/svg+xml');
     res.send(captcha.data);
   }
