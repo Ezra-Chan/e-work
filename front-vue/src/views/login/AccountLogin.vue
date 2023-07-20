@@ -6,14 +6,14 @@
     :rules="rules"
     @keydown.enter.native="onLogin(loginFormRef)"
   >
-    <el-form-item prop="userName">
+    <el-form-item prop="loginName">
       <span slot="label">
         <el-icon :size="iconFontSize" class="text-light">
           <User />
         </el-icon>
       </span>
       <el-input
-        v-model="loginForm.userName"
+        v-model="loginForm.loginName"
         placeholder="请输入账号"
         class="only-border-bottom"
         size="large"
@@ -73,10 +73,11 @@
 <script setup lang="ts">
 import { User, Lock } from '@element-plus/icons-vue';
 import { FormInstance, FormRules } from 'element-plus';
-import md5 from 'js-md5';
 import * as LoginService from 'api/modules/login';
 import { cancelRequest } from 'api/request';
 import { encrypt } from 'utils/encrypt';
+import { GlobalStore } from '@/store';
+const globalStore = GlobalStore();
 
 const router = useRouter();
 const iconFontSize = '3rem';
@@ -84,7 +85,7 @@ const iconFontSize = '3rem';
 const loginFormRef = $ref<FormInstance>();
 
 let loginForm = reactive<LoginFormType>({
-  userName: '',
+  loginName: '',
   password: '',
   code: '',
   rememberMe: false,
@@ -93,7 +94,7 @@ let loginFormCache = $(
   useLocalStorage('ework-loginCache', null)
 ) as InitLoginFormType;
 const rules = reactive<FormRules>({
-  userName: { required: true, message: '请输入账号！', trigger: 'blur' },
+  loginName: { required: true, message: '请输入账号！', trigger: 'blur' },
   password: { required: true, message: '请输入密码！', trigger: 'blur' },
   code: { required: true, message: '请输入验证码！', trigger: 'blur' },
 });
@@ -104,7 +105,7 @@ onMounted(() => {
   getCaptcha();
   if (loginFormCache) {
     const cache = JSON.parse(loginFormCache);
-    loginForm.userName = cache.userName;
+    loginForm.loginName = cache.loginName;
     loginForm.password = cache.password;
     loginForm.rememberMe = true;
   }
@@ -119,16 +120,24 @@ const onLogin = async (formRef: FormInstance | undefined) => {
         const password = loginForm.password;
         const sign = 'encrypted';
         const isRemember = password.endsWith(sign);
-        const data = await LoginService.accountLogin({
+        const {
+          success,
+          data = {},
+          message,
+        } = (await LoginService.accountLogin({
           ...loginForm,
           password: isRemember
             ? password.replace(sign, '')
             : (encrypt(loginForm.password) as string),
-        });
+        })) as any;
+        if (!success) {
+          ElMessage.error(message);
+          return;
+        }
         ElMessage.success('登录成功！欢迎');
         if (loginForm.rememberMe) {
           loginFormCache = JSON.stringify({
-            userName: loginForm.userName,
+            loginName: loginForm.loginName,
             password: isRemember
               ? password
               : encrypt(loginForm.password) + sign,
@@ -136,6 +145,9 @@ const onLogin = async (formRef: FormInstance | undefined) => {
         } else {
           loginFormCache = null;
         }
+        const { token, info } = data;
+        globalStore.setGlobalState('userInfo', info);
+        globalStore.setGlobalState('token', token);
         router.push('/');
       } catch (error) {
       } finally {

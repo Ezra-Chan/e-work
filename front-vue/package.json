@@ -25,7 +25,6 @@
     "vue-router": "^4.1.6"
   },
   "devDependencies": {
-    "@types/js-md5": "^0.7.0",
     "@types/node": "^18.11.18",
     "@types/querystringify": "^2.0.0",
     "@unocss/preset-attributify": "^0.53.1",

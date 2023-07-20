@@ -6,7 +6,7 @@ declare type LoginTypes = {
 };
 
 declare type LoginFormType = {
-  userName: string;
+  loginName: string;
   password: string;
   code: string;
   rememberMe: boolean;

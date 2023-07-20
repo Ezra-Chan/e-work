@@ -7,9 +7,10 @@ import Request from './request';
 import type { RequestConfig } from './types';
 
 export interface NewResponse<T> {
-  statusCode: number;
-  desc: string;
-  result: T;
+  code: number;
+  message: string;
+  success: boolean;
+  data: T;
 }
 
 // 重写返回类型
