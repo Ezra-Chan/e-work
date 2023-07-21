@@ -77,6 +77,7 @@ import * as LoginService from 'api/modules/login';
 import { cancelRequest } from 'api/request';
 import { encrypt } from 'utils/encrypt';
 import { GlobalStore } from '@/store';
+import { NewResponse } from 'api/request';
 const globalStore = GlobalStore();
 
 const router = useRouter();
@@ -129,9 +130,10 @@ const onLogin = async (formRef: FormInstance | undefined) => {
           password: isRemember
             ? password.replace(sign, '')
             : (encrypt(loginForm.password) as string),
-        })) as any;
+        })) as NewResponse<any>;
         if (!success) {
           ElMessage.error(message);
+          getCaptcha();
           return;
         }
         ElMessage.success('登录成功！欢迎');

@@ -25,6 +25,19 @@ export class AuthController {
     return this.authService.login(body, session);
   }
 
+  @ApiOperation({ summary: '人脸登录' })
+  @Post('faceLogin')
+  faceLogin(@Body() body: any) {
+    return this.authService.faceLogin(body.base);
+  }
+
+  @ApiOperation({ summary: '退出登录' })
+  @Post('logout')
+  logout(@Req() req: any) {
+    req.session.destroy();
+    return;
+  }
+
   @ApiOperation({ summary: '获取验证码' })
   @Get('captcha')
   getCaptcha(@Req() req: any, @Res() res: any, @Session() session: any) {

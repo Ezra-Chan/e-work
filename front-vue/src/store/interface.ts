@@ -11,7 +11,8 @@ export interface GlobalState {
 
 interface UserInfo {
   id: number;
-  userName: string;
+  realName: string;
   loginName: string;
   avatar: string;
+  role: number;
 }

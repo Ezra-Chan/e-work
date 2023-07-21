@@ -4,6 +4,7 @@ import { PassportModule } from '@nestjs/passport';
 import { jwtConstants } from 'src/utils/constant';
 import { JwtStrategy } from './jwt.strategy';
 import { UserModule } from 'src/user/user.module';
+import { FaceModule } from 'src/common/face/face.module';
 import { AuthService } from './auth.service';
 import { AuthController } from './auth.controller';
 
@@ -15,6 +16,7 @@ import { AuthController } from './auth.controller';
       signOptions: { expiresIn: '8h' }, // token 过期时效
     }),
     UserModule,
+    FaceModule,
   ],
   controllers: [AuthController],
   providers: [AuthService, JwtStrategy],

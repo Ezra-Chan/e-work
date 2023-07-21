@@ -1,9 +1,13 @@
 import 'dotenv/config';
 import { join } from 'path';
 import * as session from 'express-session';
+import * as bodyParser from 'body-parser';
 import { NestFactory } from '@nestjs/core';
 import { ValidationPipe, Logger } from '@nestjs/common';
-import { NestExpressApplication } from '@nestjs/platform-express';
+import {
+  NestExpressApplication,
+  NestExpressBodyParserOptions,
+} from '@nestjs/platform-express';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { HttpFilter } from 'src/common/filter';
 import { TransformInterceptor } from 'src/common/response';
@@ -22,6 +26,7 @@ async function bootstrap() {
   app.useStaticAssets(join(__dirname, 'uploads'), {
     prefix: '/files',
   });
+  app.use(bodyParser.json({ limit: '1mb' }));
   // 跨域
   app.enableCors();
   // session

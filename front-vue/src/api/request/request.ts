@@ -52,10 +52,8 @@ class Request {
     // 全局响应拦截器保证最后执行
     this.instance.interceptors.response.use(
       // 因为我们接口的数据都在res.data下，所以我们直接返回res.data
-      (res: AxiosResponse) => {
-        return res.data;
-      },
-      (err: any) => err
+      (res: AxiosResponse) => res.data,
+      (err: any) => err?.response?.data || err
     );
   }
 

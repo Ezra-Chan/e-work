@@ -10,7 +10,7 @@
           class="border-rd-8"
         />
         <el-text class="text-light w-fit !max-w-32 !fs-1.6" truncated>{{
-          userInfo?.userName
+          userInfo?.realName || '未登录'
         }}</el-text>
       </div>
       <template #dropdown>
@@ -26,12 +26,14 @@
 <script setup lang="ts">
 import user from '@/assets/images/public/user.png';
 import { GlobalStore } from '@/store';
+import { logoutApi } from '@/api/modules/login';
 
 const router = useRouter();
 const globalStore = GlobalStore();
 const userInfo = computed(() => globalStore.userInfo);
 
-const logout = () => {
+const logout = async () => {
+  await logoutApi();
   router.push('/login');
   ElMessage.success('退出成功！');
 };

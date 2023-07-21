@@ -7,6 +7,7 @@ import { AuthModule } from './auth/auth.module';
 import { RoleModule } from './role/role.module';
 import { DepartmentModule } from './department/department.module';
 import { UploadModule } from './upload/upload.module';
+import { FaceModule } from './face/face.module';
 
 @Module({
   imports: [
@@ -28,6 +29,7 @@ import { UploadModule } from './upload/upload.module';
     RoleModule,
     DepartmentModule,
     UploadModule,
+    FaceModule,
   ],
   controllers: [AppController],
   providers: [AppService],
