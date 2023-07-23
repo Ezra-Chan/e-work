@@ -39,12 +39,12 @@ export class CreateUserDto {
   @ApiPropertyDesc(UserDesc, { example: 1 })
   @IsNotEmpty({ message: '角色不能为空' })
   @IsNumber()
-  role: Role['id'];
+  roleId: Role['id'];
 
   @ApiPropertyDesc(UserDesc, { example: 1, required: false })
   @IsNumber()
   @IsOptional()
-  department?: Department['id'];
+  departmentId?: Department['id'];
 
   @ApiPropertyDesc(UserDesc, {
     example: 'http://xxx.com/xxx.png',
@@ -101,7 +101,7 @@ export class CreateUserDto {
   @ApiPropertyDesc(UserDesc, { example: 1, required: false })
   @IsNumber()
   @IsOptional()
-  leader?: User['id'];
+  leaderId?: User['id'];
 
   @ApiPropertyDesc(UserDesc, { example: 'xx市xx区xx街道xx号', required: false })
   address?: string;

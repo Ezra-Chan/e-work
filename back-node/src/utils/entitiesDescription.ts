@@ -7,8 +7,8 @@ export const UserDesc = {
   sex: '性别',
   loginName: '登录名',
   password: '密码',
-  role: '角色ID',
-  department: '部门ID',
+  roleId: '角色ID',
+  departmentId: '部门ID',
   avatar: '头像',
   email: '邮箱',
   phoneNumber: '手机号',
@@ -16,7 +16,7 @@ export const UserDesc = {
   bankCard: '银行卡号',
   education: '学历',
   graduateSchool: '毕业院校',
-  leader: '上级领导',
+  leaderId: '上级领导',
   address: '住址',
   signature: '个性签名',
   lastLoginIp: '最后登录IP',
@@ -34,6 +34,7 @@ export const DepartmentDesc = {
   name: '部门名',
   manager: '部门管理者',
   email: '部门邮箱',
+  parentId: '上级部门ID',
 };
 
 /**

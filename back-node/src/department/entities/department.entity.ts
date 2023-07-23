@@ -29,8 +29,8 @@ export class Department {
   @ManyToOne(() => Department, department => department.id, {
     nullable: true,
   })
-  @JoinColumn({ name: 'parent' })
-  parent: Department['id'];
+  @JoinColumn({ name: 'parent_id' })
+  parentId: Department['id'];
 
   @ApiPropertyDesc(DepartmentDesc)
   @Column({ nullable: true, comment: DepartmentDesc.email })
