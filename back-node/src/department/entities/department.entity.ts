@@ -2,6 +2,7 @@ import {
   Column,
   Entity,
   JoinColumn,
+  ManyToOne,
   OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
@@ -20,9 +21,16 @@ export class Department {
   name: string;
 
   @ApiPropertyDesc(DepartmentDesc)
-  @OneToOne(() => User, user => user.id)
-  @JoinColumn({ name: 'manager_id' })
-  manager: User;
+  @OneToOne(() => User, user => user.id, { nullable: true })
+  @JoinColumn({ name: 'manager' })
+  manager: User['id'];
+
+  @ApiPropertyDesc(DepartmentDesc)
+  @ManyToOne(() => Department, department => department.id, {
+    nullable: true,
+  })
+  @JoinColumn({ name: 'parent' })
+  parent: Department['id'];
 
   @ApiPropertyDesc(DepartmentDesc)
   @Column({ nullable: true, comment: DepartmentDesc.email })

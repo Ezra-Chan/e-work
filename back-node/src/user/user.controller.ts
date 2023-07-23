@@ -61,4 +61,10 @@ export class UserController {
   remove(@Param('id') id: string) {
     return this.userService.remove(+id);
   }
+
+  @ApiOperation({ summary: '禁用用户账号' })
+  @Get('disable/:id')
+  disable(@Param('id') id: string) {
+    return this.userService.disable(+id);
+  }
 }

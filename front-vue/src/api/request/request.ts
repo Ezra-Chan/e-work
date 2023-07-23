@@ -2,6 +2,7 @@ import axios, { AxiosResponse } from 'axios';
 import type { AxiosInstance, AxiosRequestConfig } from 'axios';
 import type {
   RequestConfig,
+  NewResponse,
   RequestInterceptors,
   CancelRequestSource,
 } from './types';
@@ -116,19 +117,27 @@ class Request {
     });
   }
 
-  get<T>(url: string, params?: any, config?: RequestConfig<T>): Promise<T> {
+  get<T = NewResponse<any>>(
+    url: string,
+    params?: any,
+    config?: RequestConfig<T>
+  ): Promise<T> {
     return this.request<T>({ ...(config || {}), url, params, method: 'GET' });
   }
 
-  post<T>(url: string, data?: any, config?: RequestConfig<T>): Promise<T> {
+  post<T = NewResponse<any>>(
+    url: string,
+    data?: any,
+    config?: RequestConfig<T>
+  ): Promise<T> {
     return this.request<T>({ ...(config || {}), url, data, method: 'POST' });
   }
 
-  delete<T>(config: RequestConfig<T>): Promise<T> {
+  delete<T = NewResponse<any>>(config: RequestConfig<T>): Promise<T> {
     return this.request<T>({ ...config, method: 'DELETE' });
   }
 
-  patch<T>(config: RequestConfig<T>): Promise<T> {
+  patch<T = NewResponse<any>>(config: RequestConfig<T>): Promise<T> {
     return this.request<T>({ ...config, method: 'PATCH' });
   }
 

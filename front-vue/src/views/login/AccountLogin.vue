@@ -77,7 +77,6 @@ import * as LoginService from 'api/modules/login';
 import { cancelRequest } from 'api/request';
 import { encrypt } from 'utils/encrypt';
 import { GlobalStore } from '@/store';
-import { NewResponse } from 'api/request';
 const globalStore = GlobalStore();
 
 const router = useRouter();
@@ -125,12 +124,12 @@ const onLogin = async (formRef: FormInstance | undefined) => {
           success,
           data = {},
           message,
-        } = (await LoginService.accountLogin({
+        } = await LoginService.accountLogin({
           ...loginForm,
           password: isRemember
             ? password.replace(sign, '')
             : (encrypt(loginForm.password) as string),
-        })) as NewResponse<any>;
+        });
         if (!success) {
           ElMessage.error(message);
           getCaptcha();

@@ -99,6 +99,8 @@ export class CreateUserDto {
   graduateSchool?: string;
 
   @ApiPropertyDesc(UserDesc, { example: 1, required: false })
+  @IsNumber()
+  @IsOptional()
   leader?: User['id'];
 
   @ApiPropertyDesc(UserDesc, { example: 'xx市xx区xx街道xx号', required: false })

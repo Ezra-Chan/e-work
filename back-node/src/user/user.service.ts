@@ -7,12 +7,17 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
 import { UserDesc } from 'src/utils/entitiesDescription';
 import { decrypt } from 'src/utils/decrypt';
+import { UserMessage } from './constant';
 
 @Injectable()
 export class UserService {
   constructor(
     @InjectRepository(User) private userRepository: Repository<User>
   ) {}
+
+  /**
+   * 注册用户
+   */
   async register(createUserDto: CreateUserDto) {
     const uniqueFields = ['loginName', 'phoneNumber', 'idCard', 'bankCard'];
     for await (const field of uniqueFields) {
@@ -41,7 +46,9 @@ export class UserService {
    * @returns 用户
    */
   async findOneBy(field: string, value: string) {
-    return await this.userRepository.findOneBy({ [field]: value });
+    return await this.userRepository.findOne({
+      where: { [field]: value },
+    });
   }
 
   /**
@@ -55,7 +62,7 @@ export class UserService {
     const user = await this.userRepository.findOneBy({ [field]: value });
     if (user) {
       throw new HttpException(
-        `${UserDesc[field] ?? field}已存在`,
+        `"${UserDesc[field] ?? field}"${UserMessage.ALREADY_EXISTS}}}`,
         HttpStatus.BAD_REQUEST
       );
     }
@@ -77,15 +84,44 @@ export class UserService {
       .getMany();
   }
 
+  /**
+   * 获取指定用户信息
+   * @param id 用户ID
+   * @returns 用户
+   */
   findOne(id: number) {
-    return `This action returns a #${id} user`;
+    const user = this.userRepository.findOneBy({ id });
+    if (!user) {
+      throw new HttpException(UserMessage.NOT_FOUND, HttpStatus.BAD_REQUEST);
+    }
+    return user;
   }
 
   update(id: number, updateUserDto: UpdateUserDto) {
+    console.log(updateUserDto);
+
     return `This action updates a #${id} user`;
   }
 
   remove(id: number) {
     return `This action removes a #${id} user`;
+  }
+
+  async checkEnabled(user: User) {
+    if (!user.enabled) {
+      throw new HttpException(
+        UserMessage.USER_DISABLED,
+        HttpStatus.BAD_REQUEST
+      );
+    }
+  }
+
+  /**
+   * 启用/禁用用户
+   * @param id 用户ID
+   */
+  async disable(id: number) {
+    const user = await this.findOne(id);
+    return await this.userRepository.update(id, { enabled: !user.enabled });
   }
 }

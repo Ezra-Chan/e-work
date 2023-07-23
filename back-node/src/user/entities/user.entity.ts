@@ -3,6 +3,7 @@ import {
   Entity,
   JoinColumn,
   ManyToOne,
+  OneToMany,
   OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
@@ -48,12 +49,12 @@ export class User {
   @ApiPropertyDesc(UserDesc)
   @ManyToOne(() => Role, role => role.id, { nullable: false })
   @JoinColumn({ name: 'role_id' })
-  role: Role['id'];
+  roleId: Role['id'];
 
   @ApiPropertyDesc(UserDesc)
   @ManyToOne(() => Department, department => department.id)
   @JoinColumn({ name: 'department_id' })
-  department: Department['id'];
+  departmentId: Department['id'];
 
   @ApiPropertyDesc(UserDesc)
   @Column({ nullable: true, default: null, comment: UserDesc.avatar })
@@ -110,9 +111,9 @@ export class User {
   graduateSchool: string;
 
   @ApiPropertyDesc(UserDesc)
-  @OneToOne(() => User, user => user.id, { nullable: true })
+  @ManyToOne(() => User, user => user.id, { nullable: true })
   @JoinColumn({ name: 'leader_id' })
-  leader: User['id'];
+  leaderId: User['id'];
 
   @ApiPropertyDesc(UserDesc)
   @Column({ nullable: true, default: null, comment: UserDesc.address })

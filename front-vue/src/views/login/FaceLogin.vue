@@ -30,6 +30,9 @@
 <script setup lang="ts">
 import * as LoginService from 'api/modules/login';
 import { cancelRequest } from 'api/request';
+import { GlobalStore } from '@/store';
+const globalStore = GlobalStore();
+const router = useRouter();
 
 const rootFontSize =
   Number(document.querySelector('html')?.style.fontSize?.slice(0, -2)) || 10;
@@ -63,27 +66,16 @@ const onFaceLogin = async () => {
   // 把流媒体数据画到canvas画布上
   context!.drawImage(video!, 0, 0, videoWidth, videoHeight);
   const base64 = canvas!.toDataURL('image/png')?.split('base64,')[1];
-  const res = await LoginService.faceLogin(base64);
-  console.log(res);
-  switch (res) {
-    case 0:
-      ElMessage.error('识别失败！');
-      break;
-    case -1:
-      ElMessage.warning('请勿使用照片进行识别！');
-      break;
-    case -2:
-      ElMessage.warning('匹配度不高，请正对摄像头再识别一次！');
-      break;
-    case -3:
-      ElMessage.warning('人脸信息未注册，请使用账号登录！');
-      break;
-    case 1:
-      ElMessage.success('登录成功！');
-      break;
-    default:
-      break;
+  const { message, success, data = {} } = await LoginService.faceLogin(base64);
+  if (!success) {
+    ElMessage.error(message);
+    return;
   }
+  ElMessage.success('登录成功！欢迎');
+  const { token, info } = data;
+  globalStore.setGlobalState('userInfo', info);
+  globalStore.setGlobalState('token', token);
+  router.push('/');
 };
 
 watchEffect(() => {

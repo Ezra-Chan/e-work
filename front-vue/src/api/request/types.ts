@@ -17,3 +17,10 @@ export interface RequestConfig<T = AxiosResponse> extends AxiosRequestConfig {
 export interface CancelRequestSource {
   [index: string]: () => void;
 }
+
+export interface NewResponse<T> {
+  code: number;
+  message: string;
+  success: boolean;
+  data: T;
+}

@@ -4,14 +4,7 @@
  */
 import { AxiosResponse } from 'axios';
 import Request from './request';
-import type { RequestConfig } from './types';
-
-export interface NewResponse<T> {
-  code: number;
-  message: string;
-  success: boolean;
-  data: T;
-}
+import type { RequestConfig, NewResponse } from './types';
 
 // 重写返回类型
 interface NewRequestConfig<T, R> extends RequestConfig<NewResponse<R>> {

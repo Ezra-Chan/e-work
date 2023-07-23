@@ -1,5 +1,12 @@
-import { IsNotEmpty, IsNumber, Length, Validate } from 'class-validator';
+import {
+  IsNotEmpty,
+  IsNumber,
+  IsOptional,
+  Length,
+  Validate,
+} from 'class-validator';
 import { User } from 'src/user/entities/user.entity';
+import { Department } from 'src/department/entities/department.entity';
 import { ApiPropertyDesc } from 'src/utils/customDecorator';
 import { DepartmentDesc } from 'src/utils/entitiesDescription';
 
@@ -10,9 +17,14 @@ export class CreateDepartmentDto {
   name: string;
 
   @ApiPropertyDesc(DepartmentDesc, { example: 1 })
-  @IsNotEmpty({ message: '部门负责人不能为空' })
+  @IsOptional()
   @IsNumber()
-  manager: User['id'];
+  manager?: User['id'];
+
+  @ApiPropertyDesc(DepartmentDesc, { example: 1, required: false })
+  @IsNumber()
+  @IsOptional()
+  parent?: Department['id'];
 
   @ApiPropertyDesc(DepartmentDesc, { example: 'xx@xx.com', required: false })
   @Validate((value: string) => {
