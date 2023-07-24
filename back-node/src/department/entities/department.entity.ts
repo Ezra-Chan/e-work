@@ -20,17 +20,17 @@ export class Department {
   @Column({ length: 50, unique: true, comment: DepartmentDesc.name })
   name: string;
 
-  @ApiPropertyDesc(DepartmentDesc)
+  @ApiPropertyDesc(DepartmentDesc, { type: () => User, example: 1 })
   @OneToOne(() => User, user => user.id, { nullable: true })
-  @JoinColumn({ name: 'manager' })
-  manager: User['id'];
+  @JoinColumn({ name: 'manager_id' })
+  manager: User;
 
-  @ApiPropertyDesc(DepartmentDesc)
+  @ApiPropertyDesc(DepartmentDesc, { type: () => Department, example: 1 })
   @ManyToOne(() => Department, department => department.id, {
     nullable: true,
   })
   @JoinColumn({ name: 'parent_id' })
-  parentId: Department['id'];
+  parent: Department;
 
   @ApiPropertyDesc(DepartmentDesc)
   @Column({ nullable: true, comment: DepartmentDesc.email })

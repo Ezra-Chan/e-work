@@ -55,8 +55,7 @@ export class AuthService {
           HttpStatus.BAD_REQUEST
         );
       }
-      const { id, realName, roleId, loginName, avatar } = user;
-      const info = { id, realName, roleId, loginName, avatar };
+      const info = this.userService.transformUserInfo(user);
       const token = this.jwtService.sign(info);
       return { info, token };
     }
@@ -64,21 +63,5 @@ export class AuthService {
       Message.ERROR_LOGIN_NAME_OR_PASSWORD,
       HttpStatus.BAD_REQUEST
     );
-  }
-
-  findAll() {
-    return `This action returns all auth`;
-  }
-
-  findOne(id: number) {
-    return `This action returns a #${id} auth`;
-  }
-
-  update(id: number) {
-    return `This action updates a #${id} auth`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} auth`;
   }
 }

@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { ClassSerializerInterceptor, Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
@@ -8,6 +8,7 @@ import { RoleModule } from './role/role.module';
 import { DepartmentModule } from './department/department.module';
 import { UploadModule } from './upload/upload.module';
 import { FaceModule } from './face/face.module';
+import { APP_INTERCEPTOR } from '@nestjs/core';
 
 @Module({
   imports: [
@@ -32,6 +33,12 @@ import { FaceModule } from './face/face.module';
     FaceModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: ClassSerializerInterceptor,
+    },
+    AppService,
+  ],
 })
 export class AppModule {}

@@ -9,6 +9,15 @@ import { UserDesc } from 'src/utils/entitiesDescription';
 import { decrypt } from 'src/utils/decrypt';
 import { UserMessage } from './constant';
 
+const relations = {
+  role: true,
+  department: true,
+  leader: {
+    role: true,
+    department: true,
+  },
+};
+
 @Injectable()
 export class UserService {
   constructor(
@@ -45,9 +54,10 @@ export class UserService {
    * @param value 字段值
    * @returns 用户
    */
-  async findOneBy(field: string, value: string) {
+  async findOneBy(field: string, value: any) {
     return await this.userRepository.findOne({
       where: { [field]: value },
+      relations,
     });
   }
 
@@ -57,7 +67,7 @@ export class UserService {
    * @param value 字段值
    * @returns
    */
-  async checkUnique(field: string, value: string) {
+  async checkUnique(field: string, value: any) {
     if (!value) return;
     const user = await this.userRepository.findOneBy({ [field]: value });
     if (user) {
@@ -90,7 +100,10 @@ export class UserService {
    * @returns 用户
    */
   findOne(id: number) {
-    const user = this.userRepository.findOneBy({ id });
+    const user = this.userRepository.findOne({
+      where: { id },
+      relations,
+    });
     if (!user) {
       throw new HttpException(UserMessage.NOT_FOUND, HttpStatus.BAD_REQUEST);
     }
@@ -123,5 +136,37 @@ export class UserService {
   async disable(id: number) {
     const user = await this.findOne(id);
     return await this.userRepository.update(id, { enabled: !user.enabled });
+  }
+
+  /**
+   * 格式化用户信息
+   * @param user 用户
+   * @returns 用户信息
+   */
+  transformUserInfo(user: User) {
+    return {
+      id: +user.id,
+      realName: user.realName,
+      role: user.role,
+      loginName: user.loginName,
+      avatar: user.avatar,
+    };
+  }
+
+  /**
+   * 根据某外键字段查找用户
+   * @param field 外键字段名 'department' | 'role' | 'leader'
+   * @param value 字段值
+   * @returns 用户列表
+   */
+  async findBy(field: 'department' | 'role' | 'leader', value: any) {
+    return await this.userRepository.find({
+      where: { [field]: { id: value } },
+      select: ['id', 'realName', 'avatar', 'loginName', 'role', 'department'],
+      relations: {
+        role: true,
+        department: true,
+      },
+    });
   }
 }

@@ -44,15 +44,15 @@ export class User {
   @Column({ comment: UserDesc.password })
   password: string;
 
-  @ApiPropertyDesc(UserDesc)
+  @ApiPropertyDesc(UserDesc, { type: () => Role, example: 1 })
   @ManyToOne(() => Role, role => role.id, { nullable: false })
   @JoinColumn({ name: 'role_id' })
-  roleId: Role['id'];
+  role: Role;
 
-  @ApiPropertyDesc(UserDesc)
+  @ApiPropertyDesc(UserDesc, { type: () => Department, example: 1 })
   @ManyToOne(() => Department, department => department.id)
   @JoinColumn({ name: 'department_id' })
-  departmentId: Department['id'];
+  department: Department;
 
   @ApiPropertyDesc(UserDesc)
   @Column({ nullable: true, default: null, comment: UserDesc.avatar })
@@ -108,10 +108,10 @@ export class User {
   })
   graduateSchool: string;
 
-  @ApiPropertyDesc(UserDesc)
+  @ApiPropertyDesc(UserDesc, { type: () => User, example: 1 })
   @ManyToOne(() => User, user => user.id, { nullable: true })
   @JoinColumn({ name: 'leader_id' })
-  leaderId: User['id'];
+  leader: User;
 
   @ApiPropertyDesc(UserDesc)
   @Column({ nullable: true, default: null, comment: UserDesc.address })

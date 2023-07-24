@@ -19,12 +19,12 @@ export class CreateDepartmentDto {
   @ApiPropertyDesc(DepartmentDesc, { example: 1 })
   @IsOptional()
   @IsNumber()
-  manager?: User['id'];
+  manager?: User;
 
   @ApiPropertyDesc(DepartmentDesc, { example: 1, required: false })
   @IsNumber()
   @IsOptional()
-  parentId?: Department['id'];
+  parent?: Department;
 
   @ApiPropertyDesc(DepartmentDesc, { example: 'xx@xx.com', required: false })
   @Validate((value: string) => {

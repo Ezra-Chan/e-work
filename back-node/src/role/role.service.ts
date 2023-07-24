@@ -17,8 +17,7 @@ export class RoleService {
    * @param createRoleDto 角色信息
    */
   async create(createRoleDto: CreateRoleDto) {
-    const { name } = createRoleDto;
-    await this.checkUnique(name);
+    await this.checkUnique(createRoleDto.name);
     return await this.roleRepository.save(createRoleDto);
   }
 

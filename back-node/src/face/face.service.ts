@@ -69,11 +69,9 @@ export class FaceService {
         );
       }
       const { user_id } = user_list[0];
-      const user = await this.userService.findOneBy('id', user_id);
+      const user = await this.userService.findOne(+user_id);
       await this.userService.checkEnabled(user);
-      const { id, realName, roleId, loginName, avatar } = user;
-      const info = { id, realName, roleId, loginName, avatar };
-      return info;
+      return this.userService.transformUserInfo(user);
     } catch (error) {
       if (error instanceof HttpException) throw error;
       throw new Error(error);

@@ -73,4 +73,29 @@ export class DepartmentController {
   remove(@Param('id') id: string) {
     return this.departmentService.remove(+id);
   }
+
+  /**
+   * 查询部门下的所有用户，包含子部门，以树形结构返回
+   * @param id 部门ID
+   * @returns 用户列表
+   */
+  @ApiOperation({ summary: '查询部门下的所有用户，包含子部门及子部门用户' })
+  @Get(':id/users')
+  async findUsers(@Param('id') id: string) {
+    return await this.departmentService.findUsers(+id);
+  }
+
+  @ApiOperation({ summary: '查询部门下的所有用户，平铺展示' })
+  @Get(':id/users/flat')
+  async findUsersFlat(@Param('id') id: string) {
+    return await this.departmentService.findUsers(+id, { flat: true });
+  }
+
+  @ApiOperation({
+    summary: '查询部门下的所有用户，包含子部门，不包含子部门的用户',
+  })
+  @Get(':id/users/lazy')
+  async findUsersLazy(@Param('id') id: string) {
+    return await this.departmentService.findUsers(+id, { lazy: true });
+  }
 }
