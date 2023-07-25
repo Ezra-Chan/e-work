@@ -15,9 +15,9 @@ let cancelListenWidth: (() => void) | undefined;
 const listenWidth = useDebounceFn(() => {
   screenWidth = document.body.clientWidth;
   if (!isCollapse.value && screenWidth < 1200)
-    globalStore.setGlobalState('isCollapse', true);
+    globalStore.setGlobalState({ isCollapse: true });
   if (isCollapse.value && screenWidth > 1200)
-    globalStore.setGlobalState('isCollapse', false);
+    globalStore.setGlobalState({ isCollapse: false });
 }, 100);
 
 onMounted(() => {

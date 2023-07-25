@@ -147,8 +147,7 @@ const onLogin = async (formRef: FormInstance | undefined) => {
           loginFormCache = null;
         }
         const { token, info } = data;
-        globalStore.setGlobalState('userInfo', info);
-        globalStore.setGlobalState('token', token);
+        globalStore.setGlobalState({ userInfo: info, token });
         router.push('/');
       } catch (error) {
       } finally {

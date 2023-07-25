@@ -2,7 +2,7 @@
  * 参考：https://github.com/ywanzhou/vue3-template/tree/master/src/service
  * 应该源自coderwhy的课程
  */
-import { AxiosResponse } from 'axios';
+import { AxiosHeaders, AxiosRequestConfig, AxiosResponse } from 'axios';
 import Request from './request';
 import type { RequestConfig, NewResponse } from './types';
 
@@ -16,7 +16,15 @@ const request = new Request({
   timeout: 1000 * 60 * 1,
   interceptors: {
     // 请求拦截器
-    requestInterceptors: config => config,
+    requestInterceptors: (config: AxiosRequestConfig) => {
+      let { headers = {} } = config;
+      const { token } = JSON.parse(localStorage.getItem('GlobalState') || '{}');
+      config.headers = {
+        ...headers,
+        Authorization: token ? `Bearer ${token}` : undefined,
+      } as unknown as AxiosHeaders;
+      return config;
+    },
     // 响应拦截器
     responseInterceptors: (result: AxiosResponse) => {
       return result;

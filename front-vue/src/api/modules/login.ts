@@ -10,3 +10,5 @@ export const faceLogin = (base: string) =>
   request.post('/auth/faceLogin', { base });
 
 export const logoutApi = () => request.post('/auth/logout');
+
+export const getUserInfo = () => request.get('/user/1');

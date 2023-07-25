@@ -4,7 +4,7 @@ import { JwtService } from '@nestjs/jwt';
 import { UserService } from 'src/user/user.service';
 import { FaceService } from 'src/face/face.service';
 import { decrypt } from 'src/utils/decrypt';
-import { Message } from 'src/utils/messages';
+import { AuthMessage } from './constant';
 
 @Injectable()
 export class AuthService {
@@ -18,7 +18,7 @@ export class AuthService {
     const { loginName, password, code = '' } = body;
     if (code.toLowerCase() !== session.code?.toLowerCase()) {
       throw new HttpException(
-        Message.LOGIN_CAPTCHA_ERROR,
+        AuthMessage.LOGIN_CAPTCHA_ERROR,
         HttpStatus.BAD_REQUEST
       );
     }
@@ -51,7 +51,7 @@ export class AuthService {
       const decryptedPassword = decrypt(password);
       if (user.password !== md5(decryptedPassword)) {
         throw new HttpException(
-          Message.ERROR_LOGIN_NAME_OR_PASSWORD,
+          AuthMessage.ERROR_LOGIN_NAME_OR_PASSWORD,
           HttpStatus.BAD_REQUEST
         );
       }
@@ -60,8 +60,15 @@ export class AuthService {
       return { info, token };
     }
     throw new HttpException(
-      Message.ERROR_LOGIN_NAME_OR_PASSWORD,
+      AuthMessage.ERROR_LOGIN_NAME_OR_PASSWORD,
       HttpStatus.BAD_REQUEST
     );
+  }
+
+  logout(req: any) {
+    req.session.destroy();
+    // res.clearCookie('token');
+    // res.send({ message: '退出登录成功' });
+    return;
   }
 }

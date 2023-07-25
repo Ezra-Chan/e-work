@@ -73,8 +73,7 @@ const onFaceLogin = async () => {
   }
   ElMessage.success('登录成功！欢迎');
   const { token, info } = data;
-  globalStore.setGlobalState('userInfo', info);
-  globalStore.setGlobalState('token', token);
+  globalStore.setGlobalState({ userInfo: info, token });
   router.push('/');
 };
 

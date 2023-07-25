@@ -1,14 +1,11 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { face as AipFaceClient } from 'baidu-aip-sdk';
-import {
-  Message,
-  FACE_ERROR_CODE,
-  getFaceErrorMessage,
-} from 'src/utils/messages';
+import { FACE_ERROR_CODE, getFaceErrorMessage } from 'src/utils/messages';
+import { FaceMessage } from './constant';
 import { UserService } from 'src/user/user.service';
 
 export const defaultFaceOptions = {
-  liveness_control: 'HIGH', // 活体控制 检测结果中不符合要求的人脸会被过滤  NORMAL: 一般的活体要求(平衡的攻击拒绝率, 通过率)
+  liveness_control: 'NORMAL', // 活体控制 检测结果中不符合要求的人脸会被过滤  NORMAL: 一般的活体要求(平衡的攻击拒绝率, 通过率)
   max_user_num: '1', // 查找后返回的用户数量。返回相似度最高的几个用户，默认为1，最多返回50个。
   match_threshold: '80', // 用户查找的匹配得分阈值。默认为80，范围[0~100]。
 };
@@ -47,7 +44,7 @@ export class FaceService {
         const list = await this.getGroupList();
         if (!list?.length) {
           throw new HttpException(
-            Message.FACE_GROUP_IS_EMPTY,
+            FaceMessage.FACE_GROUP_IS_EMPTY,
             HttpStatus.BAD_REQUEST
           );
         }
@@ -96,7 +93,7 @@ export class FaceService {
 
   /**
    * 校验接口调用是否成功
-   * @returns {boolean} 是否成功
+   * @returns 是否成功
    */
   isSuccess(res: IFaceResponse<any>) {
     if (res) {
@@ -109,7 +106,7 @@ export class FaceService {
         );
     } else {
       throw new HttpException(
-        Message.FACE_API_ERROR,
+        FaceMessage.FACE_API_ERROR,
         HttpStatus.INTERNAL_SERVER_ERROR
       );
     }

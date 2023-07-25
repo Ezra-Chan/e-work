@@ -15,7 +15,7 @@
       </div>
       <template #dropdown>
         <el-dropdown-menu>
-          <el-dropdown-item>个人中心</el-dropdown-item>
+          <el-dropdown-item @click="personalCenter">个人中心</el-dropdown-item>
           <el-dropdown-item @click="logout">退出登录</el-dropdown-item>
         </el-dropdown-menu>
       </template>
@@ -26,7 +26,7 @@
 <script setup lang="ts">
 import user from '@/assets/images/public/user.png';
 import { GlobalStore } from '@/store';
-import { logoutApi } from '@/api/modules/login';
+import { logoutApi, getUserInfo } from '@/api/modules/login';
 
 const router = useRouter();
 const globalStore = GlobalStore();
@@ -34,8 +34,14 @@ const userInfo = computed(() => globalStore.userInfo);
 
 const logout = async () => {
   await logoutApi();
+  globalStore.setGlobalState({ userInfo: undefined, token: undefined });
   router.push('/login');
   ElMessage.success('退出成功！');
+};
+
+const personalCenter = async () => {
+  const { data } = await getUserInfo();
+  console.log('data', data);
 };
 </script>
 

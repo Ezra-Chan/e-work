@@ -18,6 +18,8 @@ const relations = {
   },
 };
 
+const uniqueFields = ['loginName', 'phoneNumber', 'idCard', 'bankCard'];
+
 @Injectable()
 export class UserService {
   constructor(
@@ -28,7 +30,6 @@ export class UserService {
    * 注册用户
    */
   async register(createUserDto: CreateUserDto) {
-    const uniqueFields = ['loginName', 'phoneNumber', 'idCard', 'bankCard'];
     for await (const field of uniqueFields) {
       await this.checkUnique(field, createUserDto[field]);
     }
@@ -110,16 +111,42 @@ export class UserService {
     return user;
   }
 
-  update(id: number, updateUserDto: UpdateUserDto) {
-    console.log(updateUserDto);
-
-    return `This action updates a #${id} user`;
+  /**
+   * 更新指定用户信息
+   * @param id 用户ID
+   * @param updateUserDto 用户信息
+   * @returns 用户
+   */
+  async update(id: number, updateUserDto: UpdateUserDto) {
+    const user = await this.findOne(id);
+    for await (const field of uniqueFields) {
+      if (updateUserDto[field] && updateUserDto[field] !== user[field]) {
+        await this.checkUnique(field, updateUserDto[field]);
+      }
+    }
+    if (updateUserDto.password) {
+      const decryptedPassword = decrypt(updateUserDto.password);
+      updateUserDto.password = md5(decryptedPassword);
+    }
+    const info = await this.userRepository.save({ ...user, ...updateUserDto });
+    return this.transformUserInfo(info);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} user`;
+  /**
+   * 删除指定用户
+   * @param id 用户ID
+   */
+  async remove(id: number) {
+    const { affected } = await this.userRepository.delete(id);
+    if (!affected) {
+      throw new HttpException(UserMessage.NOT_FOUND, HttpStatus.BAD_REQUEST);
+    }
   }
 
+  /**
+   * 检查用户是否被禁用
+   * @param user 用户
+   */
   async checkEnabled(user: User) {
     if (!user.enabled) {
       throw new HttpException(

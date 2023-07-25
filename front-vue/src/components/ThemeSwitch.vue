@@ -23,7 +23,7 @@ let theme = $ref<typeof isDark>(isDark);
 const changeTheme = (e: boolean) => {
   toggleDark();
   theme = e;
-  globalStore.setGlobalState('isDark', e);
+  globalStore.setGlobalState({ isDark: e });
 };
 </script>
 

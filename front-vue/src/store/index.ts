@@ -22,8 +22,8 @@ export const GlobalStore = defineStore({
   }),
   getters: {},
   actions: {
-    setGlobalState(...args: ObjToKeyValArray<GlobalState>) {
-      this.$patch({ [args[0]]: args[1] });
+    setGlobalState(state: Partial<GlobalState>) {
+      this.$patch(state);
     },
   },
   persist: piniaPersistConfig('GlobalState'),

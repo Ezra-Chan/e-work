@@ -5,11 +5,14 @@ import { CreateRoleDto } from './dto/create-role.dto';
 import { UpdateRoleDto } from './dto/update-role.dto';
 import { Role } from './entities/role.entity';
 import { RoleMessage } from './constant';
+import { User } from 'src/user/entities/user.entity';
+import { UserService } from 'src/user/user.service';
 
 @Injectable()
 export class RoleService {
   constructor(
-    @InjectRepository(Role) private roleRepository: Repository<Role>
+    @InjectRepository(Role) private roleRepository: Repository<Role>,
+    private readonly userService: UserService
   ) {}
 
   /**
@@ -80,5 +83,15 @@ export class RoleService {
         HttpStatus.BAD_REQUEST
       );
     }
+  }
+
+  /**
+   * 查询角色下的所有用户
+   * @param id 角色ID
+   * @returns 用户列表
+   */
+  async findUsers(id: number) {
+    const users = await this.userService.findBy('role', id);
+    return users;
   }
 }

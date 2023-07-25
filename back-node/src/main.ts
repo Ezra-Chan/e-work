@@ -4,10 +4,7 @@ import * as session from 'express-session';
 import * as bodyParser from 'body-parser';
 import { NestFactory } from '@nestjs/core';
 import { ValidationPipe, Logger } from '@nestjs/common';
-import {
-  NestExpressApplication,
-  NestExpressBodyParserOptions,
-} from '@nestjs/platform-express';
+import { NestExpressApplication } from '@nestjs/platform-express';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { HttpFilter } from 'src/common/filter';
 import { TransformInterceptor } from 'src/common/response';
@@ -33,11 +30,11 @@ async function bootstrap() {
   app.use(
     session({
       secret: 'ework',
-      name: 'sid',
+      name: 'ework.sid',
       rolling: true,
       resave: false,
       saveUninitialized: false,
-      cookie: { maxAge: 1000 * 60 * 60 * 12 },
+      cookie: { maxAge: 1000 * 60 * 60 * 1 },
     })
   );
 

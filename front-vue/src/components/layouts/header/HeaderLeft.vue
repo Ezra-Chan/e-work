@@ -2,7 +2,7 @@
   <div id="headerLeft">
     <el-icon
       :size="IconSize"
-      @click="() => globalStore.setGlobalState('isCollapse', !isCollapse)"
+      @click="() => globalStore.setGlobalState({ isCollapse: !isCollapse })"
       :title="isCollapse ? '展开' : '收起'"
       class="text-light cursor-pointer"
     >
