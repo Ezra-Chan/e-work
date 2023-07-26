@@ -70,6 +70,12 @@ export class UserService {
    */
   async checkUnique(field: string, value: any) {
     if (!value) return;
+    if (!uniqueFields.includes(field)) {
+      throw new HttpException(
+        UserMessage.INVALID_FIELD,
+        HttpStatus.BAD_REQUEST
+      );
+    }
     const user = await this.userRepository.findOneBy({ [field]: value });
     if (user) {
       throw new HttpException(
@@ -77,6 +83,7 @@ export class UserService {
         HttpStatus.BAD_REQUEST
       );
     }
+    return true;
   }
 
   /**

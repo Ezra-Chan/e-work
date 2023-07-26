@@ -31,4 +31,14 @@ const router = createRouter({
   history: createWebHistory(),
   routes,
 });
+
+router.beforeEach(to => {
+  if (to.meta?.requireAuth) {
+    const { token } = JSON.parse(localStorage.getItem('GlobalState') || '{}');
+    if (!token) {
+      return '/login';
+    }
+  }
+});
+
 export default router;

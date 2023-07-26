@@ -3,4 +3,5 @@ export enum UserMessage {
   ALREADY_EXISTS = '已存在',
   USER_DISABLED = '账号已禁用',
   ERROR_LOGIN_NAME_OR_PASSWORD = '用户名或密码错误',
+  INVALID_FIELD = '无效字段',
 }

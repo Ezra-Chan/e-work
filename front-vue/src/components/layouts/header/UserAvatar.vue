@@ -39,10 +39,7 @@ const logout = async () => {
   ElMessage.success('退出成功！');
 };
 
-const personalCenter = async () => {
-  const { data } = await getUserInfo();
-  console.log('data', data);
-};
+const personalCenter = async () => {};
 </script>
 
 <style lang="less" scoped>

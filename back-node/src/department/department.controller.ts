@@ -24,7 +24,13 @@ export class DepartmentController {
     return this.departmentService.create(createDepartmentDto);
   }
 
-  @ApiOperation({ summary: '获取所有部门' })
+  @ApiOperation({ summary: '获取所有部门，树形展示' })
+  @Get('tree')
+  findAllTree() {
+    return this.departmentService.findAllTree();
+  }
+
+  @ApiOperation({ summary: '获取所有部门，平铺展示' })
   @Get()
   findAll() {
     return this.departmentService.findAll();

@@ -65,10 +65,9 @@ export class AuthService {
     );
   }
 
-  logout(req: any) {
+  logout(req: any, res: any) {
     req.session.destroy();
-    // res.clearCookie('token');
-    // res.send({ message: '退出登录成功' });
-    return;
+    res.clearCookie('token');
+    return true;
   }
 }

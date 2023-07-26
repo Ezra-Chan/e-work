@@ -1,4 +1,4 @@
-import { Repository } from 'typeorm';
+import { IsNull, Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { CreateDepartmentDto } from './dto/create-department.dto';
@@ -32,6 +32,31 @@ export class DepartmentService {
    */
   async findAll() {
     return await this.departmentRepository.find({ order: { id: 'ASC' } });
+  }
+
+  /**
+   * 获取所有部门，树形展示
+   * @returns 部门列表
+   */
+  async findAllTree() {
+    // const departments = (await this.departmentRepository.find({
+    //   where: { parent: IsNull() },
+    //   order: { id: 'ASC' },
+    //   relations: ['manager'],
+    // })) as DepartmentTree[];
+    const departments = (await this.departmentRepository
+      .createQueryBuilder('department')
+      .where('department.parent is null')
+      .orderBy('department.id', 'ASC')
+      .getMany()) as DepartmentTree[];
+    console.log(departments);
+
+    for (let i = 0; i < departments.length; i++) {
+      const dept = departments[i];
+      // 递归查询子部门
+      departments[i].children = await this.findChildren(+dept.id, dept);
+    }
+    return departments;
   }
 
   /**

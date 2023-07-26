@@ -7,6 +7,7 @@ import {
   UseInterceptors,
   UploadedFile,
   UploadedFiles,
+  Body,
 } from '@nestjs/common';
 import { FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
@@ -20,16 +21,16 @@ export class UploadController {
   @ApiOperation({ summary: '上传单个文件' })
   @Post('upload')
   @UseInterceptors(FileInterceptor('file'))
-  uploads(@UploadedFile() file: any) {
-    console.log(file);
+  uploads(@Body() body: any, @UploadedFile() file: any) {
+    console.log(body, file);
     return this.uploadService.upload(file);
   }
 
   @ApiOperation({ summary: '上传多个文件' })
   @Post('uploads')
   @UseInterceptors(FilesInterceptor('file'))
-  upload(@UploadedFiles() file: any) {
-    console.log(file);
+  upload(@Body() body: any, @UploadedFiles() file: any) {
+    console.log(body, file);
     return this.uploadService.uploads(file);
   }
 

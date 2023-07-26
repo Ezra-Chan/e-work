@@ -1,4 +1,5 @@
 import * as svgCaptcha from 'svg-captcha';
+import type { Response, Request } from 'express';
 import { Controller, Get, Post, Body, Req, Res, Session } from '@nestjs/common';
 import { ApiBody, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { AuthService } from './auth.service';
@@ -27,20 +28,27 @@ export class AuthController {
 
   @ApiOperation({ summary: '退出登录' })
   @Post('logout')
-  logout(@Req() req: any) {
-    return this.authService.logout(req);
+  logout(@Req() req: Request, @Res({ passthrough: true }) res: Response) {
+    return this.authService.logout(req, res);
   }
 
   @ApiOperation({ summary: '获取验证码' })
   @Public()
   @Get('captcha')
-  getCaptcha(@Req() req: any, @Res() res: any, @Session() session: any) {
+  getCaptcha(
+    @Req() req: Request,
+    @Res() res: Response,
+    @Session() session: any
+  ) {
     const captcha = svgCaptcha.create({
       size: 4,
       noise: 2,
       color: true,
       ignoreChars: '0o1i',
     });
+    if (req.rawHeaders.join().includes('apifox')) {
+      res.set('code', captcha.text);
+    }
     session.code = captcha.text;
     res.type('image/svg+xml');
     res.send(captcha.data);

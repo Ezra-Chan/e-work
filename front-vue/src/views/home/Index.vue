@@ -13,9 +13,19 @@
 
 <script setup lang="ts">
 import { GlobalStore } from '@/store';
+const router = useRouter();
 const globalStore = GlobalStore();
 const isCollapse = computed(() => globalStore.isCollapse);
 const asideWidth = computed(() => (isCollapse.value ? '6.4rem' : '20rem'));
+
+router.beforeEach(to => {
+  console.log('to', to);
+});
+
+onBeforeRouteUpdate((to, from) => {
+  console.log('to', to);
+  console.log('from', from);
+});
 
 onMounted(() => {
   // globalStore.setGlobalState('userInfo', {
