@@ -1,4 +1,4 @@
-import { IsNull, Repository } from 'typeorm';
+import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { CreateDepartmentDto } from './dto/create-department.dto';
@@ -8,8 +8,17 @@ import { DepartmentMessage } from './constant';
 import { UserService } from 'src/user/user.service';
 import type { DepartmentTree, FindAllUsersOptions } from './department.d';
 
+const managerSelect = [
+  'department',
+  'manager.id',
+  'manager.realName',
+  'manager.avatar',
+  'manager.loginName',
+];
+
 @Injectable()
 export class DepartmentService {
+  query: any;
   constructor(
     @InjectRepository(Department)
     private departmentRepository: Repository<Department>,
@@ -31,7 +40,12 @@ export class DepartmentService {
    * @returns 部门列表
    */
   async findAll() {
-    return await this.departmentRepository.find({ order: { id: 'ASC' } });
+    return await this.departmentRepository
+      .createQueryBuilder('department')
+      .leftJoinAndSelect('department.manager', 'manager')
+      .select(managerSelect)
+      .orderBy('department.id', 'ASC')
+      .getMany();
   }
 
   /**
@@ -39,24 +53,38 @@ export class DepartmentService {
    * @returns 部门列表
    */
   async findAllTree() {
-    // const departments = (await this.departmentRepository.find({
-    //   where: { parent: IsNull() },
-    //   order: { id: 'ASC' },
-    //   relations: ['manager'],
-    // })) as DepartmentTree[];
     const departments = (await this.departmentRepository
       .createQueryBuilder('department')
-      .where('department.parent is null')
+      .leftJoinAndSelect('department.manager', 'manager')
+      .select(managerSelect)
       .orderBy('department.id', 'ASC')
+      .where('department.parent is null')
       .getMany()) as DepartmentTree[];
-    console.log(departments);
-
     for (let i = 0; i < departments.length; i++) {
       const dept = departments[i];
       // 递归查询子部门
-      departments[i].children = await this.findChildren(+dept.id, dept);
+      departments[i] = await this.findAllChildren(+dept.id, dept);
     }
     return departments;
+  }
+
+  async findAllChildren(
+    id: number,
+    department?: Department
+  ): Promise<DepartmentTree> {
+    if (!department) {
+      department = await this.findOne(id);
+    }
+    const children = await this.findChildren(id, department);
+    for (let i = 0; i < children.length; i++) {
+      const dept = children[i];
+      // 递归查询子部门
+      children[i] = await this.findAllChildren(+dept.id, dept);
+    }
+    return {
+      ...department,
+      children,
+    };
   }
 
   /**
@@ -65,10 +93,13 @@ export class DepartmentService {
    * @returns 部门
    */
   async findOne(id: number) {
-    const department = await this.departmentRepository.findOne({
-      where: { id },
-      relations: ['manager'],
-    });
+    const department = await this.departmentRepository
+      .createQueryBuilder('department')
+      .leftJoinAndSelect('department.manager', 'manager')
+      .select(managerSelect)
+      .orderBy('department.id', 'ASC')
+      .where('department.id = :id', { id })
+      .getOne();
     if (!department) {
       throw new HttpException(
         DepartmentMessage.NOT_FOUND,
@@ -141,11 +172,13 @@ export class DepartmentService {
     if (!department) {
       department = await this.findOne(id);
     }
-    return await this.departmentRepository.find({
-      where: { parent: department },
-      order: { id: 'ASC' },
-      relations: ['manager'],
-    });
+    return await this.departmentRepository
+      .createQueryBuilder('department')
+      .leftJoinAndSelect('department.manager', 'manager')
+      .select(managerSelect)
+      .orderBy('department.id', 'ASC')
+      .where('department.parent = :id', { id })
+      .getMany();
   }
 
   /**

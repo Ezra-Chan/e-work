@@ -196,6 +196,7 @@ export class UserService {
   async findBy(field: 'department' | 'role' | 'leader', value: any) {
     return await this.userRepository.find({
       where: { [field]: { id: value } },
+      order: { id: 'ASC' },
       select: ['id', 'realName', 'avatar', 'loginName', 'role', 'department'],
       relations: {
         role: true,

@@ -91,6 +91,7 @@ export class RoleService {
    * @returns 用户列表
    */
   async findUsers(id: number) {
+    await this.findOne(id);
     const users = await this.userService.findBy('role', id);
     return users;
   }

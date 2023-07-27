@@ -2,8 +2,8 @@ import { User } from 'src/user/entities/user.entity';
 import { Department } from './entities/department.entity';
 
 export type DepartmentTree = Department & {
-  users: User[];
-  children: DepartmentTree[] | Department[];
+  users?: User[];
+  children?: DepartmentTree[] | Department[];
 };
 
 export type FindAllUsersOptions = {
