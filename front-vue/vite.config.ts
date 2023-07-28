@@ -1,6 +1,6 @@
 import { defineConfig, loadEnv } from 'vite';
 import type { ConfigEnv } from 'vite';
-import ReactivityTransform from '@vue-macros/reactivity-transform/vite';
+import ReactivityTransform from '@vue-macros/reactivity-transform/dist/vite';
 import Vue from '@vitejs/plugin-vue';
 // import VueJsx from '@vitejs/plugin-vue-jsx'
 import viteCompression from 'vite-plugin-compression';
@@ -67,6 +67,7 @@ export default defineConfig(({ mode }: ConfigEnv) => {
         }),
     ],
     server: {
+      host: '0.0.0.0',
       port: env.VITE_PORT,
       open: env.VITE_OPEN === 'true',
       hmr: {
