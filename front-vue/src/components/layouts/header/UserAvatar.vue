@@ -39,7 +39,9 @@ const logout = async () => {
   ElMessage.success('退出成功！');
 };
 
-const personalCenter = async () => {};
+const personalCenter = () => {
+  router.push('/self');
+};
 </script>
 
 <style lang="less" scoped>

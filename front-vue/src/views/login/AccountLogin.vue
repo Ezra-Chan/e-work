@@ -70,7 +70,7 @@
   </el-form>
 </template>
 
-<script setup lang="ts">
+<script setup lang="ts" name="AccountLogin">
 import { User, Lock } from '@element-plus/icons-vue';
 import { FormInstance, FormRules } from 'element-plus';
 import * as LoginService from 'api/modules/login';

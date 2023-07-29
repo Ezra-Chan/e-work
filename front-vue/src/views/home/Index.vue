@@ -11,7 +11,7 @@
   </div>
 </template>
 
-<script setup lang="ts">
+<script setup lang="ts" name="Home">
 import { GlobalStore } from '@/store';
 const router = useRouter();
 const globalStore = GlobalStore();

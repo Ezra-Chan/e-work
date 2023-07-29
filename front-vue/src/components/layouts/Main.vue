@@ -1,5 +1,7 @@
 <template>
-  <el-main> Main </el-main>
+  <el-main>
+    <RouterView />
+  </el-main>
 </template>
 
 <script setup lang="ts" name="main">

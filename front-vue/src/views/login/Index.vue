@@ -56,7 +56,7 @@
   </div>
 </template>
 
-<script setup lang="ts">
+<script setup lang="ts" name="Login">
 import FaceLogin from './FaceLogin.vue';
 import AccountLogin from './AccountLogin.vue';
 

@@ -24,6 +24,18 @@ const routes: Array<RouteRecordRaw> = [
       requireAuth: true,
     },
     component: () => import('@/views/home/Index.vue'),
+    children: [
+      {
+        path: '/self',
+        name: 'Self',
+        meta: {
+          title: '个人中心',
+          keepAlive: true,
+          requireAuth: true,
+        },
+        component: () => import('@/views/self/Index.vue'),
+      },
+    ],
   },
 ];
 

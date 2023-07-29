@@ -46,7 +46,11 @@ declare module '@vue/runtime-core' {
     StationMessage: typeof import('./src/components/layouts/header/StationMessage.vue')['default']
     SubMenu: typeof import('./src/components/layouts/aside/SubMenu.vue')['default']
     SvgIcon: typeof import('./src/components/SvgIcon.vue')['default']
+    TakePhoto: typeof import('./src/components/TakePhoto.vue')['default']
     ThemeSwitch: typeof import('./src/components/ThemeSwitch.vue')['default']
     UserAvatar: typeof import('./src/components/layouts/header/UserAvatar.vue')['default']
+  }
+  export interface ComponentCustomProperties {
+    vLoading: typeof import('element-plus/es')['ElLoadingDirective']
   }
 }
