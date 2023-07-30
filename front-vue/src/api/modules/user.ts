@@ -1,10 +1,12 @@
 import request from '../request';
+import { NewResponse } from '../request/types';
 
 /**
  * 获取用户信息
  * @param id 用户ID
  */
-export const getUserInfo = (id: number) => request.get(`/user/${id}`);
+export const getUserInfo = (id: number): Promise<NewResponse<IUserInfo>> =>
+  request.get(`/user/${id}`);
 
 /**
  * 获取所有用户信息
@@ -44,3 +46,15 @@ export const searchUser = (keyword: any) =>
  */
 export const updateUser = (id: number, data: IUserInfo) =>
   request.patch(`/user/${id}`, data);
+
+/**
+ * 删除用户
+ * @param id 用户ID
+ */
+export const deleteUser = (id: number) => request.delete(`/user/${id}`);
+
+/**
+ * 启用/禁用用户
+ * @param id 用户ID
+ */
+export const disableUser = (id: number) => request.get(`/user/disable/${id}`);

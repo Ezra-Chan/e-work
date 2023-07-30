@@ -1,18 +1,10 @@
 /* GlobalState */
 export interface GlobalState {
   token: string;
-  userInfo: UserInfo | undefined;
+  userInfo: IUserInfo | undefined;
   isCollapse: boolean;
   isDark: boolean;
   breadcrumb: boolean;
   breadcrumbIcon: boolean;
   primary: string;
-}
-
-interface UserInfo {
-  id: number;
-  realName: string;
-  loginName: string;
-  avatar: string;
-  role: number;
 }

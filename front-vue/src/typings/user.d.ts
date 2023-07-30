@@ -30,6 +30,7 @@ declare interface IDepartment {
 }
 
 declare interface IUserInfo {
+  id: number;
   realName: string;
   sex: SEX;
   loginName: string;

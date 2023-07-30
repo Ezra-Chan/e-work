@@ -27,15 +27,7 @@ onBeforeRouteUpdate((to, from) => {
   console.log('from', from);
 });
 
-onMounted(() => {
-  // globalStore.setGlobalState('userInfo', {
-  //   realName: '超级管理员',
-  //   loginName: 'admin',
-  //   id: 1,
-  //   role: 1,
-  //   avatar: 'https://avatars.githubusercontent.com/u/21073039?v=4',
-  // });
-});
+onMounted(() => {});
 </script>
 
 <style lang="less" scoped>

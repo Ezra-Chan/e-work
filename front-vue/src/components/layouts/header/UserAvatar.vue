@@ -4,11 +4,7 @@
       <div
         class="current-user flex items-center border-rd-8 cursor-pointer gap-6 pr-6"
       >
-        <el-avatar
-          :size="40"
-          :src="userInfo?.avatar || user"
-          class="border-rd-8"
-        />
+        <ework-avatar :src="userInfo?.avatar" class="border-rd-8" />
         <el-text class="text-light w-fit !max-w-32 !fs-1.6" truncated>{{
           userInfo?.realName || '未登录'
         }}</el-text>
@@ -24,7 +20,6 @@
 </template>
 
 <script setup lang="ts">
-import user from '@/assets/images/public/user.png';
 import { GlobalStore } from '@/store';
 import { logoutApi, getUserInfo } from '@/api/modules/login';
 

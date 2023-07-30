@@ -133,8 +133,12 @@ class Request {
     return this.request<T>({ ...(config || {}), url, data, method: 'POST' });
   }
 
-  delete<T = NewResponse<any>>(config: RequestConfig<T>): Promise<T> {
-    return this.request<T>({ ...config, method: 'DELETE' });
+  delete<T = NewResponse<any>>(
+    url: string,
+    data?: any,
+    config?: RequestConfig<T>
+  ): Promise<T> {
+    return this.request<T>({ ...(config || {}), url, data, method: 'DELETE' });
   }
 
   patch<T = NewResponse<any>>(

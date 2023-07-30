@@ -40,6 +40,7 @@ declare module '@vue/runtime-core' {
     ElSubMenu: typeof import('element-plus/es')['ElSubMenu']
     ElSwitch: typeof import('element-plus/es')['ElSwitch']
     ElText: typeof import('element-plus/es')['ElText']
+    EworkAvatar: typeof import('./src/components/EworkAvatar.vue')['default']
     Fullscreen: typeof import('./src/components/layouts/header/Fullscreen.vue')['default']
     HeaderLeft: typeof import('./src/components/layouts/header/HeaderLeft.vue')['default']
     HeaderRight: typeof import('./src/components/layouts/header/HeaderRight.vue')['default']
