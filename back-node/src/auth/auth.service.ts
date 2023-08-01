@@ -31,7 +31,7 @@ export class AuthService {
    * @returns 用户信息和token 或者 抛出异常
    */
   async faceLogin(base: string) {
-    const info = await this.faceService.getUserId(base);
+    const info = await this.faceService.getUserInfo(base);
     const token = this.jwtService.sign(info);
     return { info, token };
   }
@@ -55,7 +55,7 @@ export class AuthService {
           HttpStatus.BAD_REQUEST
         );
       }
-      const info = this.userService.transformUserInfo(user);
+      const info = await this.userService.transformUserInfo(user);
       const token = this.jwtService.sign(info);
       return { info, token };
     }

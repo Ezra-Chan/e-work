@@ -1,6 +1,12 @@
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import {
+  HttpException,
+  HttpStatus,
+  Inject,
+  Injectable,
+  forwardRef,
+} from '@nestjs/common';
 import { CreateDepartmentDto } from './dto/create-department.dto';
 import { UpdateDepartmentDto } from './dto/update-department.dto';
 import { Department } from './entities/department.entity';
@@ -10,6 +16,7 @@ import type { DepartmentTree, FindAllUsersOptions } from './department.d';
 
 const managerSelect = [
   'department',
+  'parent',
   'manager.id',
   'manager.realName',
   'manager.avatar',
@@ -18,10 +25,10 @@ const managerSelect = [
 
 @Injectable()
 export class DepartmentService {
-  query: any;
   constructor(
     @InjectRepository(Department)
     private departmentRepository: Repository<Department>,
+    @Inject(forwardRef(() => UserService))
     private readonly userService: UserService
   ) {}
 
@@ -96,6 +103,7 @@ export class DepartmentService {
     const department = await this.departmentRepository
       .createQueryBuilder('department')
       .leftJoinAndSelect('department.manager', 'manager')
+      .leftJoinAndSelect('department.parent', 'parent')
       .select(managerSelect)
       .orderBy('department.id', 'ASC')
       .where('department.id = :id', { id })
@@ -224,5 +232,32 @@ export class DepartmentService {
       users,
       children: flat ? undefined : children,
     };
+  }
+
+  /**
+   * 获取部门路径数组
+   * @param id 部门ID
+   * @returns 部门路径
+   */
+  async getDeptPath(id: number, dept?: Department, path: string[] = []) {
+    if (!dept) {
+      dept = await this.findOne(id);
+    }
+    path.unshift(dept.name);
+    if (dept.parent) {
+      await this.getDeptPath(+dept.parent.id, undefined, path);
+    }
+    return path;
+  }
+
+  /**
+   * 获取部门路径字符串
+   * @param id 部门ID
+   * @returns 部门路径
+   */
+  async getDeptPathString(id: number) {
+    if (!id) return '-';
+    const path = await this.getDeptPath(id);
+    return path.join('/');
   }
 }

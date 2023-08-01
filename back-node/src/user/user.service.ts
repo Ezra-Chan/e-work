@@ -1,13 +1,21 @@
 import { Repository } from 'typeorm';
 import * as md5 from 'md5';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
+import {
+  Injectable,
+  HttpException,
+  HttpStatus,
+  Inject,
+  forwardRef,
+} from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
 import { UserDesc } from 'src/utils/entitiesDescription';
 import { decrypt } from 'src/utils/decrypt';
-import { UserMessage } from './constant';
+import { UserMessage, IUser } from './constant';
+import { DepartmentService } from 'src/department/department.service';
+import type { ISimpleUser } from 'src/utils/types';
 
 const relations = {
   role: true,
@@ -23,7 +31,9 @@ const uniqueFields = ['loginName', 'phoneNumber', 'idCard', 'bankCard'];
 @Injectable()
 export class UserService {
   constructor(
-    @InjectRepository(User) private userRepository: Repository<User>
+    @InjectRepository(User) private userRepository: Repository<User>,
+    @Inject(forwardRef(() => DepartmentService))
+    private readonly departmentService: DepartmentService
   ) {}
 
   /**
@@ -45,8 +55,16 @@ export class UserService {
    * 获取所有用户信息
    * @returns 用户列表
    */
-  findAll() {
-    return this.userRepository.find({ select: ['id', 'realName'] });
+  async findAll() {
+    const users = await this.userRepository.find({
+      select: ['id', 'realName', 'loginName', 'avatar', 'department', 'role'],
+      relations: ['department', 'role'],
+    });
+    for (let index = 0; index < users.length; index++) {
+      const user = users[index];
+      users[index] = (await this.transformUserInfo(user, 'all')) as IUser;
+    }
+    return users;
   }
 
   /**
@@ -55,11 +73,12 @@ export class UserService {
    * @param value 字段值
    * @returns 用户
    */
-  async findOneBy(field: string, value: any) {
-    return await this.userRepository.findOne({
+  async findOneBy(field: string, value: any): Promise<IUser> {
+    const user = await this.userRepository.findOne({
       where: { [field]: value },
       relations,
     });
+    return (await this.transformUserInfo(user, 'all')) as IUser;
   }
 
   /**
@@ -107,15 +126,15 @@ export class UserService {
    * @param id 用户ID
    * @returns 用户
    */
-  findOne(id: number) {
-    const user = this.userRepository.findOne({
+  async findOne(id: number): Promise<IUser> {
+    const user = await this.userRepository.findOne({
       where: { id },
       relations,
     });
     if (!user) {
       throw new HttpException(UserMessage.NOT_FOUND, HttpStatus.BAD_REQUEST);
     }
-    return user;
+    return (await this.transformUserInfo(user, 'all')) as IUser;
   }
 
   /**
@@ -136,7 +155,7 @@ export class UserService {
       updateUserDto.password = md5(decryptedPassword);
     }
     const info = await this.userRepository.save({ ...user, ...updateUserDto });
-    return this.transformUserInfo(info);
+    return await this.transformUserInfo(info);
   }
 
   /**
@@ -177,14 +196,25 @@ export class UserService {
    * @param user 用户
    * @returns 用户信息
    */
-  transformUserInfo(user: User) {
-    return {
-      id: +user.id,
-      realName: user.realName,
-      role: user.role,
-      loginName: user.loginName,
-      avatar: user.avatar,
-    };
+  async transformUserInfo(
+    user: User,
+    type: 'part' | 'all' = 'part'
+  ): Promise<ISimpleUser | IUser> {
+    const deptName = await this.departmentService.getDeptPathString(
+      user.department ? +user.department?.id : undefined
+    );
+    if (type === 'part') {
+      return {
+        id: +user.id,
+        realName: user.realName,
+        role: user.role,
+        loginName: user.loginName,
+        avatar: user.avatar,
+        deptName,
+      };
+    } else {
+      return { ...user, deptName };
+    }
   }
 
   /**

@@ -37,6 +37,7 @@ declare interface IUserInfo {
   password: string;
   role: IRole;
   department: IDepartment;
+  deptName: string;
   avatar?: string;
   email?: string;
   phoneNumber?: string;
