@@ -1,10 +1,13 @@
-import { Role } from 'src/role/entities/role.entity';
+import { SEX } from './constant';
 
 export interface ISimpleUser {
   id: number;
   realName: string;
-  role: Role;
+  roleId: number;
+  roleName: string;
   loginName: string;
   avatar: string;
   deptName: string;
+  deptId: number;
+  sex: SEX;
 }

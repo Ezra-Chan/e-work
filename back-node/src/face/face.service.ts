@@ -3,6 +3,7 @@ import { face as AipFaceClient } from 'baidu-aip-sdk';
 import { FACE_ERROR_CODE, getFaceErrorMessage } from 'src/utils/messages';
 import { FaceMessage } from './constant';
 import { UserService } from 'src/user/user.service';
+import { ISimpleUser } from 'src/utils/types';
 
 export const defaultFaceOptions = {
   liveness_control: 'NORMAL', // 活体控制 检测结果中不符合要求的人脸会被过滤  NORMAL: 一般的活体要求(平衡的攻击拒绝率, 通过率)
@@ -103,15 +104,13 @@ export class FaceService {
    */
   async faceRegister(
     imageUrl: string,
-    groupId: string,
-    userId: string,
+    user: ISimpleUser,
     imageType = 'BASE64'
   ) {
     try {
-      const { realName, deptName, loginName, sex } =
-        await this.userService.findOne(+userId);
+      const { id, realName, deptName, loginName, sex, roleName } = user;
       const user_info = JSON.stringify({
-        id: userId,
+        id,
         realName,
         deptName,
         loginName,
@@ -120,8 +119,8 @@ export class FaceService {
       const faceInfo: IFaceResponse<IFaceRegister> = await this.client.addUser(
         imageUrl,
         imageType,
-        groupId,
-        userId,
+        roleName,
+        id,
         { ...defaultFaceRegisterOptions, user_info }
       );
       this.isSuccess(faceInfo);

@@ -45,3 +45,7 @@ export const RoleDesc = {
   name: '角色名',
   permissions: '权限',
 };
+
+export const FaceDesc = {
+  base: 'base64编码的图片',
+};

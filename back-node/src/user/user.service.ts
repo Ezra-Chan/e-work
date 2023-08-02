@@ -207,10 +207,13 @@ export class UserService {
       return {
         id: +user.id,
         realName: user.realName,
-        role: user.role,
+        roleId: user.role.id,
+        roleName: user.role.name,
         loginName: user.loginName,
         avatar: user.avatar,
         deptName,
+        deptId: +user.department?.id,
+        sex: user.sex,
       };
     } else {
       return { ...user, deptName };
