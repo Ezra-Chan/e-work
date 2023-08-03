@@ -73,12 +73,12 @@ export class UserService {
    * @param value 字段值
    * @returns 用户
    */
-  async findOneBy(field: string, value: any): Promise<IUser> {
+  async findOneBy(field: string, value: any, needPwd: boolean): Promise<IUser> {
     const user = await this.userRepository.findOne({
       where: { [field]: value },
       relations,
     });
-    return (await this.transformUserInfo(user, 'all')) as IUser;
+    return (await this.transformUserInfo(user, 'all', needPwd)) as IUser;
   }
 
   /**
@@ -198,7 +198,8 @@ export class UserService {
    */
   async transformUserInfo(
     user: User,
-    type: 'part' | 'all' = 'part'
+    type: 'part' | 'all' = 'part',
+    needPwd = false
   ): Promise<ISimpleUser | IUser> {
     const deptName = await this.departmentService.getDeptPathString(
       user.department ? +user.department?.id : undefined
@@ -216,7 +217,13 @@ export class UserService {
         sex: user.sex,
       };
     } else {
-      return { ...user, deptName };
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const { password, ...userInfo } = user;
+      return {
+        ...userInfo,
+        deptName,
+        password: needPwd ? user.password : undefined,
+      };
     }
   }
 
@@ -230,7 +237,15 @@ export class UserService {
     return await this.userRepository.find({
       where: { [field]: { id: value } },
       order: { id: 'ASC' },
-      select: ['id', 'realName', 'avatar', 'loginName', 'role', 'department'],
+      select: [
+        'id',
+        'realName',
+        'avatar',
+        'loginName',
+        'role',
+        'department',
+        'sex',
+      ],
       relations: {
         role: true,
         department: true,

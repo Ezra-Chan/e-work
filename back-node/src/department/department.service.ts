@@ -21,6 +21,8 @@ const managerSelect = [
   'manager.realName',
   'manager.avatar',
   'manager.loginName',
+  'parent.id',
+  'parent.name',
 ];
 
 @Injectable()
@@ -50,6 +52,7 @@ export class DepartmentService {
     return await this.departmentRepository
       .createQueryBuilder('department')
       .leftJoinAndSelect('department.manager', 'manager')
+      .leftJoinAndSelect('department.parent', 'parent')
       .select(managerSelect)
       .orderBy('department.id', 'ASC')
       .getMany();
@@ -63,6 +66,7 @@ export class DepartmentService {
     const departments = (await this.departmentRepository
       .createQueryBuilder('department')
       .leftJoinAndSelect('department.manager', 'manager')
+      .leftJoinAndSelect('department.parent', 'parent')
       .select(managerSelect)
       .orderBy('department.id', 'ASC')
       .where('department.parent is null')
@@ -183,6 +187,7 @@ export class DepartmentService {
     return await this.departmentRepository
       .createQueryBuilder('department')
       .leftJoinAndSelect('department.manager', 'manager')
+      .leftJoinAndSelect('department.parent', 'parent')
       .select(managerSelect)
       .orderBy('department.id', 'ASC')
       .where('department.parent = :id', { id })

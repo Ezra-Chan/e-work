@@ -6,7 +6,6 @@ import { AuthService } from './auth.service';
 import { Public } from 'src/auth/decorators/public.decorator';
 
 @ApiTags('验证')
-// @Public()
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
@@ -15,15 +14,15 @@ export class AuthController {
   @ApiBody({ description: '用户名、密码和验证码' })
   @Public()
   @Post('login')
-  login(@Body() body: any, @Session() session: any) {
-    return this.authService.login(body, session);
+  login(@Body() body: any, @Session() session: any, @Req() req: Request) {
+    return this.authService.login(body, session, req);
   }
 
   @ApiOperation({ summary: '人脸登录' })
   @Public()
   @Post('faceLogin')
-  faceLogin(@Body() body: any) {
-    return this.authService.faceLogin(body.base);
+  faceLogin(@Body() body: any, @Req() req: Request) {
+    return this.authService.faceLogin(body.base, req);
   }
 
   @ApiOperation({ summary: '退出登录' })

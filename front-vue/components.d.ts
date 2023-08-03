@@ -39,6 +39,8 @@ declare module '@vue/runtime-core' {
     ElSpace: typeof import('element-plus/es')['ElSpace']
     ElSubMenu: typeof import('element-plus/es')['ElSubMenu']
     ElSwitch: typeof import('element-plus/es')['ElSwitch']
+    ElTabPane: typeof import('element-plus/es')['ElTabPane']
+    ElTabs: typeof import('element-plus/es')['ElTabs']
     ElText: typeof import('element-plus/es')['ElText']
     EworkAvatar: typeof import('./src/components/EworkAvatar.vue')['default']
     Fullscreen: typeof import('./src/components/layouts/header/Fullscreen.vue')['default']

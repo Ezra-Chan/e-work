@@ -2,6 +2,7 @@ import 'dotenv/config';
 import { join } from 'path';
 import * as session from 'express-session';
 import * as bodyParser from 'body-parser';
+import * as requestIp from 'request-ip';
 import { NestFactory } from '@nestjs/core';
 import { ValidationPipe, Logger } from '@nestjs/common';
 import { NestExpressApplication } from '@nestjs/platform-express';
@@ -37,6 +38,8 @@ async function bootstrap() {
       cookie: { maxAge: 1000 * 60 * 60 * 1 },
     })
   );
+  // ip
+  app.use(requestIp.mw());
 
   // swagger
   const config = new DocumentBuilder()
