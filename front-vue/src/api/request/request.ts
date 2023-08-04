@@ -54,7 +54,21 @@ class Request {
     this.instance.interceptors.response.use(
       // 因为我们接口的数据都在res.data下，所以我们直接返回res.data
       (res: AxiosResponse) => res.data,
-      (err: any) => err?.response?.data || err
+      (err: any) => {
+        if (err.response && err.response.status === 401) {
+          if (
+            window.location.pathname !== '/login' &&
+            window.location.pathname !== '/'
+          ) {
+            ElMessage.error('登录已过期，请重新登录！');
+            const returnUrl = encodeURIComponent(
+              window.location.pathname + window.location.search
+            );
+            window.location.href = '/login?returnUrl=' + returnUrl;
+          }
+        }
+        return err?.response?.data || err;
+      }
     );
   }
 
