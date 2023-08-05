@@ -76,8 +76,7 @@ import { FormInstance, FormRules } from 'element-plus';
 import * as LoginService from 'api/modules/login';
 import { cancelRequest } from 'api/request';
 import { encrypt } from 'utils/encrypt';
-import { GlobalStore } from '@/store';
-const globalStore = GlobalStore();
+import { handleLogin } from 'utils/loginFunc';
 
 const router = useRouter();
 const iconFontSize = '3rem';
@@ -135,7 +134,6 @@ const onLogin = async (formRef: FormInstance | undefined) => {
           getCaptcha();
           return;
         }
-        ElMessage.success('登录成功！欢迎');
         if (loginForm.rememberMe) {
           loginFormCache = JSON.stringify({
             loginName: loginForm.loginName,
@@ -146,9 +144,7 @@ const onLogin = async (formRef: FormInstance | undefined) => {
         } else {
           loginFormCache = null;
         }
-        const { token, info } = data;
-        globalStore.setGlobalState({ userInfo: info, token });
-        router.push('/');
+        handleLogin(data, router);
       } catch (error) {
       } finally {
         loading = false;

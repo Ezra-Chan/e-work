@@ -23,8 +23,8 @@
 import TakePhoto from '@/components/TakePhoto.vue';
 import * as LoginService from 'api/modules/login';
 import { cancelRequest } from 'api/request';
-import { GlobalStore } from '@/store';
-const globalStore = GlobalStore();
+import { handleLogin } from 'utils/loginFunc';
+
 const router = useRouter();
 
 const rootFontSize =
@@ -47,11 +47,8 @@ const onFaceLogin = async () => {
       ElMessage.error(message);
       return;
     }
-    ElMessage.success('登录成功！欢迎');
     loading = false;
-    const { token, info } = data;
-    globalStore.setGlobalState({ userInfo: info, token });
-    router.push('/');
+    handleLogin(data, router);
   } catch (error) {
     loading = false;
   }
