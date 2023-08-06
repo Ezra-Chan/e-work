@@ -18,3 +18,12 @@ export enum EDUCATION {
   DOCTOR = '博士',
   OTHER = '其它',
 }
+
+export const EMAIL_SUFFIX = [
+  '@qq.com',
+  '@163.com',
+  '@gmail.com',
+  '@126.com',
+  '@sina.com',
+  '@foxmail.com',
+];
