@@ -21,3 +21,13 @@ export enum SEX {
   MALE = '男',
   FEMALE = '女',
 }
+
+/**
+ * @description: 婚姻状况
+ */
+export enum MARITAL_STATUS {
+  UNMARRIED = '未婚',
+  MARRIED = '已婚',
+  DIVORCED = '离异',
+  WIDOWED = '丧偶',
+}

@@ -24,9 +24,9 @@ declare interface IRole {
 declare interface IDepartment {
   id: number;
   name: string;
-  manager: IUserInfo;
-  parent: IDepartment;
-  children: IDepartment[];
+  manager?: IUserInfo;
+  parent?: IDepartment;
+  children?: IDepartment[];
 }
 
 declare interface IUserInfo {

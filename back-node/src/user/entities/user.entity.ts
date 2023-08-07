@@ -8,7 +8,7 @@ import {
 import { Exclude } from 'class-transformer';
 import { Department } from 'src/department/entities/department.entity';
 import { Role } from 'src/role/entities/role.entity';
-import { EDUCATION, SEX } from 'src/utils/constant';
+import { EDUCATION, SEX, MARITAL_STATUS } from 'src/utils/constant';
 import { ApiPropertyDesc } from 'src/utils/customDecorator';
 import { UserDesc } from 'src/utils/entitiesDescription';
 
@@ -107,6 +107,25 @@ export class User {
     comment: UserDesc.graduateSchool,
   })
   graduateSchool: string;
+
+  @ApiPropertyDesc(UserDesc)
+  @Column({
+    name: 'graduate_time',
+    type: 'timestamp',
+    default: null,
+    nullable: true,
+    comment: UserDesc.graduateTime,
+  })
+  graduateTime: Date;
+
+  @ApiPropertyDesc(UserDesc)
+  @Column({
+    name: 'marital_status',
+    default: null,
+    nullable: true,
+    comment: UserDesc.maritalStatus,
+  })
+  maritalStatus: MARITAL_STATUS;
 
   @ApiPropertyDesc(UserDesc, { type: () => User, example: 1 })
   @ManyToOne(() => User, user => user.id, { nullable: true })

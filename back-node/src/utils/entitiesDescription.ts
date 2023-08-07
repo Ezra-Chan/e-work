@@ -16,6 +16,8 @@ export const UserDesc = {
   bankCard: '银行卡号',
   education: '学历',
   graduateSchool: '毕业院校',
+  graduateTime: '毕业时间',
+  maritalStatus: '婚姻状况',
   leader: '上级领导',
   address: '住址',
   signature: '个性签名',
