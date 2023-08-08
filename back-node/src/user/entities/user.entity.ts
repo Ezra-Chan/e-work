@@ -8,27 +8,25 @@ import {
 import { Exclude } from 'class-transformer';
 import { Department } from 'src/department/entities/department.entity';
 import { Role } from 'src/role/entities/role.entity';
-import { EDUCATION, SEX, MARITAL_STATUS } from 'src/utils/constant';
+import { Nation } from 'src/dictionaryTable/nation/entities/nation.entity';
+import {
+  EDUCATION,
+  SEX,
+  MARITAL_STATUS,
+  EMPLOYEE_TYPE,
+  EMPLOYEE_STATUS,
+  POLITICAL_STATUS,
+} from 'src/utils/constant';
 import { ApiPropertyDesc } from 'src/utils/customDecorator';
 import { UserDesc } from 'src/utils/entitiesDescription';
+import { Position } from 'src/position/entities/position.entity';
 
 @Entity('user')
 export class User {
+  // 个人信息
   @ApiPropertyDesc(UserDesc)
   @PrimaryGeneratedColumn({ type: 'bigint', comment: UserDesc.id })
   id: number;
-
-  @ApiPropertyDesc(UserDesc)
-  @Column({ name: 'real_name', length: 50, comment: UserDesc.realName })
-  realName: string;
-
-  @ApiPropertyDesc(UserDesc)
-  @Column('enum', {
-    enum: SEX,
-    default: SEX['MALE'],
-    comment: UserDesc.sex,
-  })
-  sex: SEX;
 
   @ApiPropertyDesc(UserDesc)
   @Column({
@@ -44,15 +42,17 @@ export class User {
   @Column({ comment: UserDesc.password })
   password: string;
 
-  @ApiPropertyDesc(UserDesc, { type: () => Role, example: 1 })
-  @ManyToOne(() => Role, role => role.id, { nullable: false })
-  @JoinColumn({ name: 'role_id' })
-  role: Role;
+  @ApiPropertyDesc(UserDesc)
+  @Column({ name: 'real_name', length: 50, comment: UserDesc.realName })
+  realName: string;
 
-  @ApiPropertyDesc(UserDesc, { type: () => Department, example: 1 })
-  @ManyToOne(() => Department, department => department.id)
-  @JoinColumn({ name: 'department_id' })
-  department: Department;
+  @ApiPropertyDesc(UserDesc)
+  @Column('enum', {
+    enum: SEX,
+    default: SEX['MALE'],
+    comment: UserDesc.sex,
+  })
+  sex: SEX;
 
   @ApiPropertyDesc(UserDesc)
   @Column({ nullable: true, default: null, comment: UserDesc.avatar })
@@ -83,13 +83,54 @@ export class User {
 
   @ApiPropertyDesc(UserDesc)
   @Column({
-    name: 'bank_card',
-    nullable: false,
-    unique: true,
-    comment: UserDesc.bankCard,
+    name: 'marital_status',
+    default: null,
+    nullable: true,
+    comment: UserDesc.maritalStatus,
   })
-  bankCard: string;
+  maritalStatus: MARITAL_STATUS;
 
+  @ApiPropertyDesc(UserDesc)
+  @Column({
+    name: 'native_place',
+    default: null,
+    nullable: true,
+    comment: UserDesc.nativePlace,
+  })
+  nativePlace: string;
+
+  @ApiPropertyDesc(UserDesc)
+  @Column({
+    name: 'political_status',
+    default: null,
+    nullable: true,
+    comment: UserDesc.politicalStatus,
+  })
+  politicalStatus: POLITICAL_STATUS;
+
+  @ApiPropertyDesc(UserDesc)
+  @ManyToOne(() => Nation, nation => nation.id, { nullable: true })
+  @JoinColumn({ name: 'nation_id' })
+  nation: Nation;
+
+  @ApiPropertyDesc(UserDesc)
+  @Column({
+    name: 'account_location',
+    default: null,
+    nullable: true,
+    comment: UserDesc.accountLocation,
+  })
+  accountLocation: string;
+
+  @ApiPropertyDesc(UserDesc)
+  @Column({ nullable: true, default: null, comment: UserDesc.address })
+  address: string;
+
+  @ApiPropertyDesc(UserDesc)
+  @Column({ nullable: true, default: null, comment: UserDesc.signature })
+  signature: string;
+
+  // 学历信息
   @ApiPropertyDesc(UserDesc)
   @Column('enum', {
     enum: EDUCATION,
@@ -118,14 +159,21 @@ export class User {
   })
   graduateTime: Date;
 
+  // 工作信息
+  @ApiPropertyDesc(UserDesc, { type: () => Role, example: 1 })
+  @ManyToOne(() => Role, role => role.id, { nullable: false })
+  @JoinColumn({ name: 'role_id' })
+  role: Role;
+
+  @ApiPropertyDesc(UserDesc, { type: () => Department, example: 1 })
+  @ManyToOne(() => Department, department => department.id)
+  @JoinColumn({ name: 'department_id' })
+  department: Department;
+
   @ApiPropertyDesc(UserDesc)
-  @Column({
-    name: 'marital_status',
-    default: null,
-    nullable: true,
-    comment: UserDesc.maritalStatus,
-  })
-  maritalStatus: MARITAL_STATUS;
+  @ManyToOne(() => Position, position => position.id, { nullable: true })
+  @JoinColumn({ name: 'position_id' })
+  position: Position;
 
   @ApiPropertyDesc(UserDesc, { type: () => User, example: 1 })
   @ManyToOne(() => User, user => user.id, { nullable: true })
@@ -133,12 +181,59 @@ export class User {
   leader: User;
 
   @ApiPropertyDesc(UserDesc)
-  @Column({ nullable: true, default: null, comment: UserDesc.address })
-  address: string;
+  @Column({
+    name: 'employee_type',
+    default: null,
+    nullable: true,
+    comment: UserDesc.employeeType,
+  })
+  employeeType: EMPLOYEE_TYPE;
 
   @ApiPropertyDesc(UserDesc)
-  @Column({ nullable: true, default: null, comment: UserDesc.signature })
-  signature: string;
+  @Column({
+    name: 'employee_status',
+    default: null,
+    nullable: true,
+    comment: UserDesc.employeeStatus,
+  })
+  employeeStatus: EMPLOYEE_STATUS;
+
+  @ApiPropertyDesc(UserDesc)
+  @Column({
+    name: 'create_time',
+    type: 'timestamp',
+    default: () => 'CURRENT_TIMESTAMP',
+    comment: UserDesc.joinTime,
+  })
+  joinTime: Date;
+
+  // 账户信息
+  @ApiPropertyDesc(UserDesc)
+  @Column({
+    name: 'bank_card',
+    nullable: false,
+    unique: true,
+    comment: UserDesc.bankCard,
+  })
+  bankCard: string;
+
+  @ApiPropertyDesc(UserDesc)
+  @Column({
+    name: 'social_security',
+    nullable: true,
+    unique: true,
+    comment: UserDesc.socialSecurity,
+  })
+  socialSecurity: string;
+
+  @ApiPropertyDesc(UserDesc)
+  @Column({
+    name: 'accumulation_fund',
+    nullable: true,
+    unique: true,
+    comment: UserDesc.accumulationFund,
+  })
+  accumulationFund: string;
 
   @ApiPropertyDesc(UserDesc)
   @Column({
@@ -156,15 +251,6 @@ export class User {
     comment: UserDesc.lastLoginTime,
   })
   lastLoginTime: Date;
-
-  @ApiPropertyDesc(UserDesc)
-  @Column({
-    name: 'create_time',
-    type: 'timestamp',
-    default: () => 'CURRENT_TIMESTAMP',
-    comment: UserDesc.joinTime,
-  })
-  joinTime: Date;
 
   @ApiPropertyDesc(UserDesc)
   @Column({

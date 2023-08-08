@@ -1,5 +1,5 @@
 <template>
-  <el-form :inline="true" :model="selfInfo" label-width="8rem">
+  <el-form :inline="true" :model="selfInfo" label-width="10rem">
     <el-collapse v-model="activeNames" @change="handleChange">
       <el-collapse-item title="个人信息" name="self">
         <el-form-item label="姓名">
@@ -15,16 +15,53 @@
             :trigger-on-focus="false"
             clearable
             placeholder="请输入邮箱"
+            class="w-100%"
           />
         </el-form-item>
         <el-form-item label="手机号">
-          <el-input v-model="selfInfo.phoneNumber" readonly />
-        </el-form-item>
-        <el-form-item label="地址">
-          <el-input v-model="selfInfo.address" readonly />
+          <el-input v-model="selfInfo.phoneNumber" />
         </el-form-item>
         <el-form-item label="身份证号">
-          <el-input v-model="selfInfo.idCard" readonly />
+          <el-input v-model="selfInfo.idCard" />
+        </el-form-item>
+        <el-form-item label="婚姻状况">
+          <el-select v-model="selfInfo.maritalStatus">
+            <el-option
+              v-for="item in MARITAL_STATUS"
+              :key="item"
+              :label="item"
+              :value="item"
+            />
+          </el-select>
+        </el-form-item>
+        <el-form-item label="籍贯">
+          <el-input v-model="selfInfo.nativePlace" />
+        </el-form-item>
+        <el-form-item label="政治面貌">
+          <el-select v-model="selfInfo.politicalStatus">
+            <el-option
+              v-for="item in POLITICAL_STATUS"
+              :key="item"
+              :label="item"
+              :value="item"
+            />
+          </el-select>
+        </el-form-item>
+        <el-form-item label="民族">
+          <el-select v-model="selfInfo.nation">
+            <el-option
+              v-for="item in nations"
+              :key="item.id"
+              :label="item.name"
+              :value="item.name"
+            />
+          </el-select>
+        </el-form-item>
+        <el-form-item label="户口所在地">
+          <el-input v-model="selfInfo.accountLocation" />
+        </el-form-item>
+        <el-form-item label="地址">
+          <el-input v-model="selfInfo.address" />
         </el-form-item>
       </el-collapse-item>
       <el-collapse-item title="学历信息" name="education">
@@ -33,6 +70,9 @@
         </el-form-item>
         <el-form-item label="毕业院校">
           <el-input v-model="selfInfo.graduateSchool" readonly />
+        </el-form-item>
+        <el-form-item label="毕业时间">
+          <el-date-picker v-model="selfInfo.graduateTime" type="date" />
         </el-form-item>
       </el-collapse-item>
       <el-collapse-item title="工作信息" name="work">
@@ -45,10 +85,42 @@
         <el-form-item label="部门">
           <el-input v-model="selfInfo.deptName" readonly />
         </el-form-item>
+        <el-form-item label="职位">
+          <el-input v-model="selfInfo.position" readonly />
+        </el-form-item>
+        <el-form-item label="直接主管">
+          <el-input v-model="selfInfo.position" readonly />
+        </el-form-item>
+        <el-form-item label="员工类型">
+          <el-select v-model="selfInfo.employeeType">
+            <el-option
+              v-for="item in EMPLOYEE_TYPE"
+              :key="item"
+              :label="item"
+              :value="item"
+            />
+          </el-select>
+        </el-form-item>
+        <el-form-item label="员工状态">
+          <el-select v-model="selfInfo.employeeStatus">
+            <el-option
+              v-for="item in EMPLOYEE_STATUS"
+              :key="item"
+              :label="item"
+              :value="item"
+            />
+          </el-select>
+        </el-form-item>
       </el-collapse-item>
       <el-collapse-item title="财务信息" name="finance">
         <el-form-item label="银行卡号">
-          <el-input v-model="selfInfo.bankCard" readonly />
+          <el-input v-model="selfInfo.bankCard" />
+        </el-form-item>
+        <el-form-item label="社保卡号">
+          <el-input v-model="selfInfo.socialSecurity" />
+        </el-form-item>
+        <el-form-item label="公积金号">
+          <el-input v-model="selfInfo.accumulationFund" />
         </el-form-item>
       </el-collapse-item>
     </el-collapse>
@@ -60,7 +132,19 @@ type AutoCompleteSuggestions = {
   value: string;
 }[];
 
-import { SEX, EMAIL_SUFFIX } from 'utils/constants';
+type Nation = {
+  id: number;
+  name: string;
+};
+
+import {
+  SEX,
+  EMAIL_SUFFIX,
+  POLITICAL_STATUS,
+  MARITAL_STATUS,
+  EMPLOYEE_TYPE,
+  EMPLOYEE_STATUS,
+} from 'utils/constants';
 
 const selfInfo = $ref<IUserInfo>({
   id: 0,
@@ -73,6 +157,8 @@ const selfInfo = $ref<IUserInfo>({
     name: '',
   },
 });
+
+let nations = $ref<Nation[]>([]);
 
 let activeNames = $ref<string[]>(['self', 'education', 'work', 'finance']);
 const handleChange = (val: string[]) => (activeNames = val);
@@ -104,4 +190,16 @@ const handleSelect = (email: any) => {
 };
 </script>
 
-<style lang="less" scoped></style>
+<style lang="less" scoped>
+.el-form {
+  :deep(.el-collapse-item__content) {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 32px 18px;
+    .el-form-item {
+      margin: 0;
+      width: 30rem;
+    }
+  }
+}
+</style>

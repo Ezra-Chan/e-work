@@ -1,5 +1,5 @@
 <template>
-  <el-row :gutter="20">
+  <el-row :gutter="20" class="self-info h-100%">
     <el-col :lg="6" :md="8">
       <el-card :body-style="{ 'padding-top': '4rem' }">
         <div class="flex flex-col items-center gap-8">
@@ -25,9 +25,9 @@
         </div>
       </el-card>
     </el-col>
-    <el-col :lg="18" :md="16">
-      <el-card>
-        <el-tabs v-model="activeTab">
+    <el-col :lg="18" :md="16" class="h-100%">
+      <el-card class="h-100%">
+        <el-tabs v-model="activeTab" class="h-100%">
           <el-tab-pane v-for="tab in tabs" :label="tab.label" :name="tab.value">
             <component :is="tab.comp" />
           </el-tab-pane>
@@ -48,7 +48,7 @@ const router = useRouter();
 
 const { id, realName, role, avatar, deptName, sex } = $(globalStore.userInfo);
 let userInfo = $ref<IUserInfo>();
-const tabs = $ref([
+const tabs = markRaw([
   {
     label: '个人信息',
     value: 'info',
@@ -69,4 +69,21 @@ onMounted(async () => {
 });
 </script>
 
-<style lang="less" scoped></style>
+<style lang="less" scoped>
+.self-info {
+  :deep(.el-card__body) {
+    height: 100%;
+    padding-right: 0;
+
+    .el-tabs__header {
+      padding-right: var(--el-card-padding);
+    }
+
+    .el-tabs__content {
+      height: calc(100% - var(--el-tabs-header-height) - 15px);
+      overflow-y: auto;
+      padding-right: var(--el-card-padding);
+    }
+  }
+}
+</style>

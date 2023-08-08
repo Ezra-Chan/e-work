@@ -1,5 +1,6 @@
 import { ClassSerializerInterceptor, Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { APP_INTERCEPTOR } from '@nestjs/core';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { UserModule } from './user/user.module';
@@ -8,7 +9,8 @@ import { RoleModule } from './role/role.module';
 import { DepartmentModule } from './department/department.module';
 import { UploadModule } from './upload/upload.module';
 import { FaceModule } from './face/face.module';
-import { APP_INTERCEPTOR } from '@nestjs/core';
+import { NationModule } from './dictionaryTable/nation/nation.module';
+import { PositionModule } from './position/position.module';
 
 @Module({
   imports: [
@@ -28,6 +30,8 @@ import { APP_INTERCEPTOR } from '@nestjs/core';
     DepartmentModule,
     UploadModule,
     FaceModule,
+    NationModule,
+    PositionModule,
   ],
   controllers: [AppController],
   providers: [
