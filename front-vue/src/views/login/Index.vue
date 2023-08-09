@@ -60,6 +60,10 @@
 import FaceLogin from './FaceLogin.vue';
 import AccountLogin from './AccountLogin.vue';
 
+defineOptions({
+  name: 'Login',
+});
+
 const systemName = import.meta.env.VITE_SYSTEM_TITLE;
 const systemAbbreviation = import.meta.env.VITE_SYSTEM_ABBREVIATION;
 const loginTypes = reactive<LoginTypes[]>([

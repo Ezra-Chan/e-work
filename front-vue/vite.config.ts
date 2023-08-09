@@ -9,6 +9,7 @@ import IconsResolver from 'unplugin-icons/resolver';
 import AutoImport from 'unplugin-auto-import/vite';
 import Components from 'unplugin-vue-components/vite';
 import { ElementPlusResolver } from 'unplugin-vue-components/resolvers';
+import DefineOptions from 'unplugin-vue-define-options/vite';
 import UnoCSS from 'unocss/vite';
 import * as path from 'path';
 import type { ViteEnv } from './src/vite-env';
@@ -28,6 +29,7 @@ export default defineConfig(({ mode }: ConfigEnv) => {
     },
     plugins: [
       Vue(),
+      DefineOptions(),
       ReactivityTransform(),
       AutoImport({
         resolvers: [

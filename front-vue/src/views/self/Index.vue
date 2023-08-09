@@ -5,18 +5,18 @@
         <div class="flex flex-col items-center gap-8">
           <ework-avatar
             :size="180"
-            :src="userInfo?.avatar || avatar"
+            :src="avatar"
             class="cursor-pointer"
             title="点击修改头像"
           />
           <span class="font-500 text-8">
-            {{ userInfo?.realName || realName }}
+            {{ realName }}
           </span>
           <span class="text-6">
-            {{ userInfo?.role?.name || role?.name }}
+            {{ role?.name }}
           </span>
           <span class="text-6">
-            {{ userInfo?.deptName || deptName }}
+            {{ deptName }}
           </span>
           <div class="text-6 flex gap-8">
             <span>{{ sex }}</span>
@@ -29,7 +29,9 @@
       <el-card class="h-100%">
         <el-tabs v-model="activeTab" class="h-100%">
           <el-tab-pane v-for="tab in tabs" :label="tab.label" :name="tab.value">
-            <component :is="tab.comp" />
+            <KeepAlive>
+              <component :is="tab.comp" />
+            </KeepAlive>
           </el-tab-pane>
         </el-tabs>
       </el-card>
@@ -37,17 +39,22 @@
   </el-row>
 </template>
 
-<script setup lang="ts" name="Self">
+<script setup lang="ts">
 import { GlobalStore } from '@/store';
 import { getUserInfo } from 'api/modules/user';
 import { getAgeByIdCard } from 'utils/timeFunc';
 import SelfInfo from './SelfInfo.vue';
 
+defineOptions({
+  name: 'Self',
+});
+
 const globalStore = GlobalStore();
 const router = useRouter();
 
-const { id, realName, role, avatar, deptName, sex } = $(globalStore.userInfo);
-let userInfo = $ref<IUserInfo>();
+const { id, realName, role, avatar, deptName, sex, idCard } = $(
+  globalStore.userInfo
+);
 const tabs = markRaw([
   {
     label: '个人信息',
@@ -60,12 +67,13 @@ const tabs = markRaw([
     comp: 'SelfPassword',
   },
 ]);
+
 let activeTab = $ref(tabs[0].value);
-const age = computed(() => getAgeByIdCard(userInfo?.idCard || ''));
+const age = computed(() => getAgeByIdCard(idCard));
 
 onMounted(async () => {
   const { data } = await getUserInfo(id);
-  userInfo = data;
+  globalStore.setGlobalState({ userInfo: data });
 });
 </script>
 

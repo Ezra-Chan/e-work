@@ -35,7 +35,7 @@ export const getAgeByBirthday = (birthday: string): number => {
  * @param idCard 身份证号
  * @returns 年龄
  */
-export const getAgeByIdCard = (idCard: string): number => {
+export const getAgeByIdCard = (idCard: string = ''): number => {
   const birthday = getBirthdayByIdCard(idCard);
   return getAgeByBirthday(birthday);
 };

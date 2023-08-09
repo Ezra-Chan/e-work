@@ -19,7 +19,10 @@
       "assets/*": ["src/assets/"],
       "utils/*": ["src/utils/*"]
     },
-    "types": ["@vue-macros/reactivity-transform/macros-global"]
+    "types": [
+      "@vue-macros/reactivity-transform/macros-global",
+      "unplugin-vue-define-options/macros-global"
+    ]
   },
   "include": [
     "src/*.ts",

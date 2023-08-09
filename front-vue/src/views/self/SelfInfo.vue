@@ -1,16 +1,16 @@
 <template>
-  <el-form :inline="true" :model="selfInfo" label-width="10rem">
+  <el-form :inline="true" :model="userInfo" label-width="10rem">
     <el-collapse v-model="activeNames" @change="handleChange">
       <el-collapse-item title="个人信息" name="self">
         <el-form-item label="姓名">
-          <el-input v-model="selfInfo.realName" readonly />
+          <el-input v-model="userInfo.realName" readonly />
         </el-form-item>
         <el-form-item label="性别">
-          <el-input v-model="selfInfo.sex" readonly />
+          <el-input v-model="userInfo.sex" readonly />
         </el-form-item>
         <el-form-item label="邮箱">
           <el-autocomplete
-            v-model="selfInfo.email"
+            v-model="userInfo.email"
             :fetch-suggestions="querySearch"
             :trigger-on-focus="false"
             clearable
@@ -19,13 +19,13 @@
           />
         </el-form-item>
         <el-form-item label="手机号">
-          <el-input v-model="selfInfo.phoneNumber" />
+          <el-input v-model="userInfo.phoneNumber" />
         </el-form-item>
         <el-form-item label="身份证号">
-          <el-input v-model="selfInfo.idCard" />
+          <el-input v-model="userInfo.idCard" />
         </el-form-item>
         <el-form-item label="婚姻状况">
-          <el-select v-model="selfInfo.maritalStatus">
+          <el-select v-model="userInfo.maritalStatus" class="w-100%">
             <el-option
               v-for="item in MARITAL_STATUS"
               :key="item"
@@ -35,10 +35,10 @@
           </el-select>
         </el-form-item>
         <el-form-item label="籍贯">
-          <el-input v-model="selfInfo.nativePlace" />
+          <el-input v-model="userInfo.nativePlace" />
         </el-form-item>
         <el-form-item label="政治面貌">
-          <el-select v-model="selfInfo.politicalStatus">
+          <el-select v-model="userInfo.politicalStatus" class="w-100%">
             <el-option
               v-for="item in POLITICAL_STATUS"
               :key="item"
@@ -48,7 +48,7 @@
           </el-select>
         </el-form-item>
         <el-form-item label="民族">
-          <el-select v-model="selfInfo.nation">
+          <el-select v-model="userInfo.nation" class="w-100%">
             <el-option
               v-for="item in nations"
               :key="item.id"
@@ -58,41 +58,50 @@
           </el-select>
         </el-form-item>
         <el-form-item label="户口所在地">
-          <el-input v-model="selfInfo.accountLocation" />
+          <el-input v-model="userInfo.accountLocation" />
         </el-form-item>
         <el-form-item label="地址">
-          <el-input v-model="selfInfo.address" />
+          <el-input v-model="userInfo.address" />
         </el-form-item>
       </el-collapse-item>
       <el-collapse-item title="学历信息" name="education">
         <el-form-item label="学历">
-          <el-input v-model="selfInfo.education" readonly />
+          <el-input v-model="userInfo.education" readonly />
         </el-form-item>
         <el-form-item label="毕业院校">
-          <el-input v-model="selfInfo.graduateSchool" readonly />
+          <el-input v-model="userInfo.graduateSchool" readonly />
         </el-form-item>
         <el-form-item label="毕业时间">
-          <el-date-picker v-model="selfInfo.graduateTime" type="date" />
+          <el-date-picker
+            v-model="userInfo.graduateTime"
+            type="date"
+            class="!w-100%"
+          />
         </el-form-item>
       </el-collapse-item>
       <el-collapse-item title="工作信息" name="work">
         <el-form-item label="加入时间">
-          <el-date-picker v-model="selfInfo.joinTime" type="date" readonly />
+          <el-date-picker
+            v-model="userInfo.joinTime"
+            type="date"
+            class="!w-100%"
+            readonly
+          />
         </el-form-item>
         <el-form-item label="角色">
-          <el-input v-model="selfInfo.role.name" readonly />
+          <el-input v-model="userInfo.role.name" readonly />
         </el-form-item>
         <el-form-item label="部门">
-          <el-input v-model="selfInfo.deptName" readonly />
+          <el-input v-model="userInfo.deptName" readonly />
         </el-form-item>
         <el-form-item label="职位">
-          <el-input v-model="selfInfo.position" readonly />
+          <el-input v-model="userInfo.position" readonly />
         </el-form-item>
         <el-form-item label="直接主管">
-          <el-input v-model="selfInfo.position" readonly />
+          <el-input v-model="userInfo.position" readonly />
         </el-form-item>
         <el-form-item label="员工类型">
-          <el-select v-model="selfInfo.employeeType">
+          <el-select v-model="userInfo.employeeType" class="w-100%">
             <el-option
               v-for="item in EMPLOYEE_TYPE"
               :key="item"
@@ -102,7 +111,7 @@
           </el-select>
         </el-form-item>
         <el-form-item label="员工状态">
-          <el-select v-model="selfInfo.employeeStatus">
+          <el-select v-model="userInfo.employeeStatus" class="w-100%">
             <el-option
               v-for="item in EMPLOYEE_STATUS"
               :key="item"
@@ -114,20 +123,33 @@
       </el-collapse-item>
       <el-collapse-item title="财务信息" name="finance">
         <el-form-item label="银行卡号">
-          <el-input v-model="selfInfo.bankCard" />
+          <el-input v-model="userInfo.bankCard" />
         </el-form-item>
         <el-form-item label="社保卡号">
-          <el-input v-model="selfInfo.socialSecurity" />
+          <el-input v-model="userInfo.socialSecurity" />
         </el-form-item>
         <el-form-item label="公积金号">
-          <el-input v-model="selfInfo.accumulationFund" />
+          <el-input v-model="userInfo.accumulationFund" />
         </el-form-item>
       </el-collapse-item>
     </el-collapse>
+    <el-form-item>
+      <el-button type="primary" @click="onSubmit">提交</el-button>
+    </el-form-item>
   </el-form>
 </template>
 
-<script setup lang="ts" name="SelfInfo">
+<script setup lang="ts">
+import {
+  SEX,
+  EMAIL_SUFFIX,
+  POLITICAL_STATUS,
+  MARITAL_STATUS,
+  EMPLOYEE_TYPE,
+  EMPLOYEE_STATUS,
+} from 'utils/constants';
+import { GlobalStore } from '@/store';
+
 type AutoCompleteSuggestions = {
   value: string;
 }[];
@@ -137,16 +159,7 @@ type Nation = {
   name: string;
 };
 
-import {
-  SEX,
-  EMAIL_SUFFIX,
-  POLITICAL_STATUS,
-  MARITAL_STATUS,
-  EMPLOYEE_TYPE,
-  EMPLOYEE_STATUS,
-} from 'utils/constants';
-
-const selfInfo = $ref<IUserInfo>({
+const defaultInfo: IUserInfo = {
   id: 0,
   realName: '',
   sex: SEX.MALE,
@@ -156,12 +169,16 @@ const selfInfo = $ref<IUserInfo>({
     id: 0,
     name: '',
   },
-});
+};
+
+const globalStore = GlobalStore();
+const { userInfo = defaultInfo } = $(globalStore);
 
 let nations = $ref<Nation[]>([]);
 
 let activeNames = $ref<string[]>(['self', 'education', 'work', 'finance']);
 const handleChange = (val: string[]) => (activeNames = val);
+
 /**
  * 判断queryStr内是否含有@符号，且@后有任意字符，如果有则返回[]，否则返回EMAIL_SUFFIX中符合的邮箱后缀
  * @param queryStr
@@ -185,8 +202,8 @@ const querySearch = (
   }
 };
 
-const handleSelect = (email: any) => {
-  selfInfo.email = email.value;
+const onSubmit = () => {
+  console.log(userInfo);
 };
 </script>
 
@@ -198,7 +215,11 @@ const handleSelect = (email: any) => {
     gap: 32px 18px;
     .el-form-item {
       margin: 0;
-      width: 30rem;
+      width: 35rem;
+
+      .el-input__wrapper {
+        width: 100%;
+      }
     }
   }
 }

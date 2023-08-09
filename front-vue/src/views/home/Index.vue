@@ -13,6 +13,11 @@
 
 <script setup lang="ts" name="Home">
 import { GlobalStore } from '@/store';
+
+defineOptions({
+  name: 'Home',
+});
+
 const router = useRouter();
 const globalStore = GlobalStore();
 const isCollapse = computed(() => globalStore.isCollapse);
