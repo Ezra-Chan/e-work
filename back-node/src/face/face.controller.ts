@@ -16,4 +16,14 @@ export class FaceController {
   register(@Body('base') base: string, @Req() req: Request) {
     return this.faceService.faceRegister(base, req.user as ISimpleUser);
   }
+
+  @ApiOperation({ summary: '获取用户人脸列表' })
+  @Post('user/list')
+  getUserFaceList(@Body() body: any, @Req() req: Request) {
+    let { userId, roleId } = body;
+    const user = req.user as ISimpleUser;
+    !userId && (userId = user.id);
+    !roleId && (roleId = user.roleId);
+    return this.faceService.faceGetList(userId, roleId);
+  }
 }

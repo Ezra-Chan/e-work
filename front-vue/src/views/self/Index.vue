@@ -6,7 +6,7 @@
           <ework-avatar
             :size="180"
             :src="avatar"
-            class="cursor-pointer"
+            class="cursor-pointer hover:scale-110 transition-all-300"
             title="点击修改头像"
           />
           <span class="font-500 text-8">
@@ -22,13 +22,21 @@
             <span>{{ sex }}</span>
             <span>{{ age }}岁</span>
           </div>
+          <el-button type="primary">
+            {{ '注册人脸' }}
+          </el-button>
         </div>
       </el-card>
     </el-col>
     <el-col :lg="18" :md="16" class="h-100%">
       <el-card class="h-100%">
         <el-tabs v-model="activeTab" class="h-100%">
-          <el-tab-pane v-for="tab in tabs" :label="tab.label" :name="tab.value">
+          <el-tab-pane
+            v-for="tab in tabs"
+            :label="tab.label"
+            :name="tab.value"
+            class="h-100%"
+          >
             <KeepAlive>
               <component :is="tab.comp" />
             </KeepAlive>
@@ -41,7 +49,7 @@
 
 <script setup lang="ts">
 import { GlobalStore } from '@/store';
-import { getUserInfo } from 'api/modules/user';
+import { getUserInfo, getUserFaces } from 'api/modules/user';
 import { getAgeByIdCard } from 'utils/timeFunc';
 import SelfInfo from './SelfInfo.vue';
 
@@ -50,11 +58,15 @@ defineOptions({
 });
 
 const globalStore = GlobalStore();
-const router = useRouter();
 
 const { id, realName, role, avatar, deptName, sex, idCard } = $(
   globalStore.userInfo
 );
+const getUserInfoApi = async () => {
+  const { data } = await getUserInfo(id);
+  globalStore.setGlobalState({ userInfo: data });
+};
+
 const tabs = markRaw([
   {
     label: '个人信息',
@@ -71,9 +83,19 @@ const tabs = markRaw([
 let activeTab = $ref(tabs[0].value);
 const age = computed(() => getAgeByIdCard(idCard));
 
+let userFaces = $ref([]);
+const getUserFacesApi = async () => {
+  try {
+    const { data } = await getUserFaces();
+    userFaces = data;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
 onMounted(async () => {
-  const { data } = await getUserInfo(id);
-  globalStore.setGlobalState({ userInfo: data });
+  getUserInfoApi();
+  getUserFacesApi();
 });
 </script>
 
@@ -83,14 +105,8 @@ onMounted(async () => {
     height: 100%;
     padding-right: 0;
 
-    .el-tabs__header {
-      padding-right: var(--el-card-padding);
-    }
-
     .el-tabs__content {
       height: calc(100% - var(--el-tabs-header-height) - 15px);
-      overflow-y: auto;
-      padding-right: var(--el-card-padding);
     }
   }
 }

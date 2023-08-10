@@ -46,8 +46,10 @@ const router = createRouter({
 
 router.beforeEach(to => {
   if (to.meta?.requireAuth) {
-    const { token } = JSON.parse(localStorage.getItem('GlobalState') || '{}');
-    if (!token) {
+    const { token, userInfo } = JSON.parse(
+      localStorage.getItem('GlobalState') || '{}'
+    );
+    if (!token || !userInfo) {
       return '/login';
     }
   }

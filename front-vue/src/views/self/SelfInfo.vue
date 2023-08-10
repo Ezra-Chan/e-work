@@ -1,5 +1,10 @@
 <template>
-  <el-form :inline="true" :model="userInfo" label-width="10rem">
+  <el-form
+    :inline="true"
+    :model="userInfo"
+    label-width="10rem"
+    class="overflow-y-auto p-r-8"
+  >
     <el-collapse v-model="activeNames" @change="handleChange">
       <el-collapse-item title="个人信息" name="self">
         <el-form-item label="姓名">
@@ -89,7 +94,7 @@
           />
         </el-form-item>
         <el-form-item label="角色">
-          <el-input v-model="userInfo.role.name" readonly />
+          <el-input v-model="userInfo.roleName" readonly />
         </el-form-item>
         <el-form-item label="部门">
           <el-input v-model="userInfo.deptName" readonly />
@@ -133,10 +138,10 @@
         </el-form-item>
       </el-collapse-item>
     </el-collapse>
-    <el-form-item>
-      <el-button type="primary" @click="onSubmit">提交</el-button>
-    </el-form-item>
   </el-form>
+  <div class="flex items-center justify-center gap-8 p-t-8 p-r-8">
+    <el-button type="primary" @click="onSubmit">提交</el-button>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -209,10 +214,12 @@ const onSubmit = () => {
 
 <style lang="less" scoped>
 .el-form {
+  height: calc(100% - 52px);
+
   :deep(.el-collapse-item__content) {
     display: flex;
     flex-wrap: wrap;
-    gap: 32px 18px;
+    gap: 24px 18px;
     .el-form-item {
       margin: 0;
       width: 35rem;

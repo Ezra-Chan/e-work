@@ -58,3 +58,12 @@ export const deleteUser = (id: number) => request.delete(`/user/${id}`);
  * @param id 用户ID
  */
 export const disableUser = (id: number) => request.get(`/user/disable/${id}`);
+
+/**
+ * 查询用户人脸列表
+ * @param id 用户ID
+ * @param role 用户角色
+ * @returns 人脸列表
+ */
+export const getUserFaces = (userId?: number, roleId?: number) =>
+  request.post(`/face/user/list`, { userId, roleId });

@@ -165,6 +165,8 @@ export class FaceService {
       this.isSuccess(faceList);
       return faceList;
     } catch (error) {
+      console.log(error);
+
       if (error instanceof HttpException) throw error;
       throw new Error(error);
     }
