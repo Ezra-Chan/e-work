@@ -62,8 +62,24 @@ export const disableUser = (id: number) => request.get(`/user/disable/${id}`);
 /**
  * 查询用户人脸列表
  * @param id 用户ID
- * @param role 用户角色
+ * @param role 用户角色ID
  * @returns 人脸列表
  */
 export const getUserFaces = (userId?: number, roleId?: number) =>
   request.post(`/face/user/list`, { userId, roleId });
+
+/**
+ * 上传人脸
+ * @param userId 用户ID
+ * @param roleId 用户角色ID
+ * @param base 图片base64
+ */
+export const createFace = ({
+  userId,
+  roleId,
+  base,
+}: {
+  userId?: number;
+  roleId?: number;
+  base: string;
+}) => request.post(`/face`, { userId, roleId, base });

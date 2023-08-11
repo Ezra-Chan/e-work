@@ -22,8 +22,8 @@
             <span>{{ sex }}</span>
             <span>{{ age }}岁</span>
           </div>
-          <el-button type="primary">
-            {{ '注册人脸' }}
+          <el-button type="primary" @click="createFace">
+            {{ userFaces.length ? '添加人脸' : '注册人脸' }}
           </el-button>
         </div>
       </el-card>
@@ -49,7 +49,7 @@
 
 <script setup lang="ts">
 import { GlobalStore } from '@/store';
-import { getUserInfo, getUserFaces } from 'api/modules/user';
+import { getUserInfo, getUserFaces, createFace } from 'api/modules/user';
 import { getAgeByIdCard } from 'utils/timeFunc';
 import SelfInfo from './SelfInfo.vue';
 
@@ -92,6 +92,7 @@ const getUserFacesApi = async () => {
     console.error(error);
   }
 };
+const createFaceApi = () => {};
 
 onMounted(async () => {
   getUserInfoApi();

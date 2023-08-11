@@ -119,6 +119,8 @@ declare interface IUserInfo {
 
   // 工作信息
   role: IRole;
+  roleId?: number;
+  roleName?: string;
   deptName?: string;
   position?: IPosition;
   department?: IDepartment;

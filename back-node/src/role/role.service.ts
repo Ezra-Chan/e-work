@@ -6,12 +6,14 @@ import { UpdateRoleDto } from './dto/update-role.dto';
 import { Role } from './entities/role.entity';
 import { RoleMessage } from './constant';
 import { UserService } from 'src/user/user.service';
+import { FaceService } from 'src/face/face.service';
 
 @Injectable()
 export class RoleService {
   constructor(
     @InjectRepository(Role) private roleRepository: Repository<Role>,
-    private readonly userService: UserService
+    private readonly userService: UserService,
+    private readonly faceService: FaceService
   ) {}
 
   /**
@@ -20,7 +22,9 @@ export class RoleService {
    */
   async create(createRoleDto: CreateRoleDto) {
     await this.checkUnique(createRoleDto.name);
-    return await this.roleRepository.save(createRoleDto);
+    const role = await this.roleRepository.save(createRoleDto);
+    await this.faceService.addGroup(role.id);
+    return role;
   }
 
   /**
@@ -59,9 +63,18 @@ export class RoleService {
    * @param id 角色ID
    */
   async remove(id: number) {
+    const users = await this.findUsers(id);
+    if (users.length) {
+      throw new HttpException(
+        RoleMessage.STILL_HAS_USERS,
+        HttpStatus.BAD_REQUEST
+      );
+    }
     const { affected } = await this.roleRepository.delete({ id });
-    if (affected === 0)
+    if (affected === 0) {
       throw new HttpException(RoleMessage.NOT_FOUND, HttpStatus.BAD_REQUEST);
+    }
+    await this.faceService.deleteGroup(id);
   }
 
   /**

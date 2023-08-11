@@ -4,6 +4,7 @@ import { FACE_ERROR_CODE, getFaceErrorMessage } from 'src/utils/messages';
 import { FaceMessage } from './constant';
 import { UserService } from 'src/user/user.service';
 import { ISimpleUser } from 'src/utils/types';
+import { CreateFaceDto } from './dto/create-face.dto';
 
 export const defaultFaceOptions = {
   liveness_control: 'NORMAL', // 活体控制 检测结果中不符合要求的人脸会被过滤  NORMAL: 一般的活体要求(平衡的攻击拒绝率, 通过率)
@@ -86,15 +87,10 @@ export class FaceService {
    * @returns 用户组id列表
    */
   async getGroupList(): Promise<string[]> {
-    try {
-      const groupInfo: IFaceResponse<IFaceGroupIdList> =
-        await this.client.getGrouplist();
-      this.isSuccess(groupInfo);
-      return groupInfo.result.group_id_list;
-    } catch (error) {
-      if (error instanceof HttpException) throw error;
-      throw new Error(error);
-    }
+    const groupInfo: IFaceResponse<IFaceGroupIdList> = await this.faceApi(
+      'getGrouplist'
+    );
+    return groupInfo.result.group_id_list;
   }
 
   /**
@@ -103,11 +99,25 @@ export class FaceService {
    * @param imageType 图片类型
    */
   async faceRegister(
-    imageUrl: string,
+    body: CreateFaceDto,
     user: ISimpleUser,
     imageType = 'BASE64'
   ) {
     try {
+      const { base, userId, roleId } = body;
+      if (userId && roleId) {
+        const { id, realName, deptName, loginName, sex, role } =
+          await this.userService.findOne(+userId);
+        user = {
+          ...user,
+          id,
+          realName,
+          deptName,
+          loginName,
+          sex,
+          roleName: role.name,
+        };
+      }
       const { id, realName, deptName, loginName, sex, roleName } = user;
       const user_info = JSON.stringify({
         id,
@@ -116,17 +126,16 @@ export class FaceService {
         loginName,
         sex,
       });
-      const faceInfo: IFaceResponse<IFaceRegister> = await this.client.addUser(
-        imageUrl,
-        imageType,
-        roleName,
-        id,
-        { ...defaultFaceRegisterOptions, user_info }
-      );
-      this.isSuccess(faceInfo);
-      return faceInfo;
+      return await this.faceApi('addUser', {
+        args: [
+          base,
+          imageType,
+          roleName,
+          id,
+          { ...defaultFaceRegisterOptions, user_info },
+        ],
+      });
     } catch (error) {
-      if (error instanceof HttpException) throw error;
       throw new Error(error);
     }
   }
@@ -138,18 +147,30 @@ export class FaceService {
    * @param faceToken 人脸标识
    */
   async faceDelete(userId: string, groupId: string, faceToken: string) {
-    try {
-      const faceInfo: IFaceResponse = await this.client.faceDelete(
-        userId,
-        groupId,
-        faceToken
-      );
-      this.isSuccess(faceInfo);
-      return faceInfo;
-    } catch (error) {
-      if (error instanceof HttpException) throw error;
-      throw new Error(error);
-    }
+    return await this.faceApi('deleteUser', {
+      args: [userId, groupId, faceToken],
+    });
+  }
+
+  /**
+   * 创建用户组
+   * @param groupId 用户组id
+   */
+  async addGroup(groupId: number) {
+    return await this.faceApi('groupAdd', {
+      args: [groupId],
+    });
+  }
+
+  /**
+   * 删除用户组
+   * @param groupId 用户组id
+   * @description 删除用户组下所有用户及人脸
+   */
+  async deleteGroup(groupId: number) {
+    return await this.faceApi('groupDelete', {
+      args: [groupId],
+    });
   }
 
   /**
@@ -159,17 +180,9 @@ export class FaceService {
    * @returns 人脸列表
    */
   async faceGetList(userId: string, groupId: string) {
-    try {
-      const faceList: IFaceResponse<IFaceGetList> =
-        await this.client.faceGetlist(userId, groupId);
-      this.isSuccess(faceList);
-      return faceList;
-    } catch (error) {
-      console.log(error);
-
-      if (error instanceof HttpException) throw error;
-      throw new Error(error);
-    }
+    return await this.faceApi('faceGetlist', {
+      args: [userId, groupId],
+    });
   }
 
   /**
@@ -178,11 +191,28 @@ export class FaceService {
    * @returns 用户列表
    */
   async getGroupUsers(groupId: string) {
+    return await this.faceApi('getGroupUsers', {
+      args: [groupId],
+    });
+  }
+
+  /**
+   * 封装人脸API
+   * @param func 函数名
+   * @param params
+   * @param params.args 参数
+   * @param params.operation 其它操作
+   */
+  async faceApi(func: string, params: any = {}) {
     try {
-      const userList: IFaceResponse<IFaceGetGroupUsers> =
-        await this.client.getGroupUsers(groupId);
-      this.isSuccess(userList);
-      return userList;
+      const res: IFaceResponse = await this.client[func](
+        ...(params.args || [])
+      );
+      this.isSuccess(res);
+      if (params.operation) {
+        await params.operation(res);
+      }
+      return res;
     } catch (error) {
       if (error instanceof HttpException) throw error;
       throw new Error(error);

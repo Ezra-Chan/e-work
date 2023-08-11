@@ -64,6 +64,8 @@ export const RoleDesc = {
 
 export const FaceDesc = {
   base: 'base64编码的图片',
+  userId: '用户ID',
+  roleId: '角色ID',
 };
 
 export const NationDesc = {

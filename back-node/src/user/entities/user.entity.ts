@@ -161,7 +161,7 @@ export class User {
 
   // 工作信息
   @ApiPropertyDesc(UserDesc, { type: () => Role, example: 1 })
-  @ManyToOne(() => Role, role => role.id, { nullable: false })
+  @ManyToOne(() => Role, role => role.id, { nullable: true })
   @JoinColumn({ name: 'role_id' })
   role: Role;
 
