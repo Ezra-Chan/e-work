@@ -1,6 +1,12 @@
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import {
+  HttpException,
+  HttpStatus,
+  Inject,
+  Injectable,
+  forwardRef,
+} from '@nestjs/common';
 import { CreateRoleDto } from './dto/create-role.dto';
 import { UpdateRoleDto } from './dto/update-role.dto';
 import { Role } from './entities/role.entity';
@@ -13,6 +19,7 @@ export class RoleService {
   constructor(
     @InjectRepository(Role) private roleRepository: Repository<Role>,
     private readonly userService: UserService,
+    @Inject(forwardRef(() => FaceService))
     private readonly faceService: FaceService
   ) {}
 

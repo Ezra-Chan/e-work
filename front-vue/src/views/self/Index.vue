@@ -22,8 +22,8 @@
             <span>{{ sex }}</span>
             <span>{{ age }}岁</span>
           </div>
-          <el-button type="primary" @click="createFace">
-            {{ userFaces.length ? '添加人脸' : '注册人脸' }}
+          <el-button type="primary" @click="faceDialogVisible = true">
+            {{ buttonName }}
           </el-button>
         </div>
       </el-card>
@@ -44,6 +44,25 @@
         </el-tabs>
       </el-card>
     </el-col>
+    <el-dialog
+      v-model="faceDialogVisible"
+      :title="buttonName"
+      width="40rem"
+      modal-class="add-face"
+      destroy-on-close
+      :before-close="closeFaceDialog"
+    >
+      <take-photo ref="camera" @open="isOpenCamera = true" />
+      <template #footer>
+        <div class="flex justify-center" v-if="isOpenCamera">
+          <el-button type="primary" @click="closeCamera">关闭摄像头</el-button>
+          <el-button type="primary" @click="shoot">拍摄</el-button>
+          <el-button v-if="!!base" type="primary" @click="uploadFace">
+            上传
+          </el-button>
+        </div>
+      </template>
+    </el-dialog>
   </el-row>
 </template>
 
@@ -52,21 +71,16 @@ import { GlobalStore } from '@/store';
 import { getUserInfo, getUserFaces, createFace } from 'api/modules/user';
 import { getAgeByIdCard } from 'utils/timeFunc';
 import SelfInfo from './SelfInfo.vue';
+import TakePhoto from '@/components/TakePhoto.vue';
 
 defineOptions({
   name: 'Self',
 });
 
 const globalStore = GlobalStore();
-
 const { id, realName, role, avatar, deptName, sex, idCard } = $(
   globalStore.userInfo
 );
-const getUserInfoApi = async () => {
-  const { data } = await getUserInfo(id);
-  globalStore.setGlobalState({ userInfo: data });
-};
-
 const tabs = markRaw([
   {
     label: '个人信息',
@@ -79,11 +93,39 @@ const tabs = markRaw([
     comp: 'SelfPassword',
   },
 ]);
-
 let activeTab = $ref(tabs[0].value);
-const age = computed(() => getAgeByIdCard(idCard));
-
 let userFaces = $ref([]);
+let faceDialogVisible = $ref(false);
+let isOpenCamera = $ref(false);
+let base = $ref<string | undefined>();
+const camera = $ref<InstanceType<typeof TakePhoto> | null>(null);
+const age = computed(() => getAgeByIdCard(idCard));
+const buttonName = computed(() => (userFaces.length ? '添加人脸' : '注册人脸'));
+
+onMounted(() => {
+  getUserInfoApi();
+  getUserFacesApi();
+});
+
+const getUserInfoApi = async () => {
+  const { data } = await getUserInfo(id);
+  globalStore.setGlobalState({ userInfo: data });
+};
+
+const closeCamera = () => {
+  camera?.stop();
+  isOpenCamera = false;
+};
+
+const closeFaceDialog = () => {
+  isOpenCamera = false;
+  faceDialogVisible = false;
+};
+
+const shoot = () => {
+  base = camera?.getBase();
+};
+
 const getUserFacesApi = async () => {
   try {
     const { data } = await getUserFaces();
@@ -92,12 +134,9 @@ const getUserFacesApi = async () => {
     console.error(error);
   }
 };
-const createFaceApi = () => {};
-
-onMounted(async () => {
-  getUserInfoApi();
-  getUserFacesApi();
-});
+const uploadFace = () => {
+  console.log(base);
+};
 </script>
 
 <style lang="less" scoped>
@@ -108,6 +147,12 @@ onMounted(async () => {
 
     .el-tabs__content {
       height: calc(100% - var(--el-tabs-header-height) - 15px);
+    }
+  }
+  :deep(.add-face) {
+    .el-dialog__footer {
+      padding-top: 0;
+      height: 52px;
     }
   }
 }

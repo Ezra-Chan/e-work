@@ -32,4 +32,10 @@ export class FaceController {
   getGroupList() {
     return this.faceService.getGroupList();
   }
+
+  @ApiOperation({ summary: '自动注册用户组' })
+  @Post('group')
+  autoCreateGroup() {
+    return this.faceService.autoCreateGroup();
+  }
 }

@@ -1,8 +1,15 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import {
+  HttpException,
+  HttpStatus,
+  Inject,
+  Injectable,
+  forwardRef,
+} from '@nestjs/common';
 import { face as AipFaceClient } from 'baidu-aip-sdk';
 import { FACE_ERROR_CODE, getFaceErrorMessage } from 'src/utils/messages';
 import { FaceMessage } from './constant';
 import { UserService } from 'src/user/user.service';
+import { RoleService } from 'src/role/role.service';
 import { ISimpleUser } from 'src/utils/types';
 import { CreateFaceDto } from './dto/create-face.dto';
 
@@ -21,7 +28,11 @@ export const defaultFaceRegisterOptions = {
 export class FaceService {
   private client: AipFaceClient;
 
-  constructor(private readonly userService: UserService) {
+  constructor(
+    private readonly userService: UserService,
+    @Inject(forwardRef(() => RoleService))
+    private readonly roleService: RoleService
+  ) {
     const {
       BDAI_APP_ID: id,
       BDAI_API_KEY: ak,
@@ -194,6 +205,20 @@ export class FaceService {
     return await this.faceApi('getGroupUsers', {
       args: [groupId],
     });
+  }
+
+  /**
+   * 自动创建用户组
+   *
+   */
+  async autoCreateGroup() {
+    const list = await this.getGroupList();
+    const roles = await this.roleService.findAll();
+    for (const role of roles) {
+      if (!list.includes(role.id + '')) {
+        await this.addGroup(role.id);
+      }
+    }
   }
 
   /**

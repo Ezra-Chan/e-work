@@ -1,5 +1,11 @@
 <template>
-  <div class="flex items-center justify-center">
+  <div
+    class="take-photo flex items-center justify-center"
+    :style="{
+      '--take-photo-width': props.videoWidth + 'px',
+      '--take-photo-height': props.videoHeight + 'px',
+    }"
+  >
     <template v-if="enabled">
       <video
         ref="video"
@@ -8,9 +14,14 @@
         :width="videoWidth"
         :height="videoHeight"
       />
-      <canvas class="login-canvas hidden" ref="canvas" />
+      <canvas
+        class="login-canvas hidden"
+        :width="(videoHeight / 3) * 4"
+        :height="videoHeight"
+        ref="canvas"
+      />
     </template>
-    <el-button v-else type="primary" @click="enabled = true" size="large">
+    <el-button v-else type="primary" @click="openCamera" size="large">
       开启摄像头
     </el-button>
   </div>
@@ -21,12 +32,17 @@ interface TakePhotoProps {
   videoWidth?: number;
   videoHeight?: number;
 }
+
 const props = withDefaults(defineProps<TakePhotoProps>(), {
   videoWidth: 300,
   videoHeight: 200,
 });
 
 let currentCamera = $ref<string>();
+let video = $ref<HTMLVideoElement>();
+let cameraPermission = $(usePermission('camera'));
+const canvas = $ref<HTMLCanvasElement>();
+
 const { videoInputs: cameras } = $(
   useDevicesList({
     onUpdated() {
@@ -36,19 +52,15 @@ const { videoInputs: cameras } = $(
     constraints: { audio: false },
   })
 );
-let video = $ref<HTMLVideoElement>();
 let { stream, enabled, stop } = $(
   useUserMedia({
     constraints: { video: { deviceId: currentCamera }, audio: false },
   })
 );
-let cameraPermission = $(usePermission('camera'));
 const noCameraPermissonTip = () => {
   ElMessage.error('您没有授予相机权限，请授予权限后再试！');
   enabled = false;
 };
-
-const canvas = $ref<HTMLCanvasElement>();
 
 const getBase = () => {
   const context = canvas!.getContext('2d');
@@ -60,7 +72,15 @@ const getBase = () => {
 
 defineExpose({
   getBase,
+  stop,
 });
+
+const emits = defineEmits(['open']);
+
+const openCamera = () => {
+  enabled = true;
+  emits('open');
+};
 
 watchEffect(() => {
   if (video) video.srcObject = stream!;
@@ -81,3 +101,10 @@ onBeforeUnmount(() => {
   stop();
 });
 </script>
+
+<style lang="less" scoped>
+.take-photo {
+  min-width: var(--take-photo-width, 300px);
+  min-height: var(--take-photo-height, 200px);
+}
+</style>
