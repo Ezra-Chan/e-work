@@ -66,7 +66,10 @@ export const disableUser = (id: number) => request.get(`/user/disable/${id}`);
  * @returns 人脸列表
  */
 export const getUserFaces = (userId?: number, roleId?: number) =>
-  request.post(`/face/user/list`, { userId, roleId });
+  request.post<NewResponse<IUserFaceList>>(`/face/user/list`, {
+    userId,
+    roleId,
+  });
 
 /**
  * 上传人脸

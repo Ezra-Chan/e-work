@@ -43,11 +43,12 @@ const onFaceLogin = async () => {
       success,
       data = {},
     } = await LoginService.faceLogin(base64!);
+    loading = false;
     if (!success) {
       ElMessage.error(message);
+      camera?.clearCanvas();
       return;
     }
-    loading = false;
     handleLogin(data, router);
   } catch (error) {
     loading = false;

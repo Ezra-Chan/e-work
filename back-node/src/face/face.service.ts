@@ -98,10 +98,8 @@ export class FaceService {
    * @returns 用户组id列表
    */
   async getGroupList(): Promise<string[]> {
-    const groupInfo: IFaceResponse<IFaceGroupIdList> = await this.faceApi(
-      'getGrouplist'
-    );
-    return groupInfo.result.group_id_list;
+    const groupInfo: IFaceGroupIdList = await this.faceApi('getGrouplist');
+    return groupInfo.group_id_list;
   }
 
   /**
@@ -126,10 +124,10 @@ export class FaceService {
           deptName,
           loginName,
           sex,
-          roleName: role.name,
+          roleId: role.id,
         };
       }
-      const { id, realName, deptName, loginName, sex, roleName } = user;
+      const { id, realName, deptName, loginName, sex, roleId: role_id } = user;
       const user_info = JSON.stringify({
         id,
         realName,
@@ -141,7 +139,7 @@ export class FaceService {
         args: [
           base,
           imageType,
-          roleName,
+          role_id,
           id,
           { ...defaultFaceRegisterOptions, user_info },
         ],
@@ -237,7 +235,7 @@ export class FaceService {
       if (params.operation) {
         await params.operation(res);
       }
-      return res;
+      return res?.result;
     } catch (error) {
       if (error instanceof HttpException) throw error;
       throw new Error(error);

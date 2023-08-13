@@ -140,3 +140,12 @@ declare interface IUserInfo {
   lastLoginIp?: string;
   lastLoginTime?: Date;
 }
+
+declare interface IFaceInfo {
+  face_token: string;
+  ctime: string;
+}
+
+declare interface IUserFaceList {
+  face_list: (IFaceInfo | string)[];
+}

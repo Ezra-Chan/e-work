@@ -13,9 +13,11 @@
         autoplay
         :width="videoWidth"
         :height="videoHeight"
+        :class="{ hidden: showCanvas }"
       />
       <canvas
-        class="login-canvas hidden"
+        class="login-canvas"
+        :class="{ hidden: !showCanvas }"
         :width="(videoHeight / 3) * 4"
         :height="videoHeight"
         ref="canvas"
@@ -42,6 +44,7 @@ let currentCamera = $ref<string>();
 let video = $ref<HTMLVideoElement>();
 let cameraPermission = $(usePermission('camera'));
 const canvas = $ref<HTMLCanvasElement>();
+let showCanvas = $ref<boolean>(false);
 
 const { videoInputs: cameras } = $(
   useDevicesList({
@@ -65,13 +68,27 @@ const noCameraPermissonTip = () => {
 const getBase = () => {
   const context = canvas!.getContext('2d');
   // 把流媒体数据画到canvas画布上
-  context!.drawImage(video!, 0, 0, props.videoWidth, props.videoHeight);
+  context!.drawImage(
+    video!,
+    0,
+    0,
+    (props.videoHeight / 3) * 4,
+    props.videoHeight
+  );
   const base64 = canvas!.toDataURL('image/png')?.split('base64,')[1];
+  showCanvas = true;
   return base64;
+};
+
+const clearCanvas = () => {
+  const context = canvas!.getContext('2d');
+  context!.clearRect(0, 0, (props.videoHeight / 3) * 4, props.videoHeight);
+  showCanvas = false;
 };
 
 defineExpose({
   getBase,
+  clearCanvas,
   stop,
 });
 
@@ -79,6 +96,7 @@ const emits = defineEmits(['open']);
 
 const openCamera = () => {
   enabled = true;
+  showCanvas = false;
   emits('open');
 };
 

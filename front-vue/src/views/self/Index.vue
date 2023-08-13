@@ -9,18 +9,18 @@
             class="cursor-pointer hover:scale-110 transition-all-300"
             title="点击修改头像"
           />
-          <span class="font-500 text-8">
+          <span class="font-500 text-8" title="姓名">
             {{ realName }}
           </span>
-          <span class="text-6">
-            {{ role?.name }}
+          <span class="text-6" title="职位">
+            {{ position?.name || '-' }}
           </span>
-          <span class="text-6">
+          <span class="text-6" title="部门">
             {{ deptName }}
           </span>
           <div class="text-6 flex gap-8">
-            <span>{{ sex }}</span>
-            <span>{{ age }}岁</span>
+            <span title="性别">{{ sex }}</span>
+            <span title="年龄">{{ age }}岁</span>
           </div>
           <el-button type="primary" @click="faceDialogVisible = true">
             {{ buttonName }}
@@ -57,6 +57,9 @@
         <div class="flex justify-center" v-if="isOpenCamera">
           <el-button type="primary" @click="closeCamera">关闭摄像头</el-button>
           <el-button type="primary" @click="shoot">拍摄</el-button>
+          <el-button v-if="!!base" type="primary" @click="reShoot">
+            重拍
+          </el-button>
           <el-button v-if="!!base" type="primary" @click="uploadFace">
             上传
           </el-button>
@@ -78,7 +81,7 @@ defineOptions({
 });
 
 const globalStore = GlobalStore();
-const { id, realName, role, avatar, deptName, sex, idCard } = $(
+const { id, realName, avatar, deptName, sex, idCard, position } = $(
   globalStore.userInfo
 );
 const tabs = markRaw([
@@ -94,7 +97,7 @@ const tabs = markRaw([
   },
 ]);
 let activeTab = $ref(tabs[0].value);
-let userFaces = $ref([]);
+let userFaces = $ref<(string | IFaceInfo)[]>([]);
 let faceDialogVisible = $ref(false);
 let isOpenCamera = $ref(false);
 let base = $ref<string | undefined>();
@@ -115,27 +118,41 @@ const getUserInfoApi = async () => {
 const closeCamera = () => {
   camera?.stop();
   isOpenCamera = false;
+  base = undefined;
 };
 
 const closeFaceDialog = () => {
   isOpenCamera = false;
   faceDialogVisible = false;
+  base = undefined;
 };
 
 const shoot = () => {
   base = camera?.getBase();
 };
 
+const reShoot = () => {
+  camera?.clearCanvas();
+  base = undefined;
+};
+
 const getUserFacesApi = async () => {
   try {
     const { data } = await getUserFaces();
-    userFaces = data;
+    userFaces = data?.face_list;
   } catch (error) {
     console.error(error);
   }
 };
-const uploadFace = () => {
-  console.log(base);
+const uploadFace = async () => {
+  const { data, message, success } = await createFace({ base: base! });
+  if (success) {
+    userFaces.push(data.face_token);
+    ElMessage.success(buttonName + '成功');
+    closeFaceDialog();
+  } else {
+    ElMessage.error(message);
+  }
 };
 </script>
 
