@@ -24,6 +24,7 @@ import TakePhoto from '@/components/TakePhoto.vue';
 import * as LoginService from 'api/modules/login';
 import { cancelRequest } from 'api/request';
 import { handleLogin } from 'utils/loginFunc';
+import { useCompRef } from 'utils/useCompRef';
 
 const router = useRouter();
 
@@ -31,7 +32,7 @@ const rootFontSize =
   Number(document.querySelector('html')?.style.fontSize?.slice(0, -2)) || 10;
 const videoWidth = $ref<number>(30 * rootFontSize);
 const videoHeight = $ref<number>(20 * rootFontSize);
-const camera = $ref<InstanceType<typeof TakePhoto> | null>(null);
+const camera = $(useCompRef(TakePhoto));
 let loading = $ref<boolean>(false);
 
 const onFaceLogin = async () => {

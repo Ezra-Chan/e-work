@@ -61,6 +61,7 @@ declare module '@vue/runtime-core' {
     SvgIcon: typeof import('./src/components/SvgIcon.vue')['default']
     TakePhoto: typeof import('./src/components/TakePhoto.vue')['default']
     ThemeSwitch: typeof import('./src/components/ThemeSwitch.vue')['default']
+    UploadFace: typeof import('./src/components/UploadFace.vue')['default']
     UserAvatar: typeof import('./src/components/layouts/header/UserAvatar.vue')['default']
   }
   export interface ComponentCustomProperties {

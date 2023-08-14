@@ -85,4 +85,4 @@ export const createFace = ({
   userId?: number;
   roleId?: number;
   base: string;
-}) => request.post(`/face`, { userId, roleId, base });
+}) => request.post<NewResponse<IFaceInfo>>(`/face`, { userId, roleId, base });

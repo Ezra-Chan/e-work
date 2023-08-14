@@ -7,7 +7,7 @@ import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
 import { RoleModule } from './role/role.module';
 import { DepartmentModule } from './department/department.module';
-import { UploadModule } from './upload/upload.module';
+import { UploadModule } from './file/file.module';
 import { FaceModule } from './face/face.module';
 import { NationModule } from './dictionaryTable/nation/nation.module';
 import { PositionModule } from './position/position.module';

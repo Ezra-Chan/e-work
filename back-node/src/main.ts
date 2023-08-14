@@ -21,7 +21,7 @@ async function bootstrap() {
   // 参数验证管道
   app.useGlobalPipes(new ValidationPipe());
   // 静态资源
-  app.useStaticAssets(join(__dirname, 'uploads'), {
+  app.useStaticAssets(join(__dirname, 'files'), {
     prefix: '/files',
   });
   app.use(bodyParser.json({ limit: '1mb' }));
