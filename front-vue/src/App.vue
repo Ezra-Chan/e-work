@@ -1,11 +1,11 @@
 <template>
-  <ElConfigProvider :locale="zhCn">
+  <ElConfigProvider :locale="zhCN">
     <RouterView />
   </ElConfigProvider>
 </template>
 
 <script setup lang="ts">
-import zhCn from 'element-plus/lib/locale/lang/zh-cn';
+import zhCN from "element-plus/dist/locale/zh-cn.mjs";
 
 const getHTMLFontSize = useDebounceFn(() => {
   const width = window.innerWidth;
