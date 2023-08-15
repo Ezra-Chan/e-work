@@ -47,8 +47,9 @@
           class="!fs-2 cursor-pointer !pb-2 b-b-2 b-b-solid b-b-transparent"
           :class="loginType === item.type ? 'current-login-type' : ''"
           @click="loginType = item.type"
-          >{{ item.name }}</el-text
         >
+          {{ item.name }}
+        </el-text>
       </el-space>
       <component :is="loginType === 0 ? AccountLogin : FaceLogin" />
     </div>
@@ -71,10 +72,6 @@ const loginTypes = reactive<LoginTypes[]>([
   { name: '人脸识别', type: 1 },
 ]);
 let loginType = $ref<LoginType>(loginTypes[0].type);
-
-onMounted(() => {
-  // getUser();
-});
 </script>
 
 <style lang="less" scoped>

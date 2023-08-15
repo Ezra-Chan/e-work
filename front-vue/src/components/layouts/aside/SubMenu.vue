@@ -3,7 +3,7 @@
     <el-sub-menu v-if="subItem.children?.length" :index="subItem.path">
       <template #title>
         <el-icon>
-          <component :is="subItem.meta.icon"></component>
+          <component :is="subItem.meta.icon" />
         </el-icon>
         <span class="sle">{{ subItem.meta.title }}</span>
       </template>
@@ -15,7 +15,7 @@
       @click="handleClickMenu(subItem)"
     >
       <el-icon>
-        <component :is="subItem.meta.icon"></component>
+        <component :is="subItem.meta.icon" />
       </el-icon>
       <template #title>
         <span class="sle">{{ subItem.meta.title }}</span>

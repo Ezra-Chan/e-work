@@ -6,7 +6,7 @@
       :title="isCollapse ? '展开' : '收起'"
       class="text-light cursor-pointer"
     >
-      <component :is="isCollapse ? Expand : Fold"></component>
+      <component :is="isCollapse ? Expand : Fold" />
     </el-icon>
   </div>
 </template>

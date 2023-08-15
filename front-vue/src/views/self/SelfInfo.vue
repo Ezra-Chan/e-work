@@ -145,6 +145,7 @@
 </template>
 
 <script setup lang="ts">
+import type { CollapseModelValue, CollapseActiveName } from 'element-plus';
 import {
   SEX,
   EMAIL_SUFFIX,
@@ -181,8 +182,14 @@ const { userInfo = defaultInfo } = $(globalStore);
 
 let nations = $ref<Nation[]>([]);
 
-let activeNames = $ref<string[]>(['self', 'education', 'work', 'finance']);
-const handleChange = (val: string[]) => (activeNames = val);
+let activeNames = $ref<CollapseActiveName[]>([
+  'self',
+  'education',
+  'work',
+  'finance',
+]);
+const handleChange = (val: CollapseModelValue) =>
+  (activeNames = val as CollapseActiveName[]);
 
 /**
  * 判断queryStr内是否含有@符号，且@后有任意字符，如果有则返回[]，否则返回EMAIL_SUFFIX中符合的邮箱后缀
