@@ -22,3 +22,5 @@ declare namespace Menu {
     isKeepAlive: boolean;
   }
 }
+
+declare module 'element-plus/dist/locale/zh-cn.mjs';

@@ -12,5 +12,3 @@ export declare interface ViteEnv {
   VITE_BASE_URL: string;
   VITE_BUILD_GZIP: boolean | string;
 }
-
-declare module 'element-plus/dist/locale/zh-cn.mjs';
