@@ -244,6 +244,9 @@ const onSubmit = () => {
         .el-input.is-disabled {
           .el-input__wrapper {
             background-color: inherit;
+            &:hover {
+              box-shadow: 0 0 0 1px var(--el-input-hover-border-color) inset;
+            }
           }
           .el-input__inner {
             color: var(--el-input-text-color, var(--el-text-color-regular));
