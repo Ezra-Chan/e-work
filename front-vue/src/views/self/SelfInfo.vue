@@ -103,7 +103,11 @@
           <el-input v-model="userInfo.leader.realName" readonly />
         </el-form-item>
         <el-form-item label="员工类型">
-          <el-select v-model="userInfo.employeeType" class="w-100%" disabled>
+          <el-select
+            v-model="userInfo.employeeType"
+            class="w-100% readonly-select"
+            disabled
+          >
             <el-option
               v-for="item in EMPLOYEE_TYPE"
               :key="item"
@@ -113,7 +117,11 @@
           </el-select>
         </el-form-item>
         <el-form-item label="员工状态">
-          <el-select v-model="userInfo.employeeStatus" class="w-100%" disabled>
+          <el-select
+            v-model="userInfo.employeeStatus"
+            class="w-100% readonly-select"
+            disabled
+          >
             <el-option
               v-for="item in EMPLOYEE_STATUS"
               :key="item"
@@ -224,6 +232,27 @@ const onSubmit = () => {
 
       .el-input__wrapper {
         width: 100%;
+      }
+
+      .readonly-select {
+        .el-input.is-disabled,
+        .el-input.is-disabled .el-input__wrapper,
+        .el-input.is-disabled .el-input__inner,
+        .el-input.is-disabled .el-select__caret {
+          cursor: text;
+        }
+        .el-input.is-disabled {
+          .el-input__wrapper {
+            background-color: inherit;
+          }
+          .el-input__inner {
+            color: var(--el-input-text-color, var(--el-text-color-regular));
+            -webkit-text-fill-color: var(
+              --el-input-text-color,
+              var(--el-text-color-regular)
+            );
+          }
+        }
       }
     }
   }
