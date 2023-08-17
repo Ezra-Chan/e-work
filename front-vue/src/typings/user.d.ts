@@ -97,9 +97,9 @@ declare interface IUserInfo {
   // 个人信息
   id: number;
   loginName: string;
-  password: string;
+  password?: string;
   realName: string;
-  sex: SEX;
+  sex?: SEX;
   avatar?: string;
   email?: string;
   phoneNumber?: string;
@@ -118,13 +118,13 @@ declare interface IUserInfo {
   graduateTime?: string;
 
   // 工作信息
-  role: IRole;
+  role?: IRole;
   roleId?: number;
   roleName?: string;
   deptName?: string;
   position?: IPosition;
   department?: IDepartment;
-  leader?: IUserInfo;
+  leader?: Partial<IUserInfo>;
   joinTime?: Date;
   employeeType?: EMPLOYEE_TYPE;
   employeeStatus?: EMPLOYEE_STATUS;

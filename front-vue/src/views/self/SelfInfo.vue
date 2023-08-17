@@ -39,9 +39,6 @@
             />
           </el-select>
         </el-form-item>
-        <el-form-item label="籍贯">
-          <el-input v-model="userInfo.nativePlace" />
-        </el-form-item>
         <el-form-item label="政治面貌">
           <el-select v-model="userInfo.politicalStatus" class="w-100%">
             <el-option
@@ -62,10 +59,13 @@
             />
           </el-select>
         </el-form-item>
+        <el-form-item label="籍贯">
+          <el-input v-model="userInfo.nativePlace" />
+        </el-form-item>
         <el-form-item label="户口所在地">
           <el-input v-model="userInfo.accountLocation" />
         </el-form-item>
-        <el-form-item label="地址">
+        <el-form-item label="住址">
           <el-input v-model="userInfo.address" />
         </el-form-item>
       </el-collapse-item>
@@ -93,20 +93,17 @@
             readonly
           />
         </el-form-item>
-        <el-form-item label="角色">
-          <el-input v-model="userInfo.roleName" readonly />
-        </el-form-item>
         <el-form-item label="部门">
           <el-input v-model="userInfo.deptName" readonly />
         </el-form-item>
-        <el-form-item label="职位">
-          <el-input v-model="userInfo.position" readonly />
+        <el-form-item label="职位" v-if="userInfo.position">
+          <el-input v-model="userInfo.position.name" readonly />
         </el-form-item>
-        <el-form-item label="直接主管">
-          <el-input v-model="userInfo.position" readonly />
+        <el-form-item label="直接主管" v-if="userInfo.leader">
+          <el-input v-model="userInfo.leader.realName" readonly />
         </el-form-item>
         <el-form-item label="员工类型">
-          <el-select v-model="userInfo.employeeType" class="w-100%">
+          <el-select v-model="userInfo.employeeType" class="w-100%" disabled>
             <el-option
               v-for="item in EMPLOYEE_TYPE"
               :key="item"
@@ -116,7 +113,7 @@
           </el-select>
         </el-form-item>
         <el-form-item label="员工状态">
-          <el-select v-model="userInfo.employeeStatus" class="w-100%">
+          <el-select v-model="userInfo.employeeStatus" class="w-100%" disabled>
             <el-option
               v-for="item in EMPLOYEE_STATUS"
               :key="item"
@@ -168,13 +165,7 @@ type Nation = {
 const defaultInfo: IUserInfo = {
   id: 0,
   realName: '',
-  sex: SEX.MALE,
   loginName: '',
-  password: '',
-  role: {
-    id: 0,
-    name: '',
-  },
 };
 
 const globalStore = GlobalStore();
