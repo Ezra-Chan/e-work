@@ -6,6 +6,10 @@
 export {}
 declare global {
   const EffectScope: typeof import('vue')['EffectScope']
+  const ElAutocomplete: typeof import('element-plus/es')['ElAutocomplete']
+  const ElForm: typeof import('element-plus/es')['ElForm']
+  const ElFormItem: typeof import('element-plus/es')['ElFormItem']
+  const ElInput: typeof import('element-plus/es')['ElInput']
   const ElMessage: typeof import('element-plus/es')['ElMessage']
   const asyncComputed: typeof import('@vueuse/core')['asyncComputed']
   const autoResetRef: typeof import('@vueuse/core')['autoResetRef']

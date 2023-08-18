@@ -81,6 +81,7 @@
             v-model="userInfo.graduateTime"
             type="date"
             class="!w-100%"
+            readonly
           />
         </el-form-item>
       </el-collapse-item>
@@ -145,6 +146,7 @@
     </el-collapse>
   </el-form>
   <div class="flex items-center justify-center gap-8 p-t-8 p-r-8">
+    <el-button type="primary" @click="onReset">重置</el-button>
     <el-button type="primary" @click="onSubmit">提交</el-button>
   </div>
 </template>
@@ -152,7 +154,6 @@
 <script setup lang="ts">
 import type { CollapseModelValue, CollapseActiveName } from 'element-plus';
 import {
-  SEX,
   EMAIL_SUFFIX,
   POLITICAL_STATUS,
   MARITAL_STATUS,
@@ -177,7 +178,9 @@ const defaultInfo: IUserInfo = {
 };
 
 const globalStore = GlobalStore();
-const { userInfo = defaultInfo } = $(globalStore);
+const { cloned: userInfo, sync } = useCloned(
+  globalStore.userInfo || defaultInfo
+);
 
 let nations = $ref<Nation[]>([]);
 
@@ -211,6 +214,10 @@ const querySearch = (
     }));
     cb(results);
   }
+};
+
+const onReset = () => {
+  sync();
 };
 
 const onSubmit = () => {
@@ -250,10 +257,6 @@ const onSubmit = () => {
           }
           .el-input__inner {
             color: var(--el-input-text-color, var(--el-text-color-regular));
-            -webkit-text-fill-color: var(
-              --el-input-text-color,
-              var(--el-text-color-regular)
-            );
           }
         }
       }

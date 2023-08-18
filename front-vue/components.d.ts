@@ -54,7 +54,7 @@ declare module 'vue' {
     HeaderLeft: typeof import('./src/components/layouts/header/HeaderLeft.vue')['default']
     HeaderRight: typeof import('./src/components/layouts/header/HeaderRight.vue')['default']
     Main: typeof import('./src/components/layouts/Main.vue')['default']
-    ProForm: typeof import('./src/components/ProForm.vue')['default']
+    ProForm: typeof import('./src/components/Form/ProForm.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     StationMessage: typeof import('./src/components/layouts/header/StationMessage.vue')['default']

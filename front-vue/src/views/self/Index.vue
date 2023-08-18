@@ -9,7 +9,10 @@
             class="cursor-pointer hover:scale-110 transition-all-300"
             title="点击修改头像"
           />
-          <span class="font-500 text-8" title="姓名">
+          <span
+            class="font-500 text-8 truncate w-100% text-center"
+            :title="realName"
+          >
             {{ realName }}
           </span>
           <span class="text-6" title="职位">
@@ -58,6 +61,7 @@ import { GlobalStore } from '@/store';
 import { getUserInfo, getUserFaces } from 'api/modules/user';
 import { getAgeByIdCard } from 'utils/timeFunc';
 import SelfInfo from './SelfInfo.vue';
+// import SelfInfo from './Self.vue';
 
 defineOptions({
   name: 'Self',

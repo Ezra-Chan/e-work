@@ -22,5 +22,6 @@ declare namespace Menu {
     isKeepAlive: boolean;
   }
 }
+declare type Recordable<T = any> = Record<string, T>;
 
 declare module 'element-plus/dist/locale/zh-cn.mjs';
