@@ -9,5 +9,14 @@ export enum UserMessage {
 }
 
 export interface IUser extends User {
+  deptId?: number;
   deptName?: string;
+  nationId?: number;
+  nationName?: string;
+  roleId?: number;
+  roleName?: string;
+  positionId?: number;
+  positionName?: string;
+  leaderId?: number;
+  leaderName?: string;
 }

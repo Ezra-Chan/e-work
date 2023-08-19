@@ -60,9 +60,9 @@ export class UserService {
       select: ['id', 'realName', 'loginName', 'avatar', 'department', 'role'],
       relations: ['department', 'role'],
     });
-    for (let index = 0; index < users.length; index++) {
-      const user = users[index];
-      users[index] = (await this.transformUserInfo(user, 'all')) as IUser;
+    for (let i = 0; i < users.length; i++) {
+      const user = users[i];
+      users[i] = (await this.transformUserInfo(user, 'all')) as IUser;
     }
     return users;
   }
@@ -222,6 +222,15 @@ export class UserService {
       return {
         ...userInfo,
         deptName,
+        deptId: user.department?.id,
+        nationId: user.nation?.id,
+        nationName: user.nation?.name,
+        roleId: user.role?.id,
+        roleName: user.role?.name,
+        positionId: user.position?.id,
+        positionName: user.position?.name,
+        leaderId: user.leader?.id,
+        leaderName: user.leader?.realName,
         password: needPwd ? user.password : undefined,
       };
     }

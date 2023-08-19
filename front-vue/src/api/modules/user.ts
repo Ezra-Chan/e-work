@@ -86,3 +86,5 @@ export const createFace = ({
   roleId?: number;
   base: string;
 }) => request.post<NewResponse<IFaceInfo>>(`/face`, { userId, roleId, base });
+
+export const getNation = () => request.get('/nation');

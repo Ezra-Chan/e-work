@@ -55,7 +55,7 @@
               v-for="item in nations"
               :key="item.id"
               :label="item.name"
-              :value="item.name"
+              :value="item.id"
             />
           </el-select>
         </el-form-item>
@@ -153,6 +153,7 @@
 
 <script setup lang="ts">
 import type { CollapseModelValue, CollapseActiveName } from 'element-plus';
+import { getNation } from 'api/modules/user';
 import {
   EMAIL_SUFFIX,
   POLITICAL_STATUS,
@@ -223,6 +224,15 @@ const onReset = () => {
 const onSubmit = () => {
   console.log(userInfo);
 };
+
+const getNationApi = async () => {
+  const { data } = await getNation();
+  nations = data;
+};
+
+onMounted(() => {
+  getNationApi();
+});
 </script>
 
 <style lang="less" scoped>
