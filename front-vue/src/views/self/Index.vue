@@ -60,6 +60,7 @@
 import { GlobalStore } from '@/store';
 import { getUserInfo, getUserFaces } from 'api/modules/user';
 import { getAgeByIdCard } from 'utils/timeFunc';
+import ChangePwd from './ChangePwd.vue';
 import SelfInfo from './SelfInfo.vue';
 // import SelfInfo from './Self.vue';
 
@@ -80,7 +81,7 @@ const tabs = markRaw([
   {
     label: '修改密码',
     value: 'password',
-    comp: 'SelfPassword',
+    comp: ChangePwd,
   },
 ]);
 let activeTab = $ref(tabs[0].value);
