@@ -20,6 +20,8 @@ import type { ISimpleUser } from 'src/utils/types';
 const relations = {
   role: true,
   department: true,
+  position: true,
+  nation: true,
   leader: {
     role: true,
     department: true,
@@ -214,6 +216,8 @@ export class UserService {
         avatar: user.avatar,
         deptName,
         deptId: +user.department?.id,
+        positionId: user.position?.id,
+        positionName: user.position?.name,
         sex: user.sex,
       };
     } else {

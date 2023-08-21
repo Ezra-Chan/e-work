@@ -108,6 +108,8 @@ declare interface IUserInfo {
   nativePlace?: string;
   politicalStatus?: POLITICAL_STATUS;
   nation?: string;
+  nationId?: number;
+  nationName?: string;
   accountLocation?: string;
   address?: string;
   signature?: string;
@@ -121,10 +123,15 @@ declare interface IUserInfo {
   role?: IRole;
   roleId?: number;
   roleName?: string;
+  deptId?: number;
   deptName?: string;
   position?: IPosition;
+  positionId?: number;
+  positionName?: string;
   department?: IDepartment;
   leader?: Partial<IUserInfo>;
+  leaderId?: number;
+  leaderName?: string;
   joinTime?: Date;
   employeeType?: EMPLOYEE_TYPE;
   employeeStatus?: EMPLOYEE_STATUS;

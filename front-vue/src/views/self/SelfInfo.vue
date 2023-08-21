@@ -50,7 +50,7 @@
           </el-select>
         </el-form-item>
         <el-form-item label="民族">
-          <el-select v-model="userInfo.nation" class="w-100%">
+          <el-select v-model="userInfo.nationId" class="w-100%">
             <el-option
               v-for="item in nations"
               :key="item.id"
@@ -97,11 +97,11 @@
         <el-form-item label="部门">
           <el-input v-model="userInfo.deptName" readonly />
         </el-form-item>
-        <el-form-item label="职位" v-if="userInfo.position">
-          <el-input v-model="userInfo.position.name" readonly />
+        <el-form-item label="职位">
+          <el-input v-model="userInfo.positionName" readonly />
         </el-form-item>
-        <el-form-item label="直接主管" v-if="userInfo.leader">
-          <el-input v-model="userInfo.leader.realName" readonly />
+        <el-form-item label="直接主管">
+          <el-input v-model="userInfo.leaderName" readonly />
         </el-form-item>
         <el-form-item label="员工类型">
           <el-select
