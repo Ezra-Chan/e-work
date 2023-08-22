@@ -34,6 +34,7 @@ export class CreateUserDto {
 
   @ApiPropertyDesc(UserDesc, { example: '123456' })
   @IsNotEmpty({ message: '密码不能为空' })
+  @Length(6)
   password: string;
 
   @ApiPropertyDesc(UserDesc, { example: 1 })
