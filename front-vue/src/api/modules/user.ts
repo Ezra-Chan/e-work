@@ -48,6 +48,15 @@ export const updateUser = (id: number, data: IUserInfo) =>
   request.patch(`/user/${id}`, data);
 
 /**
+ * 修改密码
+ * @param params
+ * @param params.oldPwd 旧密码
+ * @param params.newPwd 新密码
+ */
+export const changePassword = (params: IPwdForm) =>
+  request.post('/user/changePassword', params);
+
+/**
  * 删除用户
  * @param id 用户ID
  */

@@ -128,7 +128,7 @@ export class UserService {
    * @param id 用户ID
    * @returns 用户
    */
-  async findOne(id: number): Promise<IUser> {
+  async findOne(id: number, needPwd?: boolean): Promise<IUser> {
     const user = await this.userRepository.findOne({
       where: { id },
       relations,
@@ -136,7 +136,7 @@ export class UserService {
     if (!user) {
       throw new HttpException(UserMessage.NOT_FOUND, HttpStatus.BAD_REQUEST);
     }
-    return (await this.transformUserInfo(user, 'all')) as IUser;
+    return (await this.transformUserInfo(user, 'all', needPwd)) as IUser;
   }
 
   /**
@@ -158,6 +158,26 @@ export class UserService {
     }
     const info = await this.userRepository.save({ ...user, ...updateUserDto });
     return await this.transformUserInfo(info);
+  }
+
+  /**
+   * 修改密码
+   */
+  async changePassword(body, req) {
+    const { oldPwd, newPwd } = body;
+    const { id } = req.user;
+    const user = await this.findOne(id, true);
+    const decryptedOldPwd = decrypt(oldPwd);
+    if (md5(decryptedOldPwd) !== user.password) {
+      throw new HttpException(
+        UserMessage.PASSWORD_ERROR,
+        HttpStatus.BAD_REQUEST
+      );
+    }
+    const decryptedNewPwd = decrypt(newPwd);
+    return await this.userRepository.update(id, {
+      password: md5(decryptedNewPwd),
+    });
   }
 
   /**

@@ -156,3 +156,9 @@ declare interface IFaceInfo {
 declare interface IUserFaceList {
   face_list: (IFaceInfo | string)[];
 }
+
+declare interface IPwdForm {
+  oldPwd: string;
+  newPwd: string;
+  confirmPwd?: string;
+}

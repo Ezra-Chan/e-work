@@ -4,6 +4,7 @@
     :model="userInfo"
     label-width="10rem"
     class="overflow-y-auto p-r-8"
+    scroll-to-error
   >
     <el-collapse v-model="activeNames" @change="handleChange">
       <el-collapse-item title="个人信息" name="self">

@@ -6,6 +6,7 @@ import {
   Patch,
   Param,
   Delete,
+  Req,
 } from '@nestjs/common';
 import { ApiBody, ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
 import { UserService } from './user.service';
@@ -71,5 +72,11 @@ export class UserController {
   @Get('disable/:id')
   disable(@Param('id') id: string) {
     return this.userService.disable(+id);
+  }
+
+  @ApiOperation({ summary: '修改密码' })
+  @Post('changePassword')
+  changePassword(@Body() body, @Req() req) {
+    return this.userService.changePassword(body, req);
   }
 }
