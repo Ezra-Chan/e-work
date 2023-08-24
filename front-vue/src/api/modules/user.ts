@@ -44,7 +44,7 @@ export const searchUser = (keyword: any) =>
  * @param data 用户信息
  * @returns
  */
-export const updateUser = (id: number, data: IUserInfo) =>
+export const updateUser = (id: number, data: Partial<IUserInfo>) =>
   request.patch(`/user/${id}`, data);
 
 /**
