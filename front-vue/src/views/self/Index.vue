@@ -28,11 +28,34 @@
           <el-button type="primary" @click="faceDialogVisible = true">
             {{ buttonName }}
           </el-button>
+          <el-text
+            class="text-6 w-100% flex! items-center justify-center gap-2"
+            truncated
+            title="个性签名"
+            v-if="!isInput"
+          >
+            {{ signature || '编辑签名' }}
+            <el-icon class="cursor-pointer" @click="switchInput">
+              <EditPen />
+            </el-icon>
+          </el-text>
+          <el-input
+            v-else
+            class="w-100%"
+            type="textarea"
+            ref="signatureRef"
+            v-model="newSignature"
+            :rows="3"
+            :max="150"
+            @blur="changeSignature"
+            show-word-limit
+            autofocus
+          />
         </div>
       </el-card>
     </el-col>
     <el-col :lg="18" :md="16" class="h-100%">
-      <el-card class="h-100%">
+      <el-card class="h-100%" :body-style="{ 'padding-right': 0 }">
         <el-tabs v-model="activeTab" class="h-100%">
           <el-tab-pane
             v-for="tab in tabs"
@@ -57,9 +80,12 @@
 </template>
 
 <script setup lang="ts">
+import { EditPen } from '@element-plus/icons-vue';
+import { ElInput } from 'element-plus';
 import { GlobalStore } from '@/store';
-import { getUserInfo, getUserFaces } from 'api/modules/user';
+import { getUserInfo, getUserFaces, updateUser } from 'api/modules/user';
 import { getAgeByIdCard } from 'utils/timeFunc';
+import { useCompRef } from 'utils/useCompRef';
 import ChangePwd from './ChangePwd.vue';
 import SelfInfo from './SelfInfo.vue';
 // import SelfInfo from './Self.vue';
@@ -69,7 +95,7 @@ defineOptions({
 });
 
 const globalStore = GlobalStore();
-const { id, realName, avatar, deptName, sex, idCard, position } = $(
+const { id, realName, avatar, deptName, sex, idCard, position, signature } = $(
   globalStore.userInfo
 );
 const tabs = markRaw([
@@ -87,6 +113,9 @@ const tabs = markRaw([
 let activeTab = $ref(tabs[0].value);
 let userFaces = $ref<(string | IFaceInfo)[]>([]);
 let faceDialogVisible = $ref(false);
+let isInput = $ref(false);
+let newSignature = $ref(signature);
+const signatureRef = $(useCompRef(ElInput));
 const age = computed(() => getAgeByIdCard(idCard));
 const buttonName = computed(() => (userFaces.length ? '添加人脸' : '注册人脸'));
 
@@ -109,6 +138,19 @@ const getUserFacesApi = async () => {
   }
 };
 
+const switchInput = () => {
+  isInput = !isInput;
+};
+
+const changeSignature = async (e: any) => {
+  const val = e.target?.value;
+  if (val !== signature && (val || signature)) {
+    const res = await updateUser(id, { signature: val });
+    console.log(res);
+  }
+  switchInput();
+};
+
 const onUpload = (data: IFaceInfo) => {
   userFaces.push(data.face_token);
   ElMessage.success(buttonName.value + '成功');
@@ -117,13 +159,18 @@ const onUpload = (data: IFaceInfo) => {
 const onClose = () => {
   faceDialogVisible = false;
 };
+
+watchEffect(() => {
+  if (isInput) {
+    signatureRef?.focus();
+  }
+});
 </script>
 
 <style lang="less" scoped>
 .self-info {
   :deep(.el-card__body) {
     height: 100%;
-    padding-right: 0;
 
     .el-tabs__content {
       height: calc(100% - var(--el-tabs-header-height) - 15px);

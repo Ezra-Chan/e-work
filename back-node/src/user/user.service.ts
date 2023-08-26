@@ -152,10 +152,6 @@ export class UserService {
         await this.checkUnique(field, updateUserDto[field]);
       }
     }
-    if (updateUserDto.password) {
-      const decryptedPassword = decrypt(updateUserDto.password);
-      updateUserDto.password = md5(decryptedPassword);
-    }
     const info = await this.userRepository.save({ ...user, ...updateUserDto });
     return await this.transformUserInfo(info);
   }
