@@ -49,7 +49,6 @@
             :max="150"
             @blur="changeSignature"
             show-word-limit
-            autofocus
           />
         </div>
       </el-card>
@@ -145,8 +144,13 @@ const switchInput = () => {
 const changeSignature = async (e: any) => {
   const val = e.target?.value;
   if (val !== signature && (val || signature)) {
-    const res = await updateUser(id, { signature: val });
-    console.log(res);
+    const { success, message } = await updateUser(id, { signature: val });
+    if (!success) {
+      ElMessage.error(message);
+      newSignature = signature;
+      return;
+    }
+    getUserInfoApi();
   }
   switchInput();
 };
