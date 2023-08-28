@@ -25,17 +25,13 @@
             <span title="性别">{{ sex }}</span>
             <span title="年龄">{{ age }}岁</span>
           </div>
-          <el-button type="primary" @click="faceDialogVisible = true">
-            {{ buttonName }}
-          </el-button>
           <el-text
-            class="text-6 w-100% flex! items-center justify-center gap-2"
-            truncated
+            class="text-6 w-100% flex! flex-wrap items-center justify-center gap-2"
             title="个性签名"
             v-if="!isInput"
           >
             {{ signature || '编辑签名' }}
-            <el-icon class="cursor-pointer" @click="switchInput">
+            <el-icon class="cursor-pointer" @click="switchInput" title="编辑">
               <EditPen />
             </el-icon>
           </el-text>
@@ -50,6 +46,9 @@
             @blur="changeSignature"
             show-word-limit
           />
+          <el-button type="primary" @click="faceDialogVisible = true">
+            {{ buttonName }}
+          </el-button>
         </div>
       </el-card>
     </el-col>
