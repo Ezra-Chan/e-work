@@ -11,6 +11,7 @@ import { UploadModule } from './file/file.module';
 import { FaceModule } from './face/face.module';
 import { NationModule } from './dictionaryTable/nation/nation.module';
 import { PositionModule } from './position/position.module';
+import { MenuModule } from './menu/menu.module';
 
 @Module({
   imports: [
@@ -32,6 +33,7 @@ import { PositionModule } from './position/position.module';
     FaceModule,
     NationModule,
     PositionModule,
+    MenuModule,
   ],
   controllers: [AppController],
   providers: [
