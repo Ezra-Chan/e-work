@@ -77,3 +77,15 @@ export const PositionDesc = {
   id: '职位ID',
   name: '职位名',
 };
+
+export const MenuDesc = {
+  id: '菜单ID',
+  name: '菜单名',
+  parentId: '上级菜单ID',
+  icon: '图标',
+  path: '路径',
+  component: '组件',
+  sort: '排序',
+  permission: '权限',
+  enabled: '是否启用',
+};
