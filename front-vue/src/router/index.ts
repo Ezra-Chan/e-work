@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router';
+import NProgress from '@/config/nprogress';
 
 const routes: Array<RouteRecordRaw> = [
   {

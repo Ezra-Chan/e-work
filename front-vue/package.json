@@ -19,6 +19,7 @@
     "dayjs": "^1.11.9",
     "element-plus": "^2.3.9",
     "jsencrypt": "^3.3.2",
+    "nprogress": "^0.2.0",
     "pinia": "^2.1.6",
     "pinia-plugin-persistedstate": "^3.2.0",
     "querystringify": "^2.2.0",
@@ -27,6 +28,7 @@
   },
   "devDependencies": {
     "@types/node": "^20.5.0",
+    "@types/nprogress": "^0.2.0",
     "@types/querystringify": "^2.0.0",
     "@unocss/preset-attributify": "^0.55.0",
     "@unocss/preset-icons": "^0.55.0",
