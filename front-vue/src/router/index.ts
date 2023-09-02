@@ -46,6 +46,7 @@ const router = createRouter({
 });
 
 router.beforeEach(to => {
+  NProgress.start();
   if (to.meta?.requireAuth) {
     const { token, userInfo } = JSON.parse(
       localStorage.getItem('GlobalState') || '{}'
@@ -54,6 +55,21 @@ router.beforeEach(to => {
       return '/login';
     }
   }
+});
+
+/**
+ * @description 路由跳转错误
+ * */
+router.onError(error => {
+  NProgress.done();
+  console.warn('路由错误', error.message);
+});
+
+/**
+ * @description 路由跳转结束
+ * */
+router.afterEach(() => {
+  NProgress.done();
 });
 
 export default router;
