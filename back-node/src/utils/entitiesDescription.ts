@@ -81,6 +81,7 @@ export const PositionDesc = {
 export const MenuDesc = {
   id: '菜单ID',
   name: '菜单名',
+  title: '菜单文档名',
   parentId: '上级菜单ID',
   icon: '图标',
   path: '路径',
