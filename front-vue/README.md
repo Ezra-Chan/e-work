@@ -4,7 +4,7 @@ e-work 信息化办公管理系统-前端
 
 ## 技术栈
 
-Vue 3 + Element Plus + Vite 4 + Pinia
+Vue 3.3 + Element Plus + Vite 4 + Pinia
 
 ## 预览图
 
