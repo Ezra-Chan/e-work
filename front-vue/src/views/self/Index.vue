@@ -118,7 +118,6 @@ const age = computed(() => getAgeByIdCard(idCard));
 const buttonName = computed(() => (userFaces.length ? '添加人脸' : '注册人脸'));
 
 onMounted(() => {
-  getUserInfoApi();
   getUserFacesApi();
 });
 

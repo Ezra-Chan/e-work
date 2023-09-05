@@ -13,6 +13,7 @@
 
 <script setup lang="ts" name="Home">
 import { GlobalStore } from '@/store';
+import { getUserInfo } from 'api/modules/user';
 
 defineOptions({
   name: 'Home',
@@ -32,7 +33,14 @@ onBeforeRouteUpdate((to, from) => {
   console.log('from', from);
 });
 
-onMounted(() => {});
+onMounted(() => {
+  getUserInfoApi();
+});
+
+const getUserInfoApi = async () => {
+  const { data } = await getUserInfo(globalStore.userInfo!.id);
+  globalStore.setGlobalState({ userInfo: data });
+};
 </script>
 
 <style lang="less" scoped>
