@@ -40,16 +40,14 @@ interface Props {
   visible: boolean;
 }
 
-interface Emits {
-  (e: 'upload', data: IFaceInfo): void;
-  (e: 'close'): void;
-}
-
 const props = withDefaults(defineProps<Props>(), {
   title: '上传人脸',
   visible: false,
 });
-const emit = defineEmits<Emits>();
+const emit = defineEmits<{
+  upload: [data: IFaceInfo];
+  close: [];
+}>();
 
 let isOpenCamera = $ref(false);
 let base = $ref<string | undefined>();

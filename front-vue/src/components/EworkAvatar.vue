@@ -1,5 +1,11 @@
 <template>
-  <el-avatar :size="size" :src="source" :shape="shape" @error="errorHandle" />
+  <el-avatar
+    class="ework-avatar"
+    :size="size"
+    :src="source"
+    :shape="shape"
+    @error="errorHandle"
+  />
 </template>
 
 <script setup lang="ts" name="EworkAvatar">
@@ -23,3 +29,11 @@ const errorHandle = () => {
   source = user;
 };
 </script>
+
+<style lang="less">
+.ework-avatar {
+  img {
+    -webkit-user-drag: none;
+  }
+}
+</style>
