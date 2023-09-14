@@ -10,6 +10,7 @@
             title="点击修改头像"
           />
           <span
+            @click="imageCroppingVisible = true"
             class="font-500 text-8 truncate w-100% text-center"
             :title="realName"
           >
@@ -75,6 +76,7 @@
     @upload="onUpload"
     @close="onClose"
   />
+  <image-cropping-modal :visible="imageCroppingVisible" />
 </template>
 
 <script setup lang="ts">
@@ -111,6 +113,7 @@ const tabs = markRaw([
 let activeTab = $ref(tabs[0].value);
 let userFaces = $ref<(string | IFaceInfo)[]>([]);
 let faceDialogVisible = $ref(false);
+let imageCroppingVisible = $ref(false);
 let isInput = $ref(false);
 let newSignature = $ref(signature);
 const signatureRef = $(useCompRef(ElInput));

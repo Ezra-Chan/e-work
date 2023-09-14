@@ -16,7 +16,6 @@ declare module 'vue' {
     ElBadge: typeof import('element-plus/es')['ElBadge']
     ElButton: typeof import('element-plus/es')['ElButton']
     ElCard: typeof import('element-plus/es')['ElCard']
-    ElCheckbox: typeof import('element-plus/es')['ElCheckbox']
     ElCol: typeof import('element-plus/es')['ElCol']
     ElCollapse: typeof import('element-plus/es')['ElCollapse']
     ElCollapseItem: typeof import('element-plus/es')['ElCollapseItem']
@@ -37,13 +36,11 @@ declare module 'vue' {
     ElMain: typeof import('element-plus/es')['ElMain']
     ElMenu: typeof import('element-plus/es')['ElMenu']
     ElMenuItem: typeof import('element-plus/es')['ElMenuItem']
-    ElMenuItemGroup: typeof import('element-plus/es')['ElMenuItemGroup']
     ElOption: typeof import('element-plus/es')['ElOption']
     ElPopover: typeof import('element-plus/es')['ElPopover']
     ElRow: typeof import('element-plus/es')['ElRow']
     ElScrollbar: typeof import('element-plus/es')['ElScrollbar']
     ElSelect: typeof import('element-plus/es')['ElSelect']
-    ElSpace: typeof import('element-plus/es')['ElSpace']
     ElSubMenu: typeof import('element-plus/es')['ElSubMenu']
     ElSwitch: typeof import('element-plus/es')['ElSwitch']
     ElTabPane: typeof import('element-plus/es')['ElTabPane']
@@ -53,9 +50,9 @@ declare module 'vue' {
     Fullscreen: typeof import('./src/components/layouts/header/Fullscreen.vue')['default']
     HeaderLeft: typeof import('./src/components/layouts/header/HeaderLeft.vue')['default']
     HeaderRight: typeof import('./src/components/layouts/header/HeaderRight.vue')['default']
-    Index: typeof import('./src/components/ImageCropping/Index.vue')['default']
+    ImageCropping: typeof import('./src/components/ImageCropping/ImageCropping.vue')['default']
+    ImageCroppingModal: typeof import('./src/components/ImageCropping/ImageCroppingModal.vue')['default']
     Main: typeof import('./src/components/layouts/Main.vue')['default']
-    Modal: typeof import('./src/components/ImageCropping/Modal.vue')['default']
     ProForm: typeof import('./src/components/Form/ProForm.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
@@ -66,8 +63,5 @@ declare module 'vue' {
     ThemeSwitch: typeof import('./src/components/ThemeSwitch.vue')['default']
     UploadFace: typeof import('./src/components/UploadFace.vue')['default']
     UserAvatar: typeof import('./src/components/layouts/header/UserAvatar.vue')['default']
-  }
-  export interface ComponentCustomProperties {
-    vLoading: typeof import('element-plus/es')['ElLoadingDirective']
   }
 }

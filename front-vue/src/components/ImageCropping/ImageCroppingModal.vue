@@ -8,14 +8,11 @@
     append-to-body
     :before-close="closeDialog"
   >
+    <image-cropping />
   </el-dialog>
 </template>
 
 <script setup lang="ts">
-defineOptions({
-  name: 'ImageCroppingModal',
-});
-
 interface Props {
   modalClass?: string;
   title?: string;
