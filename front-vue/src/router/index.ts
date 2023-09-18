@@ -36,6 +36,16 @@ const routes: Array<RouteRecordRaw> = [
         },
         component: () => import('@/views/self/Index.vue'),
       },
+      {
+        path: '/menuManage',
+        name: 'MenuManage',
+        meta: {
+          title: '菜单管理',
+          keepAlive: true,
+          requireAuth: true,
+        },
+        component: () => import('@/views/menu/MenuManage.vue'),
+      },
     ],
   },
 ];
