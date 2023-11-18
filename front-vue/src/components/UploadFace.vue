@@ -13,18 +13,13 @@
     <template #footer>
       <div class="flex justify-center" v-if="isOpenCamera">
         <el-button type="primary" @click="closeCamera">关闭摄像头</el-button>
-        <el-button type="primary" @click="shoot">拍摄</el-button>
-        <el-button v-if="!!base" type="primary" @click="reShoot">
-          重拍
-        </el-button>
-        <el-button
-          v-if="!!base"
-          type="primary"
-          @click="createFaceApi"
-          :loading="loading"
-        >
-          上传
-        </el-button>
+        <el-button v-if="!base" type="primary" @click="shoot">拍摄</el-button>
+        <template v-else>
+          <el-button type="primary" @click="reShoot">重拍</el-button>
+          <el-button type="primary" @click="createFaceApi" :loading="loading">
+            上传
+          </el-button>
+        </template>
       </div>
     </template>
   </el-dialog>

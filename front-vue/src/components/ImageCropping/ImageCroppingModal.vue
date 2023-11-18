@@ -2,13 +2,14 @@
   <el-dialog
     v-model="dialogVisible"
     :title="title"
+    width="800px"
     :modal-class="modalClass + ' image-cropping-modal'"
     :close-on-click-modal="false"
     destroy-on-close
     append-to-body
     :before-close="closeDialog"
   >
-    <image-cropping />
+    <image-cropping :imgSrc="imgSrc" :outputType="outputType" />
   </el-dialog>
 </template>
 
@@ -16,6 +17,9 @@
 interface Props {
   modalClass?: string;
   title?: string;
+  visible: boolean;
+  imgSrc?: string | Blob | File;
+  outputType?: 'jpeg' | 'png' | 'webp';
 }
 
 const props = withDefaults(defineProps<Props>(), {

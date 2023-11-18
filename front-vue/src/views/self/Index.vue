@@ -8,9 +8,9 @@
             :src="avatar"
             class="cursor-pointer hover:scale-110 transition-all-300"
             title="点击修改头像"
+            @click="imageCroppingVisible = true"
           />
           <span
-            @click="imageCroppingVisible = true"
             class="font-500 text-8 truncate w-100% text-center"
             :title="realName"
           >
@@ -76,7 +76,12 @@
     @upload="onUpload"
     @close="onClose"
   />
-  <image-cropping-modal :visible="imageCroppingVisible" />
+  <image-cropping-modal
+    title="更换头像"
+    :visible="imageCroppingVisible"
+    @close="imageCroppingVisible = false"
+    :img-src="avatar"
+  />
 </template>
 
 <script setup lang="ts">
