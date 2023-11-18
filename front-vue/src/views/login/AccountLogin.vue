@@ -76,6 +76,7 @@ import { FormInstance, FormRules } from 'element-plus';
 import * as LoginService from 'api/modules/login';
 import { cancelRequest } from 'api/request';
 import { encrypt } from 'utils/encrypt';
+import { Encrypt as AESEncrypt, Decrypt } from 'utils/AES';
 import { handleLogin } from 'utils/loginFunc';
 
 const router = useRouter();
@@ -105,7 +106,7 @@ onMounted(() => {
   if (loginFormCache) {
     const cache = JSON.parse(loginFormCache);
     loginForm.loginName = cache.loginName;
-    loginForm.password = cache.password;
+    loginForm.password = Decrypt(cache.password);
     loginForm.rememberMe = true;
   }
 });
@@ -116,18 +117,13 @@ const onLogin = async (formRef: FormInstance | undefined) => {
     if (valid) {
       try {
         loading = true;
-        const password = loginForm.password;
-        const sign = 'encrypted';
-        const isRemember = password.endsWith(sign);
         const {
           success,
           data = {},
           message,
         } = await LoginService.accountLogin({
           ...loginForm,
-          password: isRemember
-            ? password.replace(sign, '')
-            : (encrypt(loginForm.password) as string),
+          password: encrypt(loginForm.password) as string,
         });
         if (!success) {
           ElMessage.error(message);
@@ -137,9 +133,7 @@ const onLogin = async (formRef: FormInstance | undefined) => {
         if (loginForm.rememberMe) {
           loginFormCache = JSON.stringify({
             loginName: loginForm.loginName,
-            password: isRemember
-              ? password
-              : encrypt(loginForm.password) + sign,
+            password: AESEncrypt(loginForm.password),
           });
         } else {
           loginFormCache = null;
