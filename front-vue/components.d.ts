@@ -48,6 +48,7 @@ declare module 'vue' {
     ElTabPane: typeof import('element-plus/es')['ElTabPane']
     ElTabs: typeof import('element-plus/es')['ElTabs']
     ElText: typeof import('element-plus/es')['ElText']
+    ElUpload: typeof import('element-plus/es')['ElUpload']
     EworkAvatar: typeof import('./src/components/EworkAvatar.vue')['default']
     Fullscreen: typeof import('./src/components/layouts/header/Fullscreen.vue')['default']
     HeaderLeft: typeof import('./src/components/layouts/header/HeaderLeft.vue')['default']

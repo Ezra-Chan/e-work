@@ -21,7 +21,17 @@
         @realTime="realTime"
       />
       <div class="flex gap-6 justify-center">
-        <el-button type="primary">更换图片</el-button>
+        <el-upload
+          accept=".jpg, .jpeg, .png"
+          :auto-upload="false"
+          :show-file-list="false"
+          :on-change="handleImageChange"
+          :before-upload="beforeImageUpload"
+        >
+          <template #trigger>
+            <el-button type="primary">更换图片</el-button>
+          </template>
+        </el-upload>
         <el-button @click="changeScale(1)" title="放大">
           <el-icon :size="iconButtonSize"><ZoomIn /></el-icon>
         </el-button>
@@ -43,7 +53,7 @@
         </div>
       </div>
       <div class="flex justify-center">
-        <el-button type="primary" @click="upload">
+        <el-button type="primary" @click="upload" :loading="loading">
           上传
           <el-icon size="16px" class="m-l-2"><UploadFilled /></el-icon>
         </el-button>
@@ -55,6 +65,7 @@
 <script setup lang="ts">
 import { CSSProperties } from 'vue';
 import { VueCropper } from 'vue-cropper';
+import type { UploadProps } from 'element-plus';
 import {
   ZoomIn,
   ZoomOut,
@@ -79,6 +90,10 @@ interface IPreviewData {
 }
 
 const iconButtonSize = '2rem';
+const options = {
+  size: 1,
+  fixedNumber: [1, 1],
+};
 
 const props = withDefaults(defineProps<Props>(), {
   outputType: 'jpeg',
@@ -92,14 +107,11 @@ defineEmits<{
 const cropper = $(useCompRef(VueCropper));
 let img = $ref(props.imgSrc);
 let previews = $ref<IPreviewData>();
-const options = {
-  size: 1,
-  fixedNumber: [1, 1],
-};
+let loading = $ref(false);
 
 const imgLoad = (res: 'success' | 'error') => {
   if (res === 'error') {
-    ElMessage.error('图片加载失败，请重新上传');
+    ElMessage.error('图片加载失败，请更换图片');
   }
 };
 
@@ -125,6 +137,26 @@ const getPreviewBlob = () => {
 
 const upload = () => {
   getPreviewBlob();
+};
+
+const handleImageChange: UploadProps['onChange'] = uploadFile => {
+  const { raw } = uploadFile;
+  // 将raw创建本地url
+  const reader = new FileReader();
+  reader.readAsDataURL(raw!);
+  reader.onload = () => {
+    img = reader.result as string;
+  };
+};
+
+const beforeImageUpload: UploadProps['beforeUpload'] = file => {
+  // Element-Plus暂时有bug，不触发beforeUpload事件
+  const isImage = file.type.startsWith('image/');
+  if (!isImage) {
+    ElMessage.error('只能上传jpg、png格式的图片!');
+    return false;
+  }
+  return true;
 };
 
 onMounted(() => {
