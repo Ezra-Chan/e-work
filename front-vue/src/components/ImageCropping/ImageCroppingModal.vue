@@ -9,7 +9,11 @@
     append-to-body
     :before-close="closeDialog"
   >
-    <image-cropping :imgSrc="imgSrc" :outputType="outputType" />
+    <image-cropping
+      :img-src="imgSrc"
+      :output-type="outputType"
+      @upload="upload"
+    />
   </el-dialog>
 </template>
 
@@ -28,12 +32,17 @@ const props = withDefaults(defineProps<Props>(), {
 });
 const emit = defineEmits<{
   close: [];
+  upload: [data: Blob];
 }>();
 
 let dialogVisible = $ref(false);
 
 const closeDialog = () => {
   emit('close');
+};
+
+const upload = (data: Blob) => {
+  emit('upload', data);
 };
 
 watchEffect(() => {

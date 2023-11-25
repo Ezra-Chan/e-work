@@ -53,7 +53,7 @@
         </div>
       </div>
       <div class="flex justify-center">
-        <el-button type="primary" @click="upload" :loading="loading">
+        <el-button type="primary" @click="getPreviewBlob" :loading="loading">
           上传
           <el-icon size="16px" class="m-l-2"><UploadFilled /></el-icon>
         </el-button>
@@ -99,9 +99,8 @@ const props = withDefaults(defineProps<Props>(), {
   outputType: 'jpeg',
 });
 
-defineEmits<{
-  upload: [data: any];
-  close: [];
+const emit = defineEmits<{
+  upload: [data: Blob];
 }>();
 
 const cropper = $(useCompRef(VueCropper));
@@ -125,18 +124,8 @@ const rotateLeft = () => cropper.rotateLeft();
 
 const getPreviewBlob = () => {
   cropper.getCropBlob((data: Blob) => {
-    // 将Blob转化为本地url
-    const reader = new FileReader();
-    reader.readAsDataURL(data);
-    reader.onload = () => {
-      // previewImg = reader.result as string;
-      console.log(reader.result);
-    };
+    emit('upload', data);
   });
-};
-
-const upload = () => {
-  getPreviewBlob();
 };
 
 const handleImageChange: UploadProps['onChange'] = uploadFile => {
@@ -166,4 +155,10 @@ onMounted(() => {
 });
 </script>
 
-<style lang="less" scoped></style>
+<style lang="less" scoped>
+.image-cropping {
+  img {
+    -webkit-user-drag: none;
+  }
+}
+</style>

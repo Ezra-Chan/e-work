@@ -73,14 +73,15 @@
   <upload-face
     :visible="faceDialogVisible"
     :title="buttonName"
-    @upload="onUpload"
+    @upload="uploadFaceImg"
     @close="onClose"
   />
   <image-cropping-modal
     title="更换头像"
     :visible="imageCroppingVisible"
-    @close="imageCroppingVisible = false"
     :img-src="avatar"
+    @close="imageCroppingVisible = false"
+    @upload="uploadAvatar"
   />
 </template>
 
@@ -161,9 +162,13 @@ const changeSignature = async (e: any) => {
   switchInput();
 };
 
-const onUpload = (data: IFaceInfo) => {
+const uploadFaceImg = (data: IFaceInfo) => {
   userFaces.push(data.face_token);
   ElMessage.success(buttonName.value + '成功');
+};
+
+const uploadAvatar = async (file: Blob) => {
+  console.log(file);
 };
 
 const onClose = () => {
