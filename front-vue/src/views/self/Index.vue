@@ -90,6 +90,7 @@ import { EditPen } from '@element-plus/icons-vue';
 import { ElInput } from 'element-plus';
 import { GlobalStore } from '@/store';
 import { getUserInfo, getUserFaces, updateUser } from 'api/modules/user';
+import { uploadFile } from 'api/modules/common';
 import { getAgeByIdCard } from 'utils/timeFunc';
 import { useCompRef } from 'utils/useCompRef';
 import ChangePwd from './ChangePwd.vue';
@@ -167,8 +168,17 @@ const uploadFaceImg = (data: IFaceInfo) => {
   ElMessage.success(buttonName.value + '成功');
 };
 
-const uploadAvatar = async (file: Blob) => {
-  console.log(file);
+const uploadAvatar = async (blob: Blob) => {
+  const { type } = blob;
+  const suffix = type.split('/')[1];
+  // 将blob格式转化为File
+  const file = new File([blob], `${realName}.${suffix}`, { type });
+  console.log('file', file);
+
+  const { success, data } = await uploadFile(file);
+  if (success) {
+    console.log('data', data);
+  }
 };
 
 const onClose = () => {
