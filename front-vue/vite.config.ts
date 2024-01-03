@@ -1,6 +1,6 @@
 import { defineConfig, loadEnv } from 'vite';
 import type { ConfigEnv } from 'vite';
-import VueDevTools from 'vite-plugin-vue-devtools';
+// import VueDevTools from 'vite-plugin-vue-devtools';
 import ReactivityTransform from '@vue-macros/reactivity-transform/dist/vite';
 import Vue from '@vitejs/plugin-vue';
 // import VueJsx from '@vitejs/plugin-vue-jsx'
@@ -29,7 +29,7 @@ export default defineConfig(({ mode }: ConfigEnv) => {
       extensions: ['.js', '.json', '.ts', '.vue'],
     },
     plugins: [
-      VueDevTools(),
+      // VueDevTools(),
       Vue(),
       DefineOptions(),
       ReactivityTransform(),
@@ -60,7 +60,7 @@ export default defineConfig(({ mode }: ConfigEnv) => {
         // 使用Unocss
         configFile: './uno.config.ts',
       }),
-      // * gzip compress
+      // gzip 压缩
       env.VITE_BUILD_GZIP === 'true' &&
         viteCompression({
           verbose: true,
