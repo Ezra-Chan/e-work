@@ -5,7 +5,7 @@ import { DEFAULT_PRIMARY } from '@/config/config';
 import { GlobalState } from './interface';
 
 export const GlobalStore = defineStore({
-  id: 'globslState',
+  id: 'globalState',
   state: (): GlobalState => ({
     token: '',
     userInfo: undefined,
